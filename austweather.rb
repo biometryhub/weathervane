@@ -27,10 +27,11 @@ VERSION_NUMBER = 0.1
 COPYRIGHT = 'Copyright (c) 2021 University of Adelaide Biometry Hub'.freeze
 
 
-# Using the built-in open-uri module for the HTTP GET, and OptionParser
-# for parsing the CLI options
+# Using the built-in open-uri module for the HTTP GET, OptionParser
+# for parsing the CLI options, and csv for parsing the download CSV
 require 'open-uri'
 require 'optparse'
+require 'csv'
 
 
 # The base API URL for the dataset retrieval
@@ -217,14 +218,119 @@ url_params = {
   'comment' => variables.map { |var| WEATHER_CODES[var] } .join('')
 }
 url = API_URL + URI.encode_www_form(url_params)
-puts url
+puts 'Data Download URL: ' + url if verbose
 
+# Download the weather data in CSV format using the constructed URL
+# TODO: Might need some checking for broken connections here?
+#       Also need to check that CSV data was returned at all. Some
+#       latitude/longitude combinations give errors (usually because
+#       they are in the middle of the ocean, e.g.), and this program
+#       should handle these errors gracefully.
+puts 'Downloading...'
+data = URI.open(url)
 
+# Parse the CSV data into a table
+data = CSV.parse(data, headers: true).by_col!
 
+# Delete 'source' columns (if any)
+source_columns = data.headers.select { |header| header[/_source/] }
+puts 'Deleting source columns ' + source_columns.to_s if verbose
+source_columns.map { |column| data.delete(column) }
 
-# Need to check the response: certain combinations can still give
-# errors, which this program should handle gracefully.
+# Extract metadata column and join
+metadata = data.delete('metadata').join("\n").strip
+puts 'Deleting metadata column (metadata to be echoed to STDOUT)' if verbose
+puts "Metadata:\n" + metadata + "\n\n"
 
-# TODO: some formatting of the CSV. change column titles, etc.
+# Change column names to be more reader-friendly
+define_method(:change_column_name) do |old_name, new_name|
+  data[new_name] = data[old_name]
+  data.delete(old_name)
+end
+define_method(:column_exists) do |column_name|
+  data.headers.include?(column_name)
+end
 
-# Finally, show (pretty-formatted!) the first six rows and then exit.
+# This implicitly reorders the columns: columns will appear from
+# left-to-right in the order that they are changed.
+change_column_name('YYYY-MM-DD', 'Date') if column_exists('YYYY-MM-DD')
+change_column_name('latitude', 'Latitude') if column_exists('latitude')
+change_column_name('longitude', 'Longitude') if column_exists('longitude')
+
+if column_exists('daily_rain')
+  change_column_name('daily_rain', 'Rainfall (mm)')
+end
+if column_exists('min_temp')
+  change_column_name('min_temp', 'Minimum Temperature (degC)')
+end
+if column_exists('max_temp')
+  change_column_name('max_temp', 'Maximum Temperature (degC)')
+end
+if column_exists('rh_tmin')
+  change_column_name('rh_tmin', 'Minimum Relative Humidity (%)')
+end
+if column_exists('rh_tmax')
+  change_column_name('rh_tmax', 'Maximum Relative Humidity (%)')
+end
+if column_exists('radiation')
+  change_column_name('radiation', 'Solar Exposure (MJ/m2)')
+end
+if column_exists('mslp')
+  change_column_name('mslp', 'Mean Pressure at Sea Level (hPa)')
+end
+if column_exists('vp')
+  change_column_name('vp', 'Vapour Pressure (hPa)')
+end
+if column_exists('vp_deficit')
+  change_column_name('vp_deficit', 'Vapour Pressure Deficit (hPa)')
+end
+if column_exists('evap_comb')
+  change_column_name('evap_comb', 'Evaporation (mm)')
+end
+if column_exists('evap_morton_lake')
+  change_column_name(
+    'evap_morton_lake',
+    "Morton's Shallow Lake Evaporation (mm)"
+  )
+end
+if column_exists('et_short_crop')
+  change_column_name(
+    'et_short_crop',
+    'FAO56 Short Crop Evapotranspiration (mm)'
+  )
+end
+if column_exists('et_tall_crop')
+  change_column_name(
+    'et_tall_crop',
+    'ASCE Tall Crop Evapotranspiration (mm)'
+  )
+end
+if column_exists('et_morton_actual')
+  change_column_name(
+    'et_morton_actual',
+    "Morton's Areal Actual Evapotranspiration (mm)"
+  )
+end
+if column_exists('et_morton_potential')
+  change_column_name(
+    'et_morton_potential',
+    "Morton's Point Potential Evapotranspiration (mm)"
+  )
+end
+if column_exists('et_morton_wet')
+  change_column_name(
+    'et_morton_wet',
+    "Morton's Wet-environment Areal Potential Evapotranspiration (mm)"
+  )
+end
+
+# Finally, show (pretty-formatted!) the first six rows.
+num_rows = 6
+max_column_width = data.headers.map { |header| header.length }.max
+data.by_row!.to_a[0, num_rows + 1].map do |row|
+  puts row.map { |chars| chars.to_s.strip.ljust(max_column_width) } .join(' ')
+end
+
+# Write the data to a nicely-formatted CSV and exit.
+File.open(output_file, 'w') { |file| file.write(data.to_csv) }
+puts 'Data successfully downloaded to ' + output_file + '.'
