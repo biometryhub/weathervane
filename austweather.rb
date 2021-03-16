@@ -17,13 +17,13 @@
 # Copyright (c) 2021 University of Adelaide Biometry Hub
 #
 # Code author: Russell A. Edson
-# Date last modified: 11/03/2021
+# Date last modified: 16/03/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
 # Program name, version number and copyright notice
 PROGRAM_NAME = 'AustWeather'.freeze
-VERSION_NUMBER = 0.1
+VERSION_NUMBER = 1.0
 COPYRIGHT = 'Copyright (c) 2021 University of Adelaide Biometry Hub'.freeze
 
 
