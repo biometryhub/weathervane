@@ -4,16 +4,33 @@
 # Copyright (c) 2021 University of Adelaide Biometry Hub
 #
 # Code author: Russell A. Edson
-# Date last modified: 12/03/2021
+# Date last modified: 16/03/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
 # TODO: document libraries used.
 library(shiny)
+library(leaflet)
 
 
 # App Meta #####################################################################
 app_title <- 'AustWeather'
+
+# Default latitude/longitude coordinates (for Waite campus, e.g.)
+latitude_default <- -34.9681
+latitude_step <- 1e-4
+
+longitude_default <- 138.6355
+longitude_step <- 1e-4
+
+# Default map zoom level (enough to cover most of SA)
+zoom_default <- 8
+
+# Default dates: a 'year of data' up to the current date
+end_date = Sys.Date()
+start_date = end_date - 365
+
+# TODO: Implement the min/max dates?
 
 
 # User Interface code for the App ##############################################
@@ -24,17 +41,133 @@ ui <- fluidPage(
     tags$script(src = 'app_ancillary.js')
   ),
   fluidRow(
-    id = 'titlebar',
-    column(width = 10, h2(id = 'apptitle', app_title)),
-    column(width = 2, actionButton(inputId = 'btn_credits', label = 'Credits'))
+    id = 'row_titlebar',
+    column(
+      width = 10, 
+      id = 'col_title',
+      h2(id = 'apptitle', app_title)
+    ),
+    column(
+      width = 2, 
+      id = 'col_credits',
+      actionButton(inputId = 'btn_credits', label = 'Credits')
+    )
+  ),
+  fluidRow(
+    id = 'row_helptext',
+    p(
+      id = 'helptext',
+      paste0(
+        'Some helpful text about how to use the app here. Choose a latitude ',
+        'and longitude (by entering in the input boxes, or alternatively by ',
+        'choosing a location using the map on the right), and select a start ',
+        'date and end date. The variables available at the location are ',
+        'loaded into the viewing window, where you can select the ones you ',
+        'want and even preview the time series data. When your are ready, ',
+        'press the Download to file... button to download the data.'
+      )
+    )
+  ),
+  fluidRow(
+    column(
+      width = 5,
+      id = 'col_controls',
+      fluidRow(
+        id = 'row_latlng',
+        column(
+          width = 6, 
+          numericInput(
+            width = '100%',
+            inputId = 'latitude',
+            label = 'Latitude',
+            value = latitude_default,
+            step = latitude_step
+          )
+        ),
+        column(
+          width = 6, 
+          numericInput(
+            width = '100%',
+            inputId = 'longitude',
+            label = 'Longitude',
+            value = longitude_default,
+            step = longitude_step
+          )
+        )
+      ),
+      fluidRow(
+        id = 'row_dates',
+        column(
+          width = 6,
+          dateInput(
+            width = '100%',
+            inputId = 'start_date',
+            label = 'Start date',
+            value = start_date
+          )
+        ),
+        column(
+          width = 6,
+          dateInput(
+            width = '100%',
+            inputId = 'end_date',
+            label = 'End date',
+            value = end_date
+          )
+        )
+      ),
+      fluidRow(
+        tags$label(
+          class = 'control-label', 
+          'for' = 'variables_view',
+          'Variables'
+        ),
+        div(
+          id = 'row_variables',
+          style = 'overflow: scroll; height: 240px; width: inherit;',
+          uiOutput(outputId = 'variables_view')
+        )
+      ),
+      fluidRow(
+        id = 'row_downloadtext',
+        p(
+          id = 'downloadtext',
+          paste0(
+            'Download the selected dataset to a file (.csv/.xls/.xlsx/.rds).'
+          )
+        )
+      ),
+      fluidRow(
+        downloadButton(
+          outputId = 'btn_download',
+          label = 'Download data to file...'
+        )
+      )
+    ),
+    column(
+      width = 7,
+      div(
+        id = 'col_map',
+        tags$canvas(id = 'map_canvas', style = 'position: absolute;'),
+        leafletOutput(outputId = 'map_view', width = '100%', height = '480px')
+      )
+    )
   )
 )
 
+
 # Server code for the App functionality ########################################
 server <- function(input, output, session) {
+  # Keep track of the latitude and longitude coordinates
+  coordinates <- reactiveVal(
+    value = list(
+      latitude = latitude_default,
+      longitude = longitude_default
+    )
+  )
   
-  # Credits: modal
-  observeEvent(input$btn_credits, {
+  # Credits: modal, appears when the 'Credits' button is clicked
+  observeEvent(input$btn_credits, ignoreInit = TRUE, {
     showModal(
       modalDialog(
         easyClose = TRUE,
@@ -43,6 +176,73 @@ server <- function(input, output, session) {
         footer = modalButton('OK')
       )
     )
+  })
+  
+  # Initialise the leaflet map
+  output$map_view <- renderLeaflet({
+    setView(
+      addMarkers(
+        addProviderTiles(
+          leaflet(),
+          providers$OpenStreetMap,
+          options = providerTileOptions(noWrap = TRUE)
+        ),
+        lat = latitude_default,
+        lng = longitude_default
+      ),
+      lat = latitude_default,
+      lng = longitude_default,
+      zoom = zoom_default
+    )
+  })
+  
+  # Update the latitude/longitude when the user clicks on the map
+  observeEvent(input$map_view_click, ignoreInit = TRUE, {
+    click <- input$map_view_click
+    coordinates(
+      list(
+        latitude = round(click$lat, digits = 4),
+        longitude = round(click$lng, digits = 4)
+      )
+    )
+  })
+  
+  # Also update the latitude/longitude coordinates when the user
+  # changes their values in the input controls
+  #TODO: These don't work quite the way we want them to. I think we
+  # need to make it so that it only updates on a loss of focus.
+  observeEvent(input$latitude, ignoreInit = TRUE, {
+    coordinates(
+      list(
+        latitude = input$latitude,
+        longitude = as.numeric(isolate(coordinates()['longitude']))
+      )
+    )
+  })
+  observeEvent(input$longitude, ignoreInit = TRUE, {
+    coordinates(
+      list(
+        latitude = as.numeric(isolate(coordinates()['latitude'])),
+        longitude = input$longitude
+      )
+    )
+  })
+  
+  # Whenever the latitude/longitude is updated, update the map with
+  # a marker and flash the latitude/longitude coordinates to indicate
+  # that they've changed.
+  observeEvent(coordinates(), ignoreInit = TRUE, {
+    # Refresh marker
+    addMarkers(
+      clearMarkers(leafletProxy('map_view')),
+      lat = coordinates()$latitude,
+      lng = coordinates()$longitude
+    )
+    
+    # Update and flash latitude/longitude controls
+    updateNumericInput(session, 'latitude', value = coordinates()$latitude)
+    updateNumericInput(session, 'longitude', value = coordinates()$longitude)
+    session$sendCustomMessage('flash_latitude_longitude', 500)
   })
   
 }
