@@ -17,7 +17,7 @@
 # Copyright (c) 2021 University of Adelaide Biometry Hub
 #
 # Code author: Russell A. Edson
-# Date last modified: 16/03/2021
+# Date last modified: 17/03/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -152,7 +152,7 @@ if longitude < 111.98 || longitude > 156.27
   exit(1)
 end
 
-# Make sure that the start date doesn't exceed the oldest date of
+# Make sure that the start date doesn't precede the oldest date of
 # data available (01/01/1889, as of checking on the 10/03/2021)
 start_date = options[:start].gsub('-', '').to_i
 if start_date < 18890101

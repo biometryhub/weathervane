@@ -79,7 +79,7 @@ ui <- fluidPage(
           numericInput(
             width = '100%',
             inputId = 'latitude',
-            label = 'Latitude',
+            label = 'Latitude (°N)',
             value = latitude_default,
             step = latitude_step
           )
@@ -89,7 +89,7 @@ ui <- fluidPage(
           numericInput(
             width = '100%',
             inputId = 'longitude',
-            label = 'Longitude',
+            label = 'Longitude (°E)',
             value = longitude_default,
             step = longitude_step
           )
@@ -102,7 +102,7 @@ ui <- fluidPage(
           dateInput(
             width = '100%',
             inputId = 'start_date',
-            label = 'Start date',
+            label = 'Start Date',
             value = start_date
           )
         ),
@@ -111,7 +111,7 @@ ui <- fluidPage(
           dateInput(
             width = '100%',
             inputId = 'end_date',
-            label = 'End date',
+            label = 'End Date',
             value = end_date
           )
         )
@@ -209,23 +209,32 @@ server <- function(input, output, session) {
   
   # Also update the latitude/longitude coordinates when the user
   # changes their values in the input controls
-  #TODO: These don't work quite the way we want them to. I think we
-  # need to make it so that it only updates on a loss of focus.
   observeEvent(input$latitude, ignoreInit = TRUE, {
-    coordinates(
-      list(
-        latitude = input$latitude,
-        longitude = as.numeric(isolate(coordinates()['longitude']))
+    # Error-checking: If we cannot parse the entered value, don't do
+    # anything (yet).
+    latitude_value <- as.numeric(input$latitude)
+    if (!is.na(latitude_value)) {
+      coordinates(
+        list(
+          latitude = latitude_value,
+          longitude = as.numeric(isolate(coordinates()['longitude']))
+        )
       )
-    )
+    }
   })
+  
   observeEvent(input$longitude, ignoreInit = TRUE, {
-    coordinates(
-      list(
-        latitude = as.numeric(isolate(coordinates()['latitude'])),
-        longitude = input$longitude
+    # Error-checking: If we cannot parse the entered value, don't do
+    # anything (yet).
+    longitude_value <- as.numeric(input$longitude)
+    if (!is.na(longitude_value)) {
+      coordinates(
+        list(
+          latitude = as.numeric(isolate(coordinates()['latitude'])),
+          longitude = longitude_value
+        )
       )
-    )
+    }
   })
   
   # Whenever the latitude/longitude is updated, update the map with
