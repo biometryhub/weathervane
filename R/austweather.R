@@ -164,6 +164,30 @@ get_austweather <- function(
   source_columns <- colnames(data)[grepl('_source', colnames(data))]
   data <- data[ , !(colnames(data) %in% source_columns)]
   
+  # Delete the 'metadata' column
+  data <- data[ , !(colnames(data) == 'metadata')]
+  
+  # Change column names to be more reader-friendly
+  silo_names <- colnames(data)
+  silo_names[which(silo_names == 'latitude')] <- 'Latitude'
+  silo_names[which(silo_names == 'longitude')] <- 'Longitude'
+  silo_names[which(silo_names == 'YYYY.MM.DD')] <- 'Date'
+  for (i in which(silo_names %in% weather_meta$SILO_name)) {
+    var <- weather_meta[which(weather_meta$SILO_name == silo_names[i]), ]
+    silo_names[i] <- var$pretty_name
+  }
+  data <- `colnames<-`(data, silo_names)
+  
+  # Sort so that the columns are in the desired order.
+  var_order <- which(silo_names == 'Date')
+  var_order <- c(var_order, which(silo_names == 'Latitude'))
+  var_order <- c(var_order, which(silo_names == 'Longitude'))
+  for (i in 1:length(weather_meta$pretty_name)) {
+    var_order <- c(var_order, which(silo_names == weather_meta$pretty_name[i]))
+  }
+  data <- data[ , var_order]
+  
+  data
 }
 
 
