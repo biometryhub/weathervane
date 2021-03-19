@@ -307,17 +307,22 @@ server <- function(input, output, session) {
     content = function(file) {
       download_data <- isolate(data())
       # Get only the selected weather variables
+      non_var_names <- c('Date', 'Latitude', 'Longitude')
       var_names <- colnames(download_data)[
-        which(!colnames(download_data) %in% c('Date', 'Latitude', 'Longitude'))
+        which(!colnames(download_data) %in% non_var_names)
       ]
       selected <- var_names[
         which(sapply(isolate(variables()), function(var) { var$checked }))
       ]
       download_data <- download_data[
-        which(colnames(download_data) %in% selected)
+        append(
+          which(colnames(download_data) %in% non_var_names),
+          which(colnames(download_data) %in% selected)
+        )
       ]
       
-      #TODO: Make this a switch or something depending on the file extension.
+      #TODO: Make this a switch or something depending on the file extension?
+      # (This might be tricky.)
       write.csv(download_data, file, row.names = FALSE)
     }
   )

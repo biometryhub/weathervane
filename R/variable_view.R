@@ -95,7 +95,6 @@ VariableView <- R6Class(
     observers = function(input) {
       observeEvent(input[[self$checkbox_id]], ignoreInit = FALSE, {
         self$checked <- input[[self$checkbox_id]]
-        print(paste0(self$var, ':: checkbox=', self$checked))
       })
     }
   )
