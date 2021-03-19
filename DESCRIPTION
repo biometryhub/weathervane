@@ -1,0 +1,24 @@
+Type: Package
+Package: AustWeather
+Title: AustWeather (TODO better title)
+Version: 0.0.1
+Authors@R: 
+    c(person(given = "Russell",
+             family = "Edson",
+             role = c("aut", "cre"),
+             email = "russell.edson@adelaide.edu.au"))
+Description: TODO
+License: MIT + file LICENSE
+URL: TODO
+BugReports: 
+    TODO
+Depends: 
+    R (>= 3.5.0)
+Imports:
+    R6,
+    ggplot2,
+    xml2
+Suggests: 
+    testthat
+Encoding: UTF-8
+LazyData: true
