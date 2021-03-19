@@ -4,13 +4,14 @@
 # Copyright (c) 2021 University of Adelaide Biometry Hub
 #
 # Code author: Russell A. Edson
-# Date last modified: 16/03/2021
+# Date last modified: 18/03/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
 # TODO: document libraries used.
 library(shiny)
 library(leaflet)
+library(ggplot2)
 
 
 # App Meta #####################################################################
@@ -166,6 +167,9 @@ server <- function(input, output, session) {
     )
   )
   
+  # TODO: Might need to keep track of the checkboxes?
+  variables <- reactiveVal()
+  
   # Credits: modal, appears when the 'Credits' button is clicked
   observeEvent(input$btn_credits, ignoreInit = TRUE, {
     showModal(
@@ -251,9 +255,72 @@ server <- function(input, output, session) {
     # Update and flash latitude/longitude controls
     updateNumericInput(session, 'latitude', value = coordinates()$latitude)
     updateNumericInput(session, 'longitude', value = coordinates()$longitude)
-    session$sendCustomMessage('flash_latitude_longitude', 500)
+    session$sendCustomMessage('flash_latitude_longitude', 1000)
   })
   
+  # Whenever the start/end dates or the coordinates are modified,
+  # do a new data download.
+  data <- reactive({
+    # TODO: Error checking here.
+    
+    get_austweather(
+      lat = coordinates()$latitude,
+      lng = coordinates()$longitude,
+      start = input$start_date,
+      finish = input$end_date
+    )
+    
+    # TODO: Filter out any NaN columns here.
+  })
+  
+
+  # Whenever the data is updated, regenerate the list of variables
+  # and prepare the data download.
+  observeEvent(data(), ignoreInit = FALSE, {
+    # Generate the variables list and plot views/checkboxes
+    var_names <- colnames(data())[
+      which(!colnames(data()) %in% c('Date', 'Latitude', 'Longitude'))
+    ]
+    variables(
+      lapply(
+        var_names, 
+        function(var) { VariableView$new(var, data()[c('Date', var)]) }
+      )
+    )
+    
+    # Render the widget UIs
+    output$variables_view <- renderUI(
+      tagList(sapply(variables(), function(var) { tagList(var$ui()) }))
+    )
+    
+    # Set the observers and draw the plots for each variable
+    for (var in variables()) {
+      var$observers(input)
+      var$draw_plot(output)
+    }
+  })
+  
+  # The download button click:
+  # TODO: Might need to disable/enable this button depending?
+  output$btn_download <- downloadHandler(
+    filename = function() { paste0('AustWeather_data_', Sys.Date(), '.csv') },
+    content = function(file) {
+      download_data <- isolate(data())
+      # Get only the selected weather variables
+      var_names <- colnames(download_data)[
+        which(!colnames(download_data) %in% c('Date', 'Latitude', 'Longitude'))
+      ]
+      selected <- var_names[
+        which(sapply(isolate(variables()), function(var) { var$checked }))
+      ]
+      download_data <- download_data[
+        which(colnames(download_data) %in% selected)
+      ]
+      
+      #TODO: Make this a switch or something depending on the file extension.
+      write.csv(download_data, file, row.names = FALSE)
+    }
+  )
 }
 
 
