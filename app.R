@@ -1,10 +1,10 @@
 # TODO: Brief App overview to go here.
-# Working name: AustWeather (but come up with something better)
+# Working name: wVane
 #
 # Copyright (c) 2021 University of Adelaide Biometry Hub
 #
 # Code author: Russell A. Edson
-# Date last modified: 18/03/2021
+# Date last modified: 24/03/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -15,7 +15,7 @@ library(ggplot2)
 
 
 # App Meta #####################################################################
-app_title <- 'AustWeather'
+app_title <- 'wVane'
 
 # Default latitude/longitude coordinates (for Waite campus, e.g.)
 latitude_default <- -34.9681
