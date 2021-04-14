@@ -18,7 +18,7 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 13/04/2021
+# Date last modified: 14/04/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -110,7 +110,7 @@ module WVane
     # Test for invalid dates
     error_message = 'Invalid date'
     if data.to_s.include?(error_message)
-      error_message = 'Invalid start/finish date'
+      error_message = 'Invalid start date'
       raise StandardError, 'Server-side error: ' + error_message
     end
 

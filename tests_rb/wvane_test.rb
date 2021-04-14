@@ -4,12 +4,13 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 13/04/2021
+# Date last modified: 14/04/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
 require 'test/unit'
 require 'open-uri'
+require 'socket'
 require_relative '../wvane'
 
 # Unit testing for the WVane module functions/methods.
@@ -51,8 +52,21 @@ class WVaneTest < Test::Unit::TestCase
     @vars_err2 = %w[wind_speed max_temp solar_exposure]
     @vars_err3 = %w[max_humidity min_humidity max_humidity]
 
-    # Set up a dummy URL creator function for the data download.
-    #TODO
+    # Set up an erroneous URL that (shouldn't) connect.
+    @bad_url = 'https://wwww.longpaddock.qld.gov.au'
+
+    # Set up a dummy URL and modifier functions for the data download.
+    @url = 'https://www.longpaddock.qld.gov.au/cgi-bin/silo/'\
+      'DataDrillDataset.php?format=csv&username=apirequest&password=apirequest'\
+      '&lat=-34.9&lon=138.6&start=20200101&finish=20201231&comment=RX'
+    @mod_url = lambda do |url, param, value|
+      regex = Regexp.new('(?<=' + param + '=).*?(?=(&|$))')
+      url.gsub(regex, value.to_s)
+    end
+    @new_lat_lon = lambda do |lat, lon|
+      url = @mod_url[@url, 'lat', lat]
+      @mod_url[url, 'lon', lon]
+    end
   end
 
   # Teardown/clean up for the module tests.
@@ -62,12 +76,24 @@ class WVaneTest < Test::Unit::TestCase
 
   # Test cases for the :download_data method.
   def test_download_data
-    #TODO
-    # Test raises error on bad connection/URL
+    # Test that it raises a SocketError exception on bad connection/URL
+    assert_raise(SocketError) { WVane.download_data(@bad_url) }
 
-    # Test raises error on bad dates
+    # Test that it raises a StandardError on a bad start date
+    assert_raise { WVane.download_data(@mod_url[@url, 'start', '00010101']) }
 
-    # Test raises error on bad coordinates
+    # Test that it raises a StandardError on non-Australia coordinates
+    assert_raise { WVane.download_data(@new_lat_lon[-45.8989, 166.7404]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-40.6563, 172.5851]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-34.4431, 172.6840]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-20.2617, 164.1146]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-8.9443, 141.0763]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-8.6502, 120.9603]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-8.5625, 114.0499]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-10.5513, 150.2279]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-9.0564, 142.1969]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-10.7159, 123.1466]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-10.1469, 120.4550]) }
 
     # Test that we always get the Date, Latitude and Longitude columns
 
