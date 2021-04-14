@@ -1,17 +1,19 @@
-# TODO: Brief functions overview here (maybe this should be a package?)
-# Working name: AustWeather (but come up with something better)
+# wVane: An R package for automating the process of downloading
+# SILO weather/climate datasets. Easily retrieve weather datasets for
+# given GPS coordinates and start/end dates for use in your projects.
 #
 # Copyright (c) 2021 University of Adelaide Biometry Hub
+# MIT Licence
 #
 # Code author: Russell A. Edson
-# Date last modified: 17/03/2021
+# Date last modified: 14/04/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
 
 # The main crux of the App download/plotting/etc stuff for the
 # weather variables goes here. The idea should be that a user could
-# simply read in this file and automatically have access to all of 
+# simply read in this file and automatically have access to all of
 # the R functions that do the data download to a data.frame/file.
 
 # Will also need ggplot functions for the small weather variable
@@ -29,7 +31,7 @@ api_url <- paste0(
 # (codes taken from www.longpaddock.qld.gov.au/silo/about/climate-variables/)
 weather_meta <- data.frame(
   name = c(
-    'rainfall', 'min_temp', 'max_temp', 'min_humidity', 'max_humidity', 
+    'rainfall', 'min_temp', 'max_temp', 'min_humidity', 'max_humidity',
     'solar_exposure', 'mean_sea_level_pressure', 'vapour_pressure',
     'vapour_pressure_deficit', 'evaporation', 'evaporation_morton_lake',
     'evapotranspiration_fao56', 'evapotranspiration_asce',
@@ -77,14 +79,14 @@ weather_meta <- data.frame(
 
 
 # return weather as a data frame. TODO unit test this too.
-# default parameters: end date is today's system date, and 
+# default parameters: end date is today's system date, and
 # by sane default get all available variables (so you don't have to
 # mess about remembering the names if you don't want.)
 get_austweather <- function(
-  lat, 
-  lng, 
-  start, 
-  finish = Sys.Date(), 
+  lat,
+  lng,
+  start,
+  finish = Sys.Date(),
   vars = weather_meta$name
 ) {
   # Latitude and longitude have to be provided and roughly within
@@ -95,7 +97,7 @@ get_austweather <- function(
   if (lng < 111.98 | lng > 156.27) {
     stop('Longitude must be within 111.98 and 156.27 degrees East.')
   }
-  
+
   # Parse the start date, and make sure that it doesn't precede the
   # oldest date of data available (01/01/1889, as of checking on the
   # 10/03/2021).
@@ -103,14 +105,14 @@ get_austweather <- function(
   if (start < 18890101) {
     stop('The given start date cannot precede 1889-01-01.')
   }
-  
+
   # Parse the end date (if provided), and make sure that it appears
   # after the start date.
   finish <- as.numeric(gsub('-', '', strftime(finish, format = '%Y-%m-%d')))
   if (finish < start) {
     stop('The given end date must not precede the start date.')
   }
-  
+
   # Make sure that the given set of variables each exist in the set
   # of available variables. (If no variables were given, we grab all
   # available variables by default.)
@@ -127,7 +129,7 @@ get_austweather <- function(
     )
     stop(message)
   }
-  
+
   # Construct the download URL with the data parameters
   url_params <- list(
     'format' = 'csv',
@@ -139,7 +141,7 @@ get_austweather <- function(
     'finish' = finish,
     'comment' = paste(
       sapply(
-        vars, 
+        vars,
         function(var) { weather_meta[which(weather_meta$name == var), 'code'] }
       ),
       collapse = ''
@@ -149,24 +151,24 @@ get_austweather <- function(
     api_url,
     paste(names(url_params), unlist(url_params), sep = '=', collapse = '&')
   )
-  
+
   # TODO: Might need some URL sanity-checking here? Also perhaps
   #       need to check for broken collections, etc.
   #       Also sometimes certain sets of coordinates don't return
   #       anything (e.g. if they're in the middle of the ocean), so
   #       we should check for those here too.
-  
+
   # Download the weather data HTML using the constructed URL
   data <- xml2::xml_text(xml2::read_html(url))
   data <- read.table(text = data, header = TRUE, sep = ',')
-  
+
   # Delete 'source' columns (if any)
   source_columns <- colnames(data)[grepl('_source', colnames(data))]
   data <- data[ , !(colnames(data) %in% source_columns)]
-  
+
   # Delete the 'metadata' column
   data <- data[ , !(colnames(data) == 'metadata')]
-  
+
   # Change column names to be more reader-friendly
   silo_names <- colnames(data)
   silo_names[which(silo_names == 'latitude')] <- 'Latitude'
@@ -177,7 +179,7 @@ get_austweather <- function(
     silo_names[i] <- var$pretty_name
   }
   data <- `colnames<-`(data, silo_names)
-  
+
   # Sort so that the columns are in the desired order.
   var_order <- which(silo_names == 'Date')
   var_order <- c(var_order, which(silo_names == 'Latitude'))
@@ -186,7 +188,7 @@ get_austweather <- function(
     var_order <- c(var_order, which(silo_names == weather_meta$pretty_name[i]))
   }
   data <- data[ , var_order]
-  
+
   data
 }
 
