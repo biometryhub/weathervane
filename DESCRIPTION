@@ -1,6 +1,6 @@
 Package: wVane
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     person(given = "Russell",
            family = "Edson",
@@ -13,3 +13,9 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Imports:
+        xml2 (>= 1.3.2)
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

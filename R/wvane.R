@@ -6,9 +6,72 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson
-# Date last modified: 14/04/2021
+# Date last modified: 16/04/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
+
+
+#'
+#'
+#'
+weather_variables <- function() {
+  data.frame(
+    check.names = FALSE,
+    variable_name = c(
+      'rainfall', 'min_temp', 'max_temp', 'min_humidity', 'max_humidity',
+      'solar_exposure', 'mean_sea_level_pressure', 'vapour_pressure',
+      'vapour_pressure_deficit', 'evaporation', 'evaporation_morton_lake',
+      'evapotranspiration_fao56', 'evapotranspiration_asce',
+      'evapotranspiration_morton_areal', 'evapotranspiration_morton_point',
+      'evapotranspiration_morton_wet'
+    ),
+    pretty_name = c(
+      'Rainfall (mm)', 'Minimum Temperature (degC)',
+      'Maximum Temperature (degC)', 'Minimum Relative Humidity (%)',
+      'Maximum Relative Humidity (%)', 'Solar Exposure (MJ/m2)',
+      'Mean Pressure at Sea Level (hPa)', 'Vapour Pressure (hPa)',
+      'Vapour Pressure Deficit (hPa)', 'Evaporation (mm)',
+      "Morton's Shallow Lake Evaporation (mm)",
+      'FAO56 Short Crop Evapotranspiration (mm)',
+      'ASCE Tall Crop Evapotranspiration (mm)',
+      "Morton's Areal Actual Evapotranspiration (mm)",
+      "Morton's Point Potential Evapotranspiration (mm)",
+      "Morton's Wet-environment Areal Potential Evapotranspiration (mm)"
+    ),
+    description = c(
+      'Daily rainfall (mm)', 'Minimum temperature (degrees Celsius)',
+      'Maximum temperature (degrees Celsius)',
+      'Relative humidity at time of minimum temperature (%)',
+      'Relative humidity at time of maximum temperature (%)',
+      'Solar exposure (MJ/m2)', 'Mean pressure at sea level (hPa)',
+      'Vapour pressure (hPa)', 'Vapour pressure deficit (hPa)',
+      'Class A pan evaporation [synthetic estimate for pre-1970] (mm)',
+      "Morton's shallow lake evaporation (mm)",
+      'FAO56 short crop evapotranspiration (mm)',
+      'ASCE tall crop evapotranspiration (mm)',
+      "Morton's areal actual evapotranspiration (mm)",
+      "Morton's point potential evapotranspiration (mm)",
+      "Morton's wet-environment areal potential evapotranspiration (mm)"
+    ),
+    code = c(
+      'R', 'N', 'X', 'G', 'H', 'J', 'M', 'V', 'D', 'C', 'L', 'F', 'T', 'A',
+      'P', 'W'
+    ),
+    silo_name = c(
+      'daily_rain', 'min_temp', 'max_temp', 'rh_tmin', 'rh_tmax', 'radiation',
+      'mslp', 'vp', 'vp_deficit', 'evap_comb', 'evap_morton_lake',
+      'et_short_crop', 'et_tall_crop', 'et_morton_actual',
+      'et_morton_potential', 'et_morton_wet'
+    )
+  )
+}
+
+
+
+
+
+
+
 
 
 # The main crux of the App download/plotting/etc stuff for the
@@ -19,8 +82,11 @@
 # Will also need ggplot functions for the small weather variable
 # 'preview' plots.
 
-library(xml2)
 
+
+
+
+# TODO: these need to be functions, and/or embedded in functions.
 
 api_url <- paste0(
   'https://www.longpaddock.qld.gov.au/cgi-bin/silo/',
@@ -167,6 +233,7 @@ get_austweather <- function(
   data <- data[ , !(colnames(data) %in% source_columns)]
 
   # Delete the 'metadata' column
+  # TODO: Need to get the elevation data first!
   data <- data[ , !(colnames(data) == 'metadata')]
 
   # Change column names to be more reader-friendly

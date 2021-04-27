@@ -4,7 +4,7 @@
 # Copyright (c) 2021 University of Adelaide Biometry Hub
 #
 # Code author: Russell A. Edson
-# Date last modified: 24/03/2021
+# Date last modified: 26/04/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -44,12 +44,12 @@ ui <- fluidPage(
   fluidRow(
     id = 'row_titlebar',
     column(
-      width = 10, 
+      width = 10,
       id = 'col_title',
       h2(id = 'apptitle', app_title)
     ),
     column(
-      width = 2, 
+      width = 2,
       id = 'col_credits',
       actionButton(inputId = 'btn_credits', label = 'Credits')
     )
@@ -59,13 +59,15 @@ ui <- fluidPage(
     p(
       id = 'helptext',
       paste0(
-        'Some helpful text about how to use the app here. Choose a latitude ',
-        'and longitude (by entering in the input boxes, or alternatively by ',
-        'choosing a location using the map on the right), and select a start ',
-        'date and end date. The variables available at the location are ',
-        'loaded into the viewing window, where you can select the ones you ',
-        'want and even preview the time series data. When your are ready, ',
-        'press the Download to file... button to download the data.'
+        'Choose a latitude and longitude (either by entering in the input ',
+        'boxes directly, or by clicking a location using the interactive ',
+        'map), and select a start date and an end date. The weather variables ',
+        'available at that location for the specified date range will then be ',
+        'loaded into the viewing window. The viewing window includes time ',
+        'series previews of the data for convenience, and each variable can ',
+        'be toggled include/exclude for the download. When you are ready, ',
+        'click the Download button to retrieve the specified weather ',
+        'variables to a CSV.'
       )
     )
   ),
@@ -76,7 +78,7 @@ ui <- fluidPage(
       fluidRow(
         id = 'row_latlng',
         column(
-          width = 6, 
+          width = 6,
           numericInput(
             width = '100%',
             inputId = 'latitude',
@@ -86,7 +88,7 @@ ui <- fluidPage(
           )
         ),
         column(
-          width = 6, 
+          width = 6,
           numericInput(
             width = '100%',
             inputId = 'longitude',
@@ -119,7 +121,7 @@ ui <- fluidPage(
       ),
       fluidRow(
         tags$label(
-          class = 'control-label', 
+          class = 'control-label',
           'for' = 'variables_view',
           'Variables'
         ),
@@ -134,14 +136,14 @@ ui <- fluidPage(
         p(
           id = 'downloadtext',
           paste0(
-            'Download the selected dataset to a file (.csv/.xls/.xlsx/.rds).'
+            'Download the selected dataset to a CSV (.csv) file.'
           )
         )
       ),
       fluidRow(
         downloadButton(
           outputId = 'btn_download',
-          label = 'Download data to file...'
+          label = 'Download data to CSV...'
         )
       )
     ),
@@ -166,10 +168,10 @@ server <- function(input, output, session) {
       longitude = longitude_default
     )
   )
-  
+
   # TODO: Might need to keep track of the checkboxes?
   variables <- reactiveVal()
-  
+
   # Credits: modal, appears when the 'Credits' button is clicked
   observeEvent(input$btn_credits, ignoreInit = TRUE, {
     showModal(
@@ -181,7 +183,7 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   # Initialise the leaflet map
   output$map_view <- renderLeaflet({
     setView(
@@ -199,7 +201,7 @@ server <- function(input, output, session) {
       zoom = zoom_default
     )
   })
-  
+
   # Update the latitude/longitude when the user clicks on the map
   observeEvent(input$map_view_click, ignoreInit = TRUE, {
     click <- input$map_view_click
@@ -210,7 +212,7 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   # Also update the latitude/longitude coordinates when the user
   # changes their values in the input controls
   observeEvent(input$latitude, ignoreInit = TRUE, {
@@ -226,7 +228,7 @@ server <- function(input, output, session) {
       )
     }
   })
-  
+
   observeEvent(input$longitude, ignoreInit = TRUE, {
     # Error-checking: If we cannot parse the entered value, don't do
     # anything (yet).
@@ -240,7 +242,7 @@ server <- function(input, output, session) {
       )
     }
   })
-  
+
   # Whenever the latitude/longitude is updated, update the map with
   # a marker and flash the latitude/longitude coordinates to indicate
   # that they've changed.
@@ -251,28 +253,28 @@ server <- function(input, output, session) {
       lat = coordinates()$latitude,
       lng = coordinates()$longitude
     )
-    
+
     # Update and flash latitude/longitude controls
     updateNumericInput(session, 'latitude', value = coordinates()$latitude)
     updateNumericInput(session, 'longitude', value = coordinates()$longitude)
     session$sendCustomMessage('flash_latitude_longitude', 1000)
   })
-  
+
   # Whenever the start/end dates or the coordinates are modified,
   # do a new data download.
   data <- reactive({
     # TODO: Error checking here.
-    
+
     get_austweather(
       lat = coordinates()$latitude,
       lng = coordinates()$longitude,
       start = input$start_date,
       finish = input$end_date
     )
-    
+
     # TODO: Filter out any NaN columns here.
   })
-  
+
 
   # Whenever the data is updated, regenerate the list of variables
   # and prepare the data download.
@@ -283,27 +285,27 @@ server <- function(input, output, session) {
     ]
     variables(
       lapply(
-        var_names, 
+        var_names,
         function(var) { VariableView$new(var, data()[c('Date', var)]) }
       )
     )
-    
+
     # Render the widget UIs
     output$variables_view <- renderUI(
       tagList(sapply(variables(), function(var) { tagList(var$ui()) }))
     )
-    
+
     # Set the observers and draw the plots for each variable
     for (var in variables()) {
       var$observers(input)
       var$draw_plot(output)
     }
   })
-  
+
   # The download button click:
   # TODO: Might need to disable/enable this button depending?
   output$btn_download <- downloadHandler(
-    filename = function() { paste0('AustWeather_data_', Sys.Date(), '.csv') },
+    filename = function() { paste0('wvane_data_', Sys.Date(), '.csv') },
     content = function(file) {
       download_data <- isolate(data())
       # Get only the selected weather variables
@@ -320,7 +322,7 @@ server <- function(input, output, session) {
           which(colnames(download_data) %in% selected)
         )
       ]
-      
+
       #TODO: Make this a switch or something depending on the file extension?
       # (This might be tricky.)
       write.csv(download_data, file, row.names = FALSE)
