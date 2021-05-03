@@ -4,7 +4,7 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 14/04/2021
+# Date last modified: 03/05/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -44,13 +44,13 @@ class WVaneTest < Test::Unit::TestCase
     # Set up some dummy variable lists
     @vars1 = %w[rainfall]
     @vars2 = %w[rainfall max_temp min_temp]
-    @vars3 = %w[max_temp max_humidity vapour_pressure_deficit]
+    @vars3 = %w[max_temp humidity_tmax vapour_pressure_deficit]
     @all_vars = WVane::WEATHER_VARIABLES
 
     # Set up erroneous variable lists.
     @vars_err1 = %w[rainball]
     @vars_err2 = %w[wind_speed max_temp solar_exposure]
-    @vars_err3 = %w[max_humidity min_humidity max_humidity]
+    @vars_err3 = %w[humidity_tmax humidity_tmin humidity_tmax]
 
     # Set up an erroneous URL that (shouldn't) connect.
     @bad_url = 'https://wwww.longpaddock.qld.gov.au'

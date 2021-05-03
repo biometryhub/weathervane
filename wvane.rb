@@ -18,7 +18,7 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 14/04/2021
+# Date last modified: 03/05/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -29,10 +29,10 @@ require 'csv'
 
 # Namespace for wVane data download functions and URL formatting.
 # @author Russell A. Edson
-# @since 1.1.0
+# @since 1.2.0
 module WVane
   PROGRAM_NAME = 'wVane'.freeze
-  VERSION_NUMBER = '1.1.0'.freeze
+  VERSION_NUMBER = '1.2.0'.freeze
   COPYRIGHT = 'Copyright (c) 2021 University of Adelaide Biometry Hub'.freeze
 
   # The base API URL for the dataset retrieval
@@ -43,7 +43,7 @@ module WVane
   # See also:
   #   https://www.longpaddock.qld.gov.au/silo/about/climate-variables/
   WEATHER_VARIABLES = %w[
-    rainfall min_temp max_temp min_humidity max_humidity solar_exposure
+    rainfall min_temp max_temp humidity_tmin humidity_tmax solar_exposure
     mean_sea_level_pressure vapour_pressure vapour_pressure_deficit
     evaporation evaporation_morton_lake evapotranspiration_fao56
     evapotranspiration_asce evapotranspiration_morton_areal
@@ -52,8 +52,9 @@ module WVane
 
   WEATHER_PRETTY = WEATHER_VARIABLES.zip(
     ['Rainfall (mm)', 'Minimum Temperature (degC)',
-     'Maximum Temperature (degC)', 'Minimum Relative Humidity (%)',
-     'Maximum Relative Humidity (%)', 'Solar Exposure (MJ/m2)',
+     'Maximum Temperature (degC)',
+     'Relative Humidity at Minimum Temperature (%)',
+     'Relative Humidity at Maximum Temperature (%)', 'Solar Exposure (MJ/m2)',
      'Mean Pressure at Sea Level (hPa)', 'Vapour Pressure (hPa)',
      'Vapour Pressure Deficit (hPa)', 'Evaporation (mm)',
      "Morton's Shallow Lake Evaporation (mm)",
