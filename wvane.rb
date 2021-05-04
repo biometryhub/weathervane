@@ -130,6 +130,15 @@ module WVane
       raise StandardError, 'Server-side error: ' + error_message
     end
 
+    # Catch-all test for an error occurring
+    # 04/05/2021: We saw this error when the SILO server went down
+    # briefly. wVane should fail gracefully in such an instance.
+    error_message = 'error occurred'
+    if data.to_s.include?(error_message)
+      error_message = 'Unspecified error or server downtime'
+      raise StandardError, 'Server-side error: ' + error_message
+    end
+
     # Catch-all test for no data (typically if the given coordinates
     # are out in the ocean or something similar). Here we test whether
     # dates are returned (to distinguish the case of no data from the
