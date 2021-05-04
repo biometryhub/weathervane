@@ -4,7 +4,7 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 03/05/2021
+# Date last modified: 04/05/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -15,7 +15,7 @@ require_relative '../wvane'
 
 # Unit testing for the WVane module functions/methods.
 # @author Russell A. Edson
-# @since 1.1.0
+# @since 1.2.1
 class WVaneTest < Test::Unit::TestCase
   # Setup and instantiate some dummy variables for the module tests.
   def setup
@@ -58,7 +58,7 @@ class WVaneTest < Test::Unit::TestCase
     # Set up a dummy URL and modifier functions for the data download.
     @url = 'https://www.longpaddock.qld.gov.au/cgi-bin/silo/'\
       'DataDrillDataset.php?format=csv&username=apirequest&password=apirequest'\
-      '&lat=-34.9&lon=138.6&start=20200101&finish=20201231&comment=RX'
+      '&lat=-34.9&lon=138.6&start=20200101&finish=20200131&comment=RX'
     @mod_url = lambda do |url, param, value|
       regex = Regexp.new('(?<=' + param + '=).*?(?=(&|$))')
       url.gsub(regex, value.to_s)
@@ -97,10 +97,41 @@ class WVaneTest < Test::Unit::TestCase
     #assert_raise { WVane.download_data(@new_lat_lon[-10.7159, 123.1466]) }
     #assert_raise { WVane.download_data(@new_lat_lon[-10.1469, 120.4550]) }
 
+    # Test that it raises a StandardError on a rejected URL (e.g. one
+    # with 'too long' latitude/longitude coordinates)
+    assert_raise { WVane.download_data(@new_lat_lon[-34.9999999, 138.6]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-34.92, 138.6666666]) }
+
+    # Test that it raises a StandardError on no data returned (e.g. when
+    # the given latitudes/longitudes are in the middle of the ocean)
+    assert_raise { WVane.download_data(@new_lat_lon[-34.7416, 138.1431]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-34.5307, 138.1045]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-33.1143, 137.7060]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-39.8952, 145.9462]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-28.8571, 153.8912]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-22.1897, 149.7235]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-14.3184, 149.9204]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-10.8320, 142.2507]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-12.6709, 141.6927]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-17.2716, 140.2711]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-12.1472, 131.6283]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-14.7479, 129.4136]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-16.9307, 123.4616]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-18.0936, 122.2377]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-26.0918, 114.0680]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-26.4109, 113.6617]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-31.8776, 115.6205]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-34.0320, 119.8792]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-32.0284, 130.5921]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-33.1620, 137.6765]) }
+    assert_raise { WVane.download_data(@new_lat_lon[-34.3732, 138.1041]) }
+
     # Test that we always get the Date, Latitude and Longitude columns
+    # TODO
 
     # Test that the other columns appear only when there is data and
     # in the expected order.
+    # TODO
   end
 
   # Test cases for the :download_url method. In particular, no error

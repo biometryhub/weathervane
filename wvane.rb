@@ -18,7 +18,7 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 03/05/2021
+# Date last modified: 04/05/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -29,10 +29,10 @@ require 'csv'
 
 # Namespace for wVane data download functions and URL formatting.
 # @author Russell A. Edson
-# @since 1.2.0
+# @since 1.2.1
 module WVane
   PROGRAM_NAME = 'wVane'.freeze
-  VERSION_NUMBER = '1.2.0'.freeze
+  VERSION_NUMBER = '1.2.1'.freeze
   COPYRIGHT = 'Copyright (c) 2021 University of Adelaide Biometry Hub'.freeze
 
   # The base API URL for the dataset retrieval
@@ -103,7 +103,7 @@ module WVane
   # @return [CSV::Table] A CSV table containing the downloaded data.
   #
   # @example
-  #   download_data(download_url(-34.9, 138.6, '2021-01-01'))
+  #   download_data(download_url(-34.9, 138.6, '2021-01-01', ...))
   def download_data(url)
     data = URI.open(url)
     data = CSV.parse(data, headers: true).by_col!
@@ -119,6 +119,23 @@ module WVane
     error_message = 'not in Australia'
     if data.to_s.include?(error_message)
       error_message = 'Latitude/longitude not within Australia'
+      raise StandardError, 'Server-side error: ' + error_message
+    end
+
+    # Catch-all test for a rejected URL (which can happen e.g. if the
+    # latitude/longitudes were 'too long')
+    error_message = 'rejected'
+    if data.to_s.include?(error_message)
+      error_message = 'URL rejected. Were the latitudes/longitudes too long?'
+      raise StandardError, 'Server-side error: ' + error_message
+    end
+
+    # Catch-all test for no data (typically if the given coordinates
+    # are out in the ocean or something similar). Here we test whether
+    # dates are returned (to distinguish the case of no data from the
+    # pathological case of a user asking for no data).
+    unless data['YYYY-MM-DD'].any?
+      error_message = 'No data returned. Double-check latitude/longitudes?'
       raise StandardError, 'Server-side error: ' + error_message
     end
 
