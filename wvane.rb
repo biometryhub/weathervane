@@ -18,7 +18,7 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 04/05/2021
+# Date last modified: 12/05/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -29,10 +29,10 @@ require 'csv'
 
 # Namespace for wVane data download functions and URL formatting.
 # @author Russell A. Edson
-# @since 1.2.1
+# @since 1.2.2
 module WVane
   PROGRAM_NAME = 'wVane'.freeze
-  VERSION_NUMBER = '1.2.1'.freeze
+  VERSION_NUMBER = '1.2.2'.freeze
   COPYRIGHT = 'Copyright (c) 2021 University of Adelaide Biometry Hub'.freeze
 
   # The base API URL for the dataset retrieval
@@ -97,7 +97,7 @@ module WVane
   # column names, from the given download URL (see :download_url).
   #
   # @param url [String] The parameter-formatted download URL.
-  # @raise [OpenURI::HTTPError] Errors on a broken HTTP connection.
+  # @raise [SocketError] Errors on a broken HTTP connection.
   # @raise [StandardError] Errors on server-side errors (e.g. for
   #   invalid date or latitude/longitude).
   # @return [CSV::Table] A CSV table containing the downloaded data.
@@ -341,6 +341,13 @@ if $PROGRAM_NAME == __FILE__
       'Australia (roughly -44.53 < lat < -9.97, 111.98 < lng < 156.27).'
     raise StandardError, error_message
   end
+
+  # Since latitudes/longitudes that are 'too long' are rejected by the
+  # server, we truncate the latitude and longitude to 4 decimal points
+  # (which is still higher resolution than the SILO grid resolution).
+  max_decimal_points = 4
+  latitude = latitude.truncate(max_decimal_points)
+  longitude = longitude.truncate(max_decimal_points)
 
   # The start date must not precede the oldest date of data available.
   start_date = options[:start]
