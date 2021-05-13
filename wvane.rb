@@ -18,7 +18,7 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 12/05/2021
+# Date last modified: 13/05/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -105,8 +105,7 @@ module WVane
   # @example
   #   download_data(download_url(-34.9, 138.6, '2021-01-01', ...))
   def download_data(url)
-    data = URI.open(url)
-    data = CSV.parse(data, headers: true).by_col!
+    data = URI.open(url).map(&:to_s).join('')
 
     # Test for invalid dates
     error_message = 'Invalid date'
@@ -119,6 +118,13 @@ module WVane
     error_message = 'not in Australia'
     if data.to_s.include?(error_message)
       error_message = 'Latitude/longitude not within Australia'
+      raise StandardError, 'Server-side error: ' + error_message
+    end
+
+    # Catch-all test for invalid parameters (e.g. missing comment=)
+    error_message = 'missing essential parameters'
+    if data.to_s.include?(error_message)
+      error_message = 'Missing parameters/malformed URL'
       raise StandardError, 'Server-side error: ' + error_message
     end
 
@@ -138,6 +144,9 @@ module WVane
       error_message = 'Unspecified error or server downtime'
       raise StandardError, 'Server-side error: ' + error_message
     end
+
+    # Convert to CSV
+    data = CSV.parse(data, headers: true).by_col!
 
     # Catch-all test for no data (typically if the given coordinates
     # are out in the ocean or something similar). Here we test whether

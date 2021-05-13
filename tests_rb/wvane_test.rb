@@ -4,7 +4,7 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 04/05/2021
+# Date last modified: 13/05/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -15,7 +15,7 @@ require_relative '../wvane'
 
 # Unit testing for the WVane module functions/methods.
 # @author Russell A. Edson
-# @since 1.2.1
+# @since 1.2.2
 class WVaneTest < Test::Unit::TestCase
   # Setup and instantiate some dummy variables for the module tests.
   def setup
@@ -66,6 +66,9 @@ class WVaneTest < Test::Unit::TestCase
     @new_lat_lon = lambda do |lat, lon|
       url = @mod_url[@url, 'lat', lat]
       @mod_url[url, 'lon', lon]
+    end
+    @new_comment = lambda do |comment|
+      @mod_url[@url, 'comment', comment]
     end
   end
 
@@ -127,6 +130,7 @@ class WVaneTest < Test::Unit::TestCase
     assert_raise { WVane.download_data(@new_lat_lon[-34.3732, 138.1041]) }
 
     # Test that we always get the Date, Latitude and Longitude columns
+    # on a 'successful' download
     # TODO
 
     # Test that the other columns appear only when there is data and
