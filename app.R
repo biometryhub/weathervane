@@ -14,7 +14,7 @@
 #   russell.edson@adelaide.edu.au
 
 # Using leaflet for the interactive map view, and ggplot2 for the
-# 'first-glance' weather variable plots.
+# 'first-glance' weather variable view plots.
 library(shiny)
 library(leaflet)
 library(ggplot2)
