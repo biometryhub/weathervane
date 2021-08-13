@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-# wVane: A Ruby module and script for automating the process of
-# downloading SILO weather/climate datasets. Easily retrieve weather
+# weathervane.rb: A Ruby module and script for automating the process
+# of downloading SILO weather/climate datasets. Easily retrieve weather
 # datasets for given GPS coordinates and start/end dates. The script
 # provides a complete command-line interface for easy data retrieval.
 #
@@ -18,7 +18,7 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 13/05/2021
+# Date last modified: 13/08/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -27,11 +27,11 @@
 require 'open-uri'
 require 'csv'
 
-# Namespace for wVane data download functions and URL formatting.
+# Namespace for weathervane data download functions and URL formatting.
 # @author Russell A. Edson
 # @since 1.2.2
-module WVane
-  PROGRAM_NAME = 'wVane'.freeze
+module Weathervane
+  PROGRAM_NAME = 'weathervane'.freeze
   VERSION_NUMBER = '1.2.2'.freeze
   COPYRIGHT = 'Copyright (c) 2021 University of Adelaide Biometry Hub'.freeze
 
@@ -138,7 +138,7 @@ module WVane
 
     # Catch-all test for an error occurring
     # 04/05/2021: We saw this error when the SILO server went down
-    # briefly. wVane should fail gracefully in such an instance.
+    # briefly. weathervane should fail gracefully in such an instance.
     error_message = 'error occurred'
     if data.to_s.include?(error_message)
       error_message = 'Unspecified error or server downtime'
@@ -265,7 +265,7 @@ module WVane
   end
 end
 
-# Run the wvane command-line program if this file was invoked as
+# Run the weathervane command-line program if this file was invoked as
 # a script.
 if $PROGRAM_NAME == __FILE__
   # Using OptionParser to process the command-line options
@@ -275,7 +275,7 @@ if $PROGRAM_NAME == __FILE__
   # Parse command-line options
   options = {}
   OptionParser.new do |opts|
-    opts.banner = 'Usage: wvane.rb [options]'
+    opts.banner = 'Usage: weathervane.rb [options]'
 
     # The user must supply latitude and longitude coordinates
     opts.on('--lat LAT', 'Latitude (decimal degrees North)', Float)
@@ -295,21 +295,21 @@ if $PROGRAM_NAME == __FILE__
     )
 
     # Optionally the user can specify a filename for the output data
-    # CSV. By default, saves to timestamped 'wVane_data_YYYYMMDD.csv',
-    # appending an integer as appropriate to ensure that it saves to
-    # a new file.
+    # CSV. By default, saves to timestamped
+    # 'weathervane_data_YYYYMMDD.csv', appending an integer as
+    # appropriate to ensure that it saves to a new file.
     opts.on(
       '-oOUT',
       '--out OUT',
-      'Filename for the output data (default="wVane_data_YYYYMMDD.csv")',
+      'Filename for the output data (default="weathervane_data_YYYYMMDD.csv")',
       String
     )
 
     # Standard options for GNU-style command line programs
     opts.on('-v', '--verbose', 'Show verbose/debug output')
     opts.on('-V', '--version', 'Print version information') do
-      puts WVane::PROGRAM_NAME + ' ' + WVane::VERSION_NUMBER.to_s \
-        + "\n" + WVane::COPYRIGHT
+      puts Weathervane::PROGRAM_NAME + ' ' + Weathervane::VERSION_NUMBER.to_s \
+        + "\n" + Weathervane::COPYRIGHT
       exit(0)
     end
 
@@ -320,14 +320,14 @@ if $PROGRAM_NAME == __FILE__
 
       # List all of the weather variables and descriptions
       puts "\nWeather/climate variables available:"
-      WVane::WEATHER_DESCRIPTION.map do |var, description|
+      Weathervane::WEATHER_DESCRIPTION.map do |var, description|
         puts '  ' + var + ': ' + description
       end
       puts 'Extract as many variables as you like by separating with a comma.'
 
       # Usage example
       puts "\nExample: 2020 rainfall and maximum temperature in Adelaide"
-      puts 'wvane.rb --lat -34.9285 --lng 138.6007 --start 2020-01-01 '\
+      puts 'weathervane.rb --lat -34.9285 --lng 138.6007 --start 2020-01-01 '\
         '--finish 2020-12-31 --vars rainfall,max_temp --out mydata.csv'
       exit(0)
     end
@@ -345,7 +345,7 @@ if $PROGRAM_NAME == __FILE__
   # Latitude and longitude should be (roughly) within Australia bounds
   latitude = options[:lat]
   longitude = options[:lng]
-  unless WVane.in_australia?(latitude, longitude)
+  unless Weathervane.in_australia?(latitude, longitude)
     error_message = 'Latitude and longitude coordinates must be within '\
       'Australia (roughly -44.53 < lat < -9.97, 111.98 < lng < 156.27).'
     raise StandardError, error_message
@@ -360,7 +360,7 @@ if $PROGRAM_NAME == __FILE__
 
   # The start date must not precede the oldest date of data available.
   start_date = options[:start]
-  if start_date < WVane.earliest_dataset_date
+  if start_date < Weathervane.earliest_dataset_date
     error_message = 'The given start date cannot precede 1889-01-01.'
     raise StandardError, error_message
   end
@@ -386,7 +386,7 @@ if $PROGRAM_NAME == __FILE__
   variables = options[:vars]
   if variables
     valid_variables = variables.map do |var|
-      WVane::WEATHER_VARIABLES.include?(var)
+      Weathervane::WEATHER_VARIABLES.include?(var)
     end
     unless valid_variables.all?
       invalid_variable = variables[valid_variables.index(false)]
@@ -395,7 +395,7 @@ if $PROGRAM_NAME == __FILE__
       raise StandardError, error_message
     end
   else
-    variables = WVane::WEATHER_VARIABLES
+    variables = Weathervane::WEATHER_VARIABLES
     if verbose
       puts 'No variables specified: defaulting to all available variables.'
     end
@@ -404,7 +404,7 @@ if $PROGRAM_NAME == __FILE__
   # If no output file was provided, default to a timestamped label.
   output_file = options[:out]
   unless output_file
-    output_file = 'wvane_data_' + Date.today.to_s + '.csv'
+    output_file = 'weathervane_data_' + Date.today.to_s + '.csv'
     if verbose
       puts 'No output file specified: downloading to ' + output_file + '.'
     end
@@ -429,7 +429,7 @@ if $PROGRAM_NAME == __FILE__
 
   # Construct the download URL. (URI.open throws an exception if there
   # are any HTTP/connection errors.)
-  download_url = WVane.download_url(
+  download_url = Weathervane.download_url(
     latitude,
     longitude,
     start_date,
@@ -440,7 +440,7 @@ if $PROGRAM_NAME == __FILE__
 
   # Download the data into a prettied CSV table
   puts 'Downloading...'
-  data = WVane.download_data(download_url)
+  data = Weathervane.download_data(download_url)
 
   # Finally, show (pretty-printed) the first N=6 rows.
   num_rows = 6
