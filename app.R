@@ -1,30 +1,36 @@
-# TODO: Brief App overview to go here.
-# Working name: wVane
+# weathervane App: This App acts as a user-friendly frontend to the
+# weathervane package for downloading SILO weather/climate datasets.
+# Users can specify the desired location using a clickable map view,
+# specify the date range for the weather data, and toggle different
+# weather variables on/off in the interactive view. A 1-click
+# download saves the chosen weather variables to a convenient CSV.
 #
 # Copyright (c) 2021 University of Adelaide Biometry Hub
+# MIT Licence
 #
 # Code author: Russell A. Edson
-# Date last modified: 26/04/2021
+# Date last modified: 13/08/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
-# TODO: document libraries used.
+# Using leaflet for the interactive map view, and ggplot2 for the
+# 'first-glance' weather variable plots.
 library(shiny)
 library(leaflet)
 library(ggplot2)
 
 
 # App Meta #####################################################################
-app_title <- 'wVane'
+app_title <- 'weathervane'
 
-# Default latitude/longitude coordinates (for Waite campus, e.g.)
+# Default latitude/longitude coordinates (e.g. for Waite campus)
 latitude_default <- -34.9681
 latitude_step <- 1e-4
 
 longitude_default <- 138.6355
 longitude_step <- 1e-4
 
-# Default map zoom level (enough to cover most of SA)
+# Default map zoom level (enough to cover most of Adelaide)
 zoom_default <- 8
 
 # Default dates: a 'year of data' up to the current date
@@ -227,6 +233,13 @@ server <- function(input, output, session) {
         )
       )
     }
+
+    # TODO: May want a delay in here so that we don't immediately
+    #       grab weather data while the user is still typing the
+    #       coordinates? (Actually maybe we just want an
+    #       'Update coordinates' button ala Kym's App?)
+    #       If so, the below observeEvent for longitude also
+    #       needs to be updated.
   })
 
   observeEvent(input$longitude, ignoreInit = TRUE, {
@@ -265,6 +278,8 @@ server <- function(input, output, session) {
   data <- reactive({
     # TODO: Error checking here.
 
+    # TODO: Change this based on how the weathervane.R package
+    #       file changes.
     get_austweather(
       lat = coordinates()$latitude,
       lng = coordinates()$longitude,
@@ -305,7 +320,7 @@ server <- function(input, output, session) {
   # The download button click:
   # TODO: Might need to disable/enable this button depending?
   output$btn_download <- downloadHandler(
-    filename = function() { paste0('wvane_data_', Sys.Date(), '.csv') },
+    filename = function() { paste0('weathervane_data_', Sys.Date(), '.csv') },
     content = function(file) {
       download_data <- isolate(data())
       # Get only the selected weather variables
@@ -323,8 +338,6 @@ server <- function(input, output, session) {
         )
       ]
 
-      #TODO: Make this a switch or something depending on the file extension?
-      # (This might be tricky.)
       write.csv(download_data, file, row.names = FALSE)
     }
   )

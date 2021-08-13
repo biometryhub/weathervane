@@ -1,6 +1,14 @@
-/* TODO */
-
-
+/**
+ * CSS styling for the weathervane App.
+ *
+ * Copyright (c) 2021 University of Adelaide Biometry Hub
+ * MIT Licence
+ *
+ * Code author: Russell A. Edson
+ * Date last modified: 13/08/2021
+ * Send all bug reports/questions/comments to
+ *   russell.edson@adelaide.edu.au
+ */
 
 /* Credits/Disclaimer modal. */
 #credits_title {
@@ -26,10 +34,7 @@
   padding-right: 16px;
 }
 
-
-/* Flash long/lat */
+/* Flash latitude/longitude coordinates when the user updates them. */
 .flash {
   background-color: #b6dfff;
 }
-
-

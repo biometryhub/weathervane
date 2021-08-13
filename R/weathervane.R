@@ -1,4 +1,4 @@
-# wVane: An R package for automating the process of downloading
+# weathervane: An R package for automating the process of downloading
 # SILO weather/climate datasets. Easily retrieve weather datasets for
 # given GPS coordinates and start/end dates for use in your projects.
 #
@@ -6,10 +6,13 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson
-# Date last modified: 16/04/2021
+# Date last modified: 13/08/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
+# TODO: Double check these: Relative humidities seem wrong.
+#       They should align exactly with the Ruby CLI program ones,
+#       down to the ordering.
 
 #'
 #'
@@ -87,7 +90,6 @@ weather_variables <- function() {
 
 
 # TODO: these need to be functions, and/or embedded in functions.
-
 api_url <- paste0(
   'https://www.longpaddock.qld.gov.au/cgi-bin/silo/',
   'DataDrillDataset.php?'
@@ -148,6 +150,7 @@ weather_meta <- data.frame(
 # default parameters: end date is today's system date, and
 # by sane default get all available variables (so you don't have to
 # mess about remembering the names if you don't want.)
+# TODO: Change name.
 get_austweather <- function(
   lat,
   lng,
@@ -223,6 +226,11 @@ get_austweather <- function(
   #       Also sometimes certain sets of coordinates don't return
   #       anything (e.g. if they're in the middle of the ocean), so
   #       we should check for those here too.
+  #
+  # see Ruby error checking: ideally this function %>% write_csv()
+  # should match up identically with the CSV retrieved from the Ruby
+  # CLI version, and also the CSV downloaded using the App frontend.
+  # (possibly add in some unit tests to this effect.)
 
   # Download the weather data HTML using the constructed URL
   data <- xml2::xml_text(xml2::read_html(url))

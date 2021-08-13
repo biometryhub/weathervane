@@ -1,4 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^wVane\.Rproj$
+^weathervane\.Rproj$
 ^LICENSE\.md$
+^weathervane.rb$
+^.\tests_rb$
