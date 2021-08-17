@@ -9,9 +9,13 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson
-# Date last modified: 13/08/2021
+# Date last modified: 17/08/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
+
+# TODO: Convert this into a function that can be called from the
+#       command line (see e.g. pealabel-R).
+
 
 # Using leaflet for the interactive map view, and ggplot2 for the
 # 'first-glance' weather variable view plots.

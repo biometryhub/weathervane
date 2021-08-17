@@ -18,7 +18,7 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 13/08/2021
+# Date last modified: 17/08/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -29,10 +29,10 @@ require 'csv'
 
 # Namespace for weathervane data download functions and URL formatting.
 # @author Russell A. Edson
-# @since 1.2.2
+# @since 1.2.3
 module Weathervane
   PROGRAM_NAME = 'weathervane'.freeze
-  VERSION_NUMBER = '1.2.2'.freeze
+  VERSION_NUMBER = '1.2.3'.freeze
   COPYRIGHT = 'Copyright (c) 2021 University of Adelaide Biometry Hub'.freeze
 
   # The base API URL for the dataset retrieval
@@ -108,22 +108,19 @@ module Weathervane
     data = URI.open(url).map(&:to_s).join('')
 
     # Test for invalid dates
-    error_message = 'Invalid date'
-    if data.to_s.include?(error_message)
-      error_message = 'Invalid start date'
+    if data.to_s.match(/(Sorry).+(date).+(invalid)*/)
+      error_message = 'Invalid start/end date'
       raise StandardError, 'Server-side error: ' + error_message
     end
 
     # Test for invalid coordinates
-    error_message = 'not in Australia'
-    if data.to_s.include?(error_message)
-      error_message = 'Latitude/longitude not within Australia'
+    if data.to_s.match(/(check).+(within Australia)/)
+      error_message = 'Invalid latitude/longitude'
       raise StandardError, 'Server-side error: ' + error_message
     end
 
     # Catch-all test for invalid parameters (e.g. missing comment=)
-    error_message = 'missing essential parameters'
-    if data.to_s.include?(error_message)
+    if data.to_s.include?('missing essential parameters')
       error_message = 'Missing parameters/malformed URL'
       raise StandardError, 'Server-side error: ' + error_message
     end
