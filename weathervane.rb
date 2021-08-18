@@ -355,7 +355,8 @@ if $PROGRAM_NAME == __FILE__
   # The start date must not precede the oldest date of data available.
   start_date = options[:start]
   if start_date < Weathervane.earliest_dataset_date
-    error_message = 'The given start date cannot precede 1889-01-01.'
+    error_message = 'The given start date cannot precede ' +
+                    Weathervane.earliest_dataset_date.to_s + '.'
     raise StandardError, error_message
   end
 

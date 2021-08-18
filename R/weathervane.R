@@ -84,11 +84,107 @@ weather_variables <- function() {
   )
 }
 
-##TODO: A public-facing wrapper for download_data(download_url),
-##      complete with error checking. What's a good name for this?
+#' Retrieve weather data for the given location and dates
+#'
+#' Return a data frame containing SILO Australian weather data
+#' for the specified latitude/longitude, date range (from start_date
+#' to finish_date, inclusive) and the specified variables. By default,
+#' all available weather variables are returned if none are specified.
+#' If no finish date is provided, the date range is taken from the
+#' given start date up to today's date (i.e. so up to the most
+#' recently uploaded weather information on the SILO server, which is
+#' updated daily).
+#'
+#' @param latitude The latitude (in decimal degrees North)
+#' @param longitude The longitude (in decimal degrees East)
+#' @param start_date A string or Date object for the starting date
+#' @param finish_date A string or Date object for the finish date
+#'   (Default: today's date, so retrieves up to most recently updated
+#'   weather data available)
+#' @param variables A vector containing the variable names
+#'   (Default: retrieve all available weather variables)
+#' @param pretty_names Whether to format the columns with prettied
+#'   variable names (Default: TRUE). Set this to FALSE to format
+#'   the column names as syntactically valid variable names (at the
+#'   cost of some readability)
+#' @return A data.frame containing the downloaded weather data
+#' @examples
+#' get_weather_data(-34.9, 138.6, '2021-01-01', pretty_names = FALSE)
+#' get_weather_data(
+#'   -34.18, 139.98, '2020-01-01', '2020-03-31', c('rainfall', 'max_temp')
+#' )
+#' @export
+get_weather_data <- function(
+  latitude,
+  longitude,
+  start_date,
+  finish_date = Sys.Date(),
+  variables = weather_variables()$variable_name,
+  pretty_names = TRUE
+) {
+  # Given latitude and longitude should be (roughly) within
+  # Australia bounds
+  if (!in_australia(latitude, longitude)) {
+    stop(
+      paste(
+        'Latitude and longitude coordinates must be within Australia',
+        '(roughly -44.53 < lat < -9.97, 111.98 < lng < 156.27)'
+      )
+    )
+  }
+
+  # Since latitudes/longitudes that are 'too long' are rejected by the
+  # server, we truncate the latitude and longitude to 4 decimal points
+  # (which is still higher resolution than the SILO grid resolution)
+  max_decimal_points <- 4
+  latitude <- round(latitude, digits = max_decimal_points)
+  longitude <- round(longitude, digits = max_decimal_points)
+
+  start_date <- as.Date(start_date)
+  finish_date <- as.Date(finish_date)
+
+  # The start date must not precede the oldest date of data available.
+  if (start_date < earliest_dataset_date()) {
+    stop(
+      paste('The given start date cannot precede', earliest_dataset_date())
+    )
+  }
+
+  # The finish date must not precede the start date.
+  if (finish_date < start_date) {
+    stop('The given finish date cannot precede the start date')
+  }
+
+  # If variables are specified, make sure that they each exist within
+  # the set of available variables.
+  valid_variables <- variables %in% weather_variables()$variable_name
+  if (!all(valid_variables)) {
+    first_erroneous <- variables[which(valid_variables == FALSE)[1]]
+    stop(
+      paste0(
+        first_erroneous,
+        ' is not in the list of available variables; did you misspell the ',
+        'variable?\n',
+        'You can use weathervane::weather_variables() to check the list of ',
+        'available variables. Use the entries in the variable_name column ',
+        'to select variables as desired.'
+      )
+    )
+  }
+
+  data <- download_data(
+    download_url(latitude, longitude, start_date, finish_date, variables)
+  )
+
+  if (!pretty_names) {
+    colnames(data) <- make.names(colnames(data))
+  }
+
+  data
+}
 
 
-#' (Private) Download the weather data from the constructed URL
+#' Download the weather data from the constructed URL
 #'
 #' Return a data frame containing the SILO weather dataset,
 #' complete with prettied column names, from the given download
@@ -107,6 +203,7 @@ weather_variables <- function() {
 #' weathervane:::download_data(
 #'   weathervane:::download_url(-34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall'))
 #' )
+#' @keywords internal
 download_data <- function(url) {
   data <- xml2::xml_text(xml2::read_html(url))
 
@@ -191,7 +288,7 @@ download_data <- function(url) {
   data
 }
 
-#' (Private) The download URL for the SILO weather data download
+#' The download URL for the SILO weather data download
 #'
 #' Return a character string containing the parameter-formatted
 #' download URL for the SILO data, given the latitude/longitude
@@ -248,7 +345,7 @@ download_url <- function(
   )
 }
 
-#' (Private) The earliest date of data available
+#' The earliest date of data available
 #'
 #' Return a Date object containing the earliest date of data
 #' available from the SILO server. (As of checking on 10/03/2021,
@@ -262,7 +359,7 @@ earliest_dataset_date <- function() {
   as.Date('1889-01-01')
 }
 
-#' (Private) True if the given coordinates are in Australia
+#' True if the given coordinates are in Australia
 #'
 #' Return TRUE if the given latitude and longitude are within the
 #' 'bounds' of Australia, where we define those bounds to be the
