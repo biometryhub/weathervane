@@ -11,8 +11,8 @@
 #   russell.edson@adelaide.edu.au
 
 # Using ggplot2 to draw the preview weather time series plots
-library(ggplot2)
-library(R6)
+# library(ggplot2)
+# library(R6)
 
 # Make a variable view widget, complete with the checkbox, label
 # and plot for the data.
@@ -20,7 +20,7 @@ library(R6)
 #' TODO: Making this as an R6 object, so document accordingly.
 #'
 #'
-VariableView <- R6Class(
+VariableView <- R6::R6Class(
   classname = 'VariableView',
   public = list(
     #TODO document these object attributes
@@ -83,21 +83,21 @@ VariableView <- R6Class(
       )
 
       output[[self$plot_id]] <- renderPlot({
-        ggplot(plot_data) +
-          geom_line(aes(x = x, y = y), size = 0.2, colour = 'blue') +
-          theme_bw() +
-          theme(
-            axis.line = element_blank(),
-            axis.ticks = element_blank(),
-            axis.text.x = element_blank(),
-            axis.title.x = element_blank(),
-            axis.text.y = element_blank(),
-            axis.title.y = element_blank(),
+        ggplot2::ggplot(plot_data) +
+          ggplot2::geom_line(ggplot2::aes(x = x, y = y), size = 0.2, colour = 'blue') +
+          ggplot2::theme_bw() +
+          ggplot2::theme(
+            axis.line = ggplot2::element_blank(),
+            axis.ticks = ggplot2::element_blank(),
+            axis.text.x = ggplot2::element_blank(),
+            axis.title.x = ggplot2::element_blank(),
+            axis.text.y = ggplot2::element_blank(),
+            axis.title.y = ggplot2::element_blank(),
             legend.position = 'none',
-            panel.background = element_blank(),
-            plot.background = element_blank(),
-            panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank()
+            panel.background = ggplot2::element_blank(),
+            plot.background = ggplot2::element_blank(),
+            panel.grid.major = ggplot2::element_blank(),
+            panel.grid.minor = ggplot2::element_blank()
           )
       })
     },

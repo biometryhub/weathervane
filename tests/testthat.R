@@ -1,6 +1,6 @@
 library(testthat)
-#library(AustWeather)
+library(weathervane)
 
-#test_check("AustWeather")
-test_local('.')
+test_check("weathervane")
+# test_local('.')
 

@@ -4,3 +4,6 @@
 ^LICENSE\.md$
 ^weathervane.rb$
 ^.\tests_rb$
+.idea*
+tests_rb
+app_plan.pdf

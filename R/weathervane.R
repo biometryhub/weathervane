@@ -97,9 +97,15 @@ weather_variables <- function() {
 #' @param url A character string containing the download URL
 #' @return A data.frame containing the specified weather data
 #' @seealso [download_url()] to generate the requisite URLs.
+#'
+#' @importFrom xml2 read_html xml_text
+#' @importFrom utils read.table
+#'
+#' @keywords internal
+#'
 #' @examples
-#' download_data(
-#'   download_url(-34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall'))
+#' weathervane:::download_data(
+#'   weathervane:::download_url(-34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall'))
 #' )
 download_data <- function(url) {
   data <- xml2::xml_text(xml2::read_html(url))
@@ -132,7 +138,7 @@ download_data <- function(url) {
   }
 
   # Convert to table and remove source columns if any
-  data <- read.table(text = data, header = TRUE, sep = ',')
+  data <- utils::read.table(text = data, header = TRUE, sep = ',')
   source_columns <- colnames(data)[grepl('_source', colnames(data))]
   data <- data[ , !(colnames(data) %in% source_columns)]
 
@@ -198,8 +204,9 @@ download_data <- function(url) {
 #' @param finish_date A string or Date object for the finish date
 #' @param variables A vector containing the variable names
 #' @return The parameter-formatted URL for the data download
+#' @keywords internal
 #' @examples
-#' download_url(-34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall'))
+#' weathervane:::download_url(-34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall'))
 download_url <- function(
   latitude,
   longitude,
@@ -248,8 +255,9 @@ download_url <- function(
 #' the earliest date is 01/01/1889, although this may change.)
 #'
 #' @return A Date object representing the earliest date
+#' @keyworks internal
 #' @examples
-#' earliest_dataset_date()
+#' weathervane:::earliest_dataset_date()
 earliest_dataset_date <- function() {
   as.Date('1889-01-01')
 }
@@ -267,8 +275,9 @@ earliest_dataset_date <- function() {
 #' @param latitude The latitude (in decimal degrees North)
 #' @param longitude The longitude (in decimal degrees East)
 #' @return TRUE if the coordinates are within Australia, FALSE if not
+#' @keywords internal
 #' @examples
-#' in_australia(-34.9285, 138.6007)
+#' weathervane:::in_australia(-34.9285, 138.6007)
 in_australia <- function(latitude, longitude) {
   (latitude >= -44.53 & latitude <= -9.98) &
     (longitude >= 111.98 & longitude <= 156.27)
