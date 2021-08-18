@@ -13,6 +13,8 @@ Authors@R:
              email = "sam.rogers@adelaide.edu.au"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
+Depends: 
+    R (>= 3.5.0)
 Imports:
     ggplot2,
     R6,
