@@ -14,10 +14,10 @@
 # Copyright (c) 2021 University of Adelaide Biometry Hub
 # MIT Licence
 #
-# Code author: Russell A. Edson, Biometry Hub
+# Code authors: Russell A. Edson, Sam Rogers, Biometry Hub
 # Date last modified: 18/08/2021
 # Send all bug reports/questions/comments to
-#   russell.edson@adelaide.edu.au
+#   biometryhubdev@gmail.com
 
 
 #' Weather variables, including ID codes and descriptions
@@ -183,7 +183,6 @@ get_weather_data <- function(
   data
 }
 
-
 #' Download the weather data from the constructed URL
 #'
 #' Return a data frame containing the SILO weather dataset,
@@ -201,7 +200,9 @@ get_weather_data <- function(
 #'
 #' @examples
 #' weathervane:::download_data(
-#'   weathervane:::download_url(-34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall'))
+#'   weathervane:::download_url(
+#'     -34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall')
+#'   )
 #' )
 #' @keywords internal
 download_data <- function(url) {
@@ -303,7 +304,9 @@ download_data <- function(url) {
 #' @return The parameter-formatted URL for the data download
 #' @keywords internal
 #' @examples
-#' weathervane:::download_url(-34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall'))
+#' weathervane:::download_url(
+#'   -34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall')
+#' )
 download_url <- function(
   latitude,
   longitude,
@@ -352,7 +355,7 @@ download_url <- function(
 #' the earliest date is 01/01/1889, although this may change.)
 #'
 #' @return A Date object representing the earliest date
-#' @keyworks internal
+#' @keywords internal
 #' @examples
 #' weathervane:::earliest_dataset_date()
 earliest_dataset_date <- function() {
