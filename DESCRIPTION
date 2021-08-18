@@ -1,5 +1,5 @@
 Package: weathervane
-Title: What the Package Does (One Line, Title Case)
+Title: Functions to Download Australian Weather Data
 Version: 0.1.0
 Authors@R: 
     c(person(given = "Russell",
@@ -11,7 +11,8 @@ Authors@R:
              family = "Rogers",
              role = c("ctb"),
              email = "sam.rogers@adelaide.edu.au"))
-Description: What the package does (one paragraph).
+Description: Provides helper functions to download Australian weather
+    data from SILO
 License: MIT + file LICENSE
 Depends: 
     R (>= 3.5.0)
