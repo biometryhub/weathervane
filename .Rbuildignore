@@ -7,3 +7,6 @@
 .idea*
 tests_rb
 app_plan.pdf
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
