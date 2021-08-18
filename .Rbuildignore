@@ -10,3 +10,4 @@ app_plan.pdf
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^\.github$

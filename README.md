@@ -17,6 +17,7 @@ dependency](https://img.shields.io/badge/Ruby%3E%3D-2.6.6-ef6666.svg)](https://w
 version](https://img.shields.io/badge/weathervane.R%20version-0.1.0-80b6ff.svg)](/weathervane.R)
 [![R
 dependency](https://img.shields.io/badge/R%3E%3D-3.5.0-80b6ff.svg)](https://cran.r-project.org/)
+[![R-CMD-check](https://github.com/biometryhub/weathervane/workflows/R-CMD-check/badge.svg)](https://github.com/biometryhub/weathervane/actions)
 <!-- badges: end -->
 
 The mythical ‘Australia weather App’ that automates retrieving weather
