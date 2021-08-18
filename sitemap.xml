@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://biometryhub.github.io/weathervane//index.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane//reference/VariableView.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane//reference/download_data.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane//reference/download_url.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane//reference/earliest_dataset_date.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane//reference/in_australia.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane//reference/run_weather_app.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane//reference/weather_variables.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane//articles/weathervane.html</loc>
+  </url>
+</urlset>
