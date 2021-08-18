@@ -15,7 +15,7 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 17/08/2021
+# Date last modified: 18/08/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -119,9 +119,70 @@ download_data <- function(url) {
     stop('Server-side error: Missing parameters/malformed URL')
   }
 
-  # TODO (finish this)
+  # Test for a rejected URL (which can happen e.g. if the latitude
+  # or longitude is 'too long')
+  if (grepl('([R|r]ejected)', data)) {
+    stop('Server-side error: URL rejected')
+  }
 
+  # Catch-all test for some other server-side error (e.g. if the server
+  # is inaccessible)
+  if (grepl('(error occurred)|(error checking)', data)) {
+    stop('Server-side error: Unspecified error or server inaccessible')
+  }
 
+  # Convert to table and remove source columns if any
+  data <- read.table(text = data, header = TRUE, sep = ',')
+  source_columns <- colnames(data)[grepl('_source', colnames(data))]
+  data <- data[ , !(colnames(data) %in% source_columns)]
+
+  # Retrieve the elevation (if listed) from the metadata and add it
+  # in as a new column (otherwise add a blank Elevation column).
+  metadata <- paste(unlist(data['metadata']), collapse = ',')
+  elevation <- ''
+  if (grepl('elevation= ', metadata, fixed = TRUE)) {
+    elevation <- regmatches(
+      metadata,
+      regexpr('(?<=elevation=)\\s*\\d+[.,]\\d+', metadata, perl = TRUE)
+    )
+  }
+  data['Elevation (m)'] <- trimws(elevation)
+  data['metadata'] <- NULL
+
+  # Pretty each of the column names
+  column_names <- colnames(data)
+  column_names[which(column_names == 'YYYY.MM.DD')] <- 'Date'
+  column_names[which(column_names == 'latitude')] <- 'Latitude'
+  column_names[which(column_names == 'longitude')] <- 'Longitude'
+
+  silo_names <- weather_variables()$silo_name
+  pretty_names <- weather_variables()$pretty_name
+  for (index in which(column_names %in% silo_names)) {
+    old_name <- column_names[index]
+    column_names[index] <- pretty_names[which(silo_names == old_name)]
+  }
+  data <- `colnames<-`(data, column_names)
+
+  # Reorder columns
+  var_order <- append(
+    c(
+      which(column_names == 'Date'),
+      which(column_names == 'Latitude'),
+      which(column_names == 'Longitude'),
+      which(column_names == 'Elevation (m)')
+    ),
+    unlist(
+      lapply(
+        1:length(pretty_names),
+        function(index) {
+          which(column_names == pretty_names[index])
+        }
+      )
+    )
+  )
+  data <- data[ , var_order]
+
+  data
 }
 
 #' (Private) The download URL for the SILO weather data download
@@ -212,130 +273,3 @@ in_australia <- function(latitude, longitude) {
   (latitude >= -44.53 & latitude <= -9.98) &
     (longitude >= 111.98 & longitude <= 156.27)
 }
-
-
-
-
-
-
-
-
-
-
-
-# TODO: Scaffolding below: mid-refactoring this into the above functions.
-
-#
-#
-# # return weather as a data frame. TODO unit test this too.
-# # default parameters: end date is today's system date, and
-# # by sane default get all available variables (so you don't have to
-# # mess about remembering the names if you don't want.)
-# # TODO: Change name.
-# get_austweather <- function(
-#   lat,
-#   lng,
-#   start,
-#   finish = Sys.Date(),
-#   vars = weather_meta$name
-# ) {
-#   # Latitude and longitude have to be provided and roughly within
-#   # Australia bounds
-#   if (lat < -44.53 | lat > -9.98) {
-#     stop('Latitude must be within -44.53 and -9.97 degrees North.')
-#   }
-#   if (lng < 111.98 | lng > 156.27) {
-#     stop('Longitude must be within 111.98 and 156.27 degrees East.')
-#   }
-#
-#   # Parse the start date, and make sure that it doesn't precede the
-#   # oldest date of data available (01/01/1889, as of checking on the
-#   # 10/03/2021).
-#   start <- as.numeric(gsub('-', '', strftime(start, format = '%Y-%m-%d')))
-#   if (start < 18890101) {
-#     stop('The given start date cannot precede 1889-01-01.')
-#   }
-#
-#   # Parse the end date (if provided), and make sure that it appears
-#   # after the start date.
-#   finish <- as.numeric(gsub('-', '', strftime(finish, format = '%Y-%m-%d')))
-#   if (finish < start) {
-#     stop('The given end date must not precede the start date.')
-#   }
-#
-#   # Make sure that the given set of variables each exist in the set
-#   # of available variables. (If no variables were given, we grab all
-#   # available variables by default.)
-#   okay_variables <- vars %in% weather_meta$name
-#   if (!all(okay_variables)) {
-#     erroneous_variable <- vars[which(okay_variables == FALSE)[1]]
-#     message <- paste0(
-#       erroneous_variable,
-#       ' is not in the list of available variables (did you misspell the ',
-#       'variable?)\n',
-#       'Available variables are:\n',
-#       paste(weather_meta$name, collapse = '  '),
-#       '\n'
-#     )
-#     stop(message)
-#   }
-#
-#   # Construct the download URL with the data parameters
-#   url_params <- list(
-#     'format' = 'csv',
-#     'username' = 'apirequest',
-#     'password' = 'apirequest',
-#     'lat' = lat,
-#     'lon' = lng,
-#     'start' = start,
-#     'finish' = finish,
-#     'comment' = paste(
-#       sapply(
-#         vars,
-#         function(var) { weather_meta[which(weather_meta$name == var), 'code'] }
-#       ),
-#       collapse = ''
-#     )
-#   )
-#   url <- paste0(
-#     api_url,
-#     paste(names(url_params), unlist(url_params), sep = '=', collapse = '&')
-#   )
-#
-#   # Download the weather data HTML using the constructed URL
-#   data <- xml2::xml_text(xml2::read_html(url))
-#   data <- read.table(text = data, header = TRUE, sep = ',')
-#
-#   # Delete 'source' columns (if any)
-#   source_columns <- colnames(data)[grepl('_source', colnames(data))]
-#   data <- data[ , !(colnames(data) %in% source_columns)]
-#
-#   # Delete the 'metadata' column
-#   # TODO: Need to get the elevation data first!
-#   data <- data[ , !(colnames(data) == 'metadata')]
-#
-#   # Change column names to be more reader-friendly
-#   silo_names <- colnames(data)
-#   silo_names[which(silo_names == 'latitude')] <- 'Latitude'
-#   silo_names[which(silo_names == 'longitude')] <- 'Longitude'
-#   silo_names[which(silo_names == 'YYYY.MM.DD')] <- 'Date'
-#   for (i in which(silo_names %in% weather_meta$SILO_name)) {
-#     var <- weather_meta[which(weather_meta$SILO_name == silo_names[i]), ]
-#     silo_names[i] <- var$pretty_name
-#   }
-#   data <- `colnames<-`(data, silo_names)
-#
-#   # Sort so that the columns are in the desired order.
-#   var_order <- which(silo_names == 'Date')
-#   var_order <- c(var_order, which(silo_names == 'Latitude'))
-#   var_order <- c(var_order, which(silo_names == 'Longitude'))
-#   for (i in 1:length(weather_meta$pretty_name)) {
-#     var_order <- c(var_order, which(silo_names == weather_meta$pretty_name[i]))
-#   }
-#   data <- data[ , var_order]
-#
-#   data
-# }
-#
-
-

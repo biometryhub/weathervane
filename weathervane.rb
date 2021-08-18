@@ -18,7 +18,7 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 17/08/2021
+# Date last modified: 18/08/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -119,26 +119,23 @@ module Weathervane
       raise StandardError, 'Server-side error: ' + error_message
     end
 
-    # Catch-all test for invalid parameters (e.g. missing comment=)
+    # Test for invalid parameters (e.g. missing comment=)
     if data.to_s.include?('missing essential parameters')
       error_message = 'Missing parameters/malformed URL'
       raise StandardError, 'Server-side error: ' + error_message
     end
 
-    # Catch-all test for a rejected URL (which can happen e.g. if the
-    # latitude/longitudes were 'too long')
-    error_message = 'rejected'
-    if data.to_s.include?(error_message)
-      error_message = 'URL rejected. Were the latitudes/longitudes too long?'
+    # Test for a rejected URL (which can happen e.g. if the latitude
+    # or longitude is 'too long')
+    if data.to_s.match(/([R|r]ejected)/)
+      error_message = 'URL rejected'
       raise StandardError, 'Server-side error: ' + error_message
     end
 
-    # Catch-all test for an error occurring
-    # 04/05/2021: We saw this error when the SILO server went down
-    # briefly. weathervane should fail gracefully in such an instance.
-    error_message = 'error occurred'
-    if data.to_s.include?(error_message)
-      error_message = 'Unspecified error or server downtime'
+    # Catch-all test for some other server-side error (e.g. if the
+    # server is inaccessible)
+    if data.to_s.match(/(error occurred)|(error checking)/)
+      error_message = 'Unspecified error or server inaccessible'
       raise StandardError, 'Server-side error: ' + error_message
     end
 
