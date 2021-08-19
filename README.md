@@ -25,3 +25,25 @@ Update/finalising. At some point document here the three ways to use
 weathervane (e.g. the R package, the Shiny App or the ruby CLI
 interface). Alternatively perhaps remove the Ruby version later?
 (e.g. if we’re preparing for CRAN or something?)
+
+# Installation
+
+Run the following code on your R console to install this package:
+
+``` r
+if(!require("remotes")) install.packages("remotes") 
+remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
+```
+
+# Using the package
+
+Load the package and start using it with:
+
+``` r
+library(BiometryTraining)
+```
+
+# Citation
+
+If you find this pacakge useful, please cite it! Type
+`citation("BiometryTraining")` on the R console to find out how.
