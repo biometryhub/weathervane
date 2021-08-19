@@ -204,7 +204,6 @@ get_weather_data <- function(
 #'     -34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall')
 #'   )
 #' )
-#' @keywords internal
 download_data <- function(url) {
   data <- xml2::xml_text(xml2::read_html(url))
 

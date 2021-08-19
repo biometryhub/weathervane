@@ -9,19 +9,16 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson
-# Date last modified: 17/08/2021
+# Date last modified: 19/08/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
-
-# TODO: Convert this into a function that can be called from the
-#       command line (see e.g. pealabel-R).
 
 
 # Using leaflet for the interactive map view, and ggplot2 for the
 # 'first-glance' weather variable view plots.
 library(shiny)
 library(leaflet)
-library(ggplot2)
+library(ggplot2) # TODO: Does this even go here? Or in variable view?
 
 
 # App Meta #####################################################################
@@ -179,7 +176,7 @@ server <- function(input, output, session) {
     )
   )
 
-  # TODO: Might need to keep track of the checkboxes?
+  # Keep track of the toggled variables
   variables <- reactiveVal()
 
   # Credits: modal, appears when the 'Credits' button is clicked
@@ -282,14 +279,14 @@ server <- function(input, output, session) {
   data <- reactive({
     # TODO: Error checking here.
 
-    # TODO: Change this based on how the weathervane.R package
-    #       file changes.
-    get_austweather(
-      lat = coordinates()$latitude,
-      lng = coordinates()$longitude,
-      start = input$start_date,
-      finish = input$end_date
+    get_weather_data(
+      latitude = coordinates()$latitude,
+      longitude = coordinates()$longitude,
+      start_date = input$start_date,
+      finish_date = input$end_date
     )
+
+    # TODO: Filter out the Elevation column.
 
     # TODO: Filter out any NaN columns here.
   })

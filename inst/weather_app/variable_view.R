@@ -19,7 +19,7 @@
 
 #' TODO: Making this as an R6 object, so document accordingly.
 #'
-#'
+#' @keywords internal
 VariableView <- R6::R6Class(
   classname = 'VariableView',
   public = list(
@@ -41,6 +41,10 @@ VariableView <- R6::R6Class(
       self$data <- data
 
       # Generate an 'almost-surely unique' ID
+      # TODO: I don't like this anymore. Can we implement a static
+      #       singleton counter that increments every time a new
+      #       VariableView is instantiated? I think that would work
+      #       better.
       id <- paste0('x', as.integer(runif(1, 1, 1e8)))
 
       # IDs for the UI elements (when ui() draws the widgets)
