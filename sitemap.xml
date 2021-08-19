@@ -4,9 +4,6 @@
     <loc>https://biometryhub.github.io/weathervane//index.html</loc>
   </url>
   <url>
-    <loc>https://biometryhub.github.io/weathervane//reference/VariableView.html</loc>
-  </url>
-  <url>
     <loc>https://biometryhub.github.io/weathervane//reference/download_data.html</loc>
   </url>
   <url>
@@ -14,6 +11,9 @@
   </url>
   <url>
     <loc>https://biometryhub.github.io/weathervane//reference/earliest_dataset_date.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane//reference/get_weather_data.html</loc>
   </url>
   <url>
     <loc>https://biometryhub.github.io/weathervane//reference/in_australia.html</loc>

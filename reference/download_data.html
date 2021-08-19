@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>(Private) Download the weather data from the constructed URL — download_data • weathervane</title>
+<title>Download the weather data from the constructed URL — download_data • weathervane</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="(Private) Download the weather data from the constructed URL — download_data" />
+<meta property="og:title" content="Download the weather data from the constructed URL — download_data" />
 <meta property="og:description" content="Return a data frame containing the SILO weather dataset,
 complete with prettied column names, from the given download
 URL." />
@@ -108,7 +108,7 @@ URL." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>(Private) Download the weather data from the constructed URL</h1>
+    <h1>Download the weather data from the constructed URL</h1>
     
     <div class="hidden name"><code>download_data.Rd</code></div>
     </div>
@@ -139,7 +139,9 @@ URL.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>weathervane</span><span class='fu'>:::</span><span class='fu'>download_data</span><span class='op'>(</span>
-  <span class='fu'>weathervane</span><span class='fu'>:::</span><span class='fu'><a href='download_url.html'>download_url</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>34.9</span>, <span class='fl'>138.6</span>, <span class='st'>'2020-01-01'</span>, <span class='st'>'2020-12-31'</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'rainfall'</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'>weathervane</span><span class='fu'>:::</span><span class='fu'><a href='download_url.html'>download_url</a></span><span class='op'>(</span>
+    <span class='op'>-</span><span class='fl'>34.9</span>, <span class='fl'>138.6</span>, <span class='st'>'2020-01-01'</span>, <span class='st'>'2020-12-31'</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'rainfall'</span><span class='op'>)</span>
+  <span class='op'>)</span>
 <span class='op'>)</span>
 </div><div class='output co'>#&gt;           Date Latitude Longitude Elevation (m) Rainfall (mm)
 #&gt; 1   2020-01-01    -34.9     138.6          42.2           0.0
