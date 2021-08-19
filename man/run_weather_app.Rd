@@ -4,13 +4,7 @@
 \alias{run_weather_app}
 \title{Run the Shiny weathervane app}
 \usage{
-run_weather_app(browser = FALSE)
-}
-\arguments{
-\item{browser}{A logical flag to run app directly in the browser}
-}
-\value{
-A list containing ggplot2 objects which are diagnostic plots.
+run_weather_app()
 }
 \description{
 Runs a shiny app where a user can select and download weather data.

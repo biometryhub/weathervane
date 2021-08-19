@@ -3,7 +3,6 @@
 export(get_weather_data)
 export(run_weather_app)
 export(weather_variables)
-importFrom(shiny,runApp)
 importFrom(utils,read.table)
 importFrom(xml2,read_html)
 importFrom(xml2,xml_text)
