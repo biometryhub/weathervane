@@ -15,7 +15,7 @@ Description: Provides helper functions to download Australian weather
     data from SILO
 License: MIT + file LICENSE
 Depends: 
-    R (>= 3.5.0)
+    R (>= 3.0.0)
 Imports:
     ggplot2,
     R6,
