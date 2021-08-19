@@ -2,7 +2,7 @@
 % Please edit documentation in R/weathervane.R
 \name{in_australia}
 \alias{in_australia}
-\title{(Private) True if the given coordinates are in Australia}
+\title{True if the given coordinates are in Australia}
 \usage{
 in_australia(latitude, longitude)
 }

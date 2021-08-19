@@ -2,7 +2,7 @@
 % Please edit documentation in R/weathervane.R
 \name{download_data}
 \alias{download_data}
-\title{(Private) Download the weather data from the constructed URL}
+\title{Download the weather data from the constructed URL}
 \usage{
 download_data(url)
 }
@@ -19,7 +19,9 @@ URL.
 }
 \examples{
 weathervane:::download_data(
-  weathervane:::download_url(-34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall'))
+  weathervane:::download_url(
+    -34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall')
+  )
 )
 }
 \seealso{

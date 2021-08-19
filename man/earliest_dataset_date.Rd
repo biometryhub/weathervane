@@ -2,7 +2,7 @@
 % Please edit documentation in R/weathervane.R
 \name{earliest_dataset_date}
 \alias{earliest_dataset_date}
-\title{(Private) The earliest date of data available}
+\title{The earliest date of data available}
 \usage{
 earliest_dataset_date()
 }
@@ -17,3 +17,4 @@ the earliest date is 01/01/1889, although this may change.)
 \examples{
 weathervane:::earliest_dataset_date()
 }
+\keyword{internal}

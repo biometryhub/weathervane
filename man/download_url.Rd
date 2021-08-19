@@ -2,7 +2,7 @@
 % Please edit documentation in R/weathervane.R
 \name{download_url}
 \alias{download_url}
-\title{(Private) The download URL for the SILO weather data download}
+\title{The download URL for the SILO weather data download}
 \usage{
 download_url(latitude, longitude, start_date, finish_date, variables)
 }
@@ -27,6 +27,8 @@ coordinates, the start and finish dates of interest, and a list
 of variables to be retrieved.
 }
 \examples{
-weathervane:::download_url(-34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall'))
+weathervane:::download_url(
+  -34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall')
+)
 }
 \keyword{internal}
