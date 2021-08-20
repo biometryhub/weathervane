@@ -1,5 +1,35 @@
-# TODO top matter
+# Unit tests for the weathervane package functions (not including
+# the accompanying Shiny app).
+#
+# Copyright (c) 2021 University of Adelaide Biometry Hub
+# MIT Licence
+#
+# Code author: Russell A. Edson
+# Date last modified: 20/08/2021
+# Send all bug reports/questions/comments to
+#   russell.edson@adelaide.edu.au
 
+
+# Test cases for the weather variables list function ###########################
+context('Tests for weather_variables()')
+
+test_that('blah', {
+  expect_equal(2, 2)
+})
+
+# Test cases for the main weather retrieval interface ##########################
+context('Tests for get_weather_data()')
+
+test_that('blah', {
+  expect_equal(2, 2)
+})
+
+# Test cases for the main weather data download function #######################
+context('Tests for download_data()')
+
+test_that('blah', {
+  expect_equal(2, 2)
+})
 
 
 # Test cases for the URL constructor ###########################################
@@ -48,6 +78,67 @@ test_that('download_url() works when requesting all variables' , {
   expect_equal(as.character(parameters['start']), '20200101')
   expect_equal(as.character(parameters['finish']), '20211231')
   expect_equal(as.character(parameters['comment']), 'RNXGHJMVDCLFTAPW')
+})
+
+test_that('download_url() works when requesting each specific variable' , {
+  latitude <- -34.9285
+  longitude <- 138.6007
+  start_date <- '2020-01-01'
+  finish_date <- '2021-12-31'
+
+  variables <- weather_variables()$variable_name
+  codes <- weather_variables()$silo_code
+
+  for (index in 1:length(variables)) {
+    variable <- variables[index]
+    code <- codes[index]
+
+    url <- download_url(latitude, longitude, start_date, finish_date, variable)
+    parameters <- decode_url_parameters(url)
+
+    expect_equal(as.character(parameters['format']), 'csv')
+    expect_equal(as.character(parameters['username']), 'apirequest')
+    expect_equal(as.character(parameters['password']), 'apirequest')
+    expect_equal(as.character(parameters['lat']), '-34.9285')
+    expect_equal(as.character(parameters['lon']), '138.6007')
+    expect_equal(as.character(parameters['start']), '20200101')
+    expect_equal(as.character(parameters['finish']), '20211231')
+    expect_equal(as.character(parameters['comment']), code)
+  }
+})
+
+test_that('download_url() lists variables in exactly the given order' , {
+  latitude <- -34.9285
+  longitude <- 138.6007
+  start_date <- '2020-01-01'
+  finish_date <- '2021-12-31'
+
+  variables <- c('max_temp', 'min_temp')
+  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  parameters <- decode_url_parameters(url)
+
+  expect_equal(as.character(parameters['format']), 'csv')
+  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['password']), 'apirequest')
+  expect_equal(as.character(parameters['lat']), '-34.9285')
+  expect_equal(as.character(parameters['lon']), '138.6007')
+  expect_equal(as.character(parameters['start']), '20200101')
+  expect_equal(as.character(parameters['finish']), '20211231')
+  expect_equal(as.character(parameters['comment']), 'XN')
+
+  # Reverse order for variables
+  variables <- c('min_temp', 'max_temp')
+  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  parameters <- decode_url_parameters(url)
+
+  expect_equal(as.character(parameters['format']), 'csv')
+  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['password']), 'apirequest')
+  expect_equal(as.character(parameters['lat']), '-34.9285')
+  expect_equal(as.character(parameters['lon']), '138.6007')
+  expect_equal(as.character(parameters['start']), '20200101')
+  expect_equal(as.character(parameters['finish']), '20211231')
+  expect_equal(as.character(parameters['comment']), 'NX')
 })
 
 test_that('(GIGO) there are no errors thrown for blank parameters' , {
@@ -108,6 +199,97 @@ test_that('(GIGO) there are no errors thrown for bad/ill-formatted dates' , {
   expect_equal(as.character(parameters['start']), '13/17/2020')
   expect_equal(as.character(parameters['finish']), '06/18/2009')
   expect_equal(as.character(parameters['comment']), 'R')
+})
+
+test_that('(GIGO) there are no errors thrown for dates outside of range' , {
+  latitude <- -34.9285
+  longitude <- -1.1581
+  start_date <- '1742-03-22'
+  finish_date <- '1781-12-20'
+  variables <- c('rainfall', 'evaporation')
+
+  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  parameters <- decode_url_parameters(url)
+
+  expect_equal(as.character(parameters['format']), 'csv')
+  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['password']), 'apirequest')
+  expect_equal(as.character(parameters['lat']), '-34.9285')
+  expect_equal(as.character(parameters['lon']), '-1.1581')
+  expect_equal(as.character(parameters['start']), '17420322')
+  expect_equal(as.character(parameters['finish']), '17811220')
+  expect_equal(as.character(parameters['comment']), 'RC')
+})
+
+test_that('(GIGO) there are no errors thrown for mispelled variables' , {
+  latitude <- -34.9285
+  longitude <- 138.6007
+  start_date <- '2020-01-01'
+  finish_date <- '2020-01-01'
+  variables <- c('rainball', 'min_temp', 'max_temperature')
+
+  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  parameters <- decode_url_parameters(url)
+
+  expect_equal(as.character(parameters['format']), 'csv')
+  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['password']), 'apirequest')
+  expect_equal(as.character(parameters['lat']), '-34.9285')
+  expect_equal(as.character(parameters['lon']), '138.6007')
+  expect_equal(as.character(parameters['start']), '20200101')
+  expect_equal(as.character(parameters['finish']), '20200101')
+  expect_equal(as.character(parameters['comment']), 'character(0)Ncharacter(0)')
+})
+
+test_that('(GIGO) there are no errors thrown for nonexistent variables' , {
+  latitude <- -34.9285
+  longitude <- 138.6007
+  start_date <- '2021-02-03'
+  finish_date <- '2021-04-05'
+  variables <- c('max_temp', 'wind_speed', 'solar_exposure')
+
+  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  parameters <- decode_url_parameters(url)
+
+  expect_equal(as.character(parameters['format']), 'csv')
+  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['password']), 'apirequest')
+  expect_equal(as.character(parameters['lat']), '-34.9285')
+  expect_equal(as.character(parameters['lon']), '138.6007')
+  expect_equal(as.character(parameters['start']), '20210203')
+  expect_equal(as.character(parameters['finish']), '20210405')
+  expect_equal(as.character(parameters['comment']), 'Xcharacter(0)J')
+})
+
+test_that('(GIGO) there are no errors thrown for duplicate variables' , {
+  latitude <- -34.9285
+  longitude <- 138.6007
+  start_date <- '1987-06-05'
+  finish_date <- '1981-01-01'
+  variables <- c('humidity_tmax', 'humidity_tmin', 'humidity_tmax')
+
+  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  parameters <- decode_url_parameters(url)
+
+  expect_equal(as.character(parameters['format']), 'csv')
+  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['password']), 'apirequest')
+  expect_equal(as.character(parameters['lat']), '-34.9285')
+  expect_equal(as.character(parameters['lon']), '138.6007')
+  expect_equal(as.character(parameters['start']), '19870605')
+  expect_equal(as.character(parameters['finish']), '19810101')
+  expect_equal(as.character(parameters['comment']), 'HGH')
+})
+
+test_that('download_url() returns a character object', {
+  latitude <- -34.9285
+  longitude <- 138.6007
+  start_date <- '2020-01-01'
+  finish_date <- '2021-12-31'
+  variables <- c('rainfall', 'max_temp', 'evaporation')
+
+  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  expect_is(url, 'character')
 })
 
 

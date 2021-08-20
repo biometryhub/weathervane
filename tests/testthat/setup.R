@@ -1,8 +1,12 @@
-# TODO top matter
-
-# Helper functions/vars for the tests.
-
-
+# Scaffolding/helper functions for the unit tests for weathervane.
+#
+# Copyright (c) 2021 University of Adelaide Biometry Hub
+# MIT Licence
+#
+# Code author: Russell A. Edson
+# Date last modified: 20/08/2021
+# Send all bug reports/questions/comments to
+#   russell.edson@adelaide.edu.au
 
 #' Return a vector of the coded parameters in the given URL
 #'
