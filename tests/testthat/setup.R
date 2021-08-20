@@ -23,7 +23,7 @@ decode_url_parameters <- function(url) {
       named_parameters[[index]][2] <- ''
     }
   }
-  named_parameters <- as.data.frame(named_parameters)
+  named_parameters <- as.data.frame(named_parameters, stringsAsFactors = FALSE)
 
   parameters <- as.character(named_parameters[2, ])
   names(parameters) <- as.character(named_parameters[1, ])
