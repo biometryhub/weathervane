@@ -9,6 +9,7 @@
 #' @export
 run_weather_app <- function() {
   appDir <- system.file("weather_app", package = "weathervane")
+
   if (!requireNamespace("shiny", quietly = TRUE)) {
     stop("Package \"shiny\" is needed for this function to work. Please install it.",
          call. = FALSE)
@@ -25,6 +26,7 @@ run_weather_app <- function() {
     stop("Could not find weather_app. Try re-installing `weathervane`.", call. = FALSE)
   }
   else {
+    shiny::addResourcePath('www', system.file('www', package = 'weathervane'))
     shiny::runApp(appDir, display.mode = "normal")
   }
 }
