@@ -38,3 +38,11 @@
 .flash {
   background-color: #b6dfff;
 }
+
+/* Truncate overly-long variable names in the VariableViews. */
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

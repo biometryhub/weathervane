@@ -8,33 +8,78 @@
 # Copyright (c) 2021 University of Adelaide Biometry Hub
 # MIT Licence
 #
-# Code author: Russell A. Edson
-# Date last modified: 19/08/2021
+# Code author: Russell A. Edson, Biometry Hub
+# Date last modified: 03/09/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
 
-# Using leaflet for the interactive map view, and ggplot2 for the
-# 'first-glance' weather variable view plots.
+# Using leaflet for the interactive map view, ggplot2 for the
+# 'first-glance' weather variable view plots and R6 classes for the
+# VariableView class definition.
 library(shiny)
 library(leaflet)
-library(ggplot2) # TODO: Does this even go here? Or in variable view?
+library(ggplot2)
 library(R6)
-library(weathervane)  # TODO: this shouldn't be necessary, surely?
+
+
+# App Meta #####################################################################
+app_title <- 'weathervane'
+
+# Default latitude/longitude coordinates (e.g. Waite campus)
+latitude_default <- -34.9681
+latitude_step <- 1e-4
+
+longitude_default <- 138.6355
+longitude_step <- 1e-4
+
+# Default map zoom level (enough to cover most of Adelaide)
+zoom_default <- 8
+
+# Default dates: a 'year of data' up to the current date
+end_date_default <- Sys.Date()
+start_date_default <- end_date_default - 365
+
+# Minimum/maximum dates for the date ranges
+minimum_date <- as.Date('1889-01-01')
+maximum_date <- Sys.Date()
 
 
 # VariableView class definition ################################################
 
-#' A 'variable view' widget for the weathervane Shiny App. Shows
-#' a preview of the weather time series and provides a toggle for
-#' whether to include that variable in the data download.
-#' TODO document this better
+# We keep track of the VariableView instances created for unique IDs
+instances_VariableView <- 0
+
+#' 'VariableView' widget class
+#'
+#' A 'variable view' widget for the weathervane Shiny App. This widget
+#' shows a preview of the weather time series for the specified date
+#' range, and provides a toggle to the user as to whether this variable
+#' should be included in the data download.
+#'
+#' @field var A character object containing the variable name
+#' @field data A data.frame containing a 'Date' column and a column
+#'   for the variable (which must have the same name as var)
+#' @field checked TRUE if the user has specified that this variable
+#'   should be included in the data download (default=TRUE)
+#' @method ui Populate the Shiny App HTML with the markup that draws
+#'   this VariableView
+#' @method draw_plot(output) Draw the variable time series plot
+#'   to the Shiny App output list
+#' @method observers(input) Bind the event observers for this
+#'   VariableView to the Shiny App input list
 #'
 #' @keywords internal
+#' @examples
+#' weather_data <- data.frame(
+#'   Date = c('2021-01-01', '2021-01-02', '2021-01-03'),
+#'   Rainfall = c(0, 1.1, 0.5),
+#'   Temperature = c(14.8, 22.1, 16.7)
+#' )
+#' VariableView$new('Rainfall', weather_data[c('Date', 'Rainfall')])
 VariableView <- R6::R6Class(
   classname = 'VariableView',
   public = list(
-    #TODO document these object attributes
     var = NULL,
     data = NULL,
 
@@ -46,25 +91,26 @@ VariableView <- R6::R6Class(
     # Checked = TRUE by default (i.e. variable included in download)
     checked = TRUE,
 
-    # Constructor
+    # VariableView constructor: instantiates a new VariableView
+    # with the given variable name (as a string in var) and data
+    # (as a data frame containing Date and variable values).
     initialize = function(var, data) {
       self$var <- var
       self$data <- data
 
-      # Generate an 'almost-surely unique' ID
-      # TODO: I don't like this anymore. Can we implement a static
-      #       singleton counter that increments every time a new
-      #       VariableView is instantiated? I think that would work
-      #       better.
-      id <- paste0('x', as.integer(runif(1, 1, 1e8)))
+      # Keep track of the number of instances so that we can
+      # generate unique IDs successively
+      instances_VariableView <<- instances_VariableView + 1
 
-      # IDs for the UI elements (when ui() draws the widgets)
+      # Generate a unique ID
+      id <- paste0('x', instances_VariableView)
       self$checkbox_id <- paste0(id, '_checkbox')
       self$label_id <- paste0(id, '_label')
       self$plot_id <- paste0(id, '_plot')
     },
 
-    # UI render
+    # UI render method: returns the list of HTML elements that
+    # draw this VariableView to the Shiny App screen.
     ui = function() {
       fluidRow(
         style = 'height: 32px; width: 100%;',
@@ -80,7 +126,8 @@ VariableView <- R6::R6Class(
         column(
           style = 'height: inherit;',
           width = 7,
-          p(id = self$label_id, self$var)
+          # TODO: Do we want hover tooltips or something here, too?
+          p(id = self$label_id, class = 'truncate', self$var)
         ),
         column(
           style = 'height: inherit;',
@@ -129,26 +176,6 @@ VariableView <- R6::R6Class(
     }
   )
 )
-
-
-# App Meta #####################################################################
-app_title <- 'weathervane'
-
-# Default latitude/longitude coordinates (e.g. for Waite campus)
-latitude_default <- -34.9681
-latitude_step <- 1e-4
-
-longitude_default <- 138.6355
-longitude_step <- 1e-4
-
-# Default map zoom level (enough to cover most of Adelaide)
-zoom_default <- 8
-
-# Default dates: a 'year of data' up to the current date
-end_date = Sys.Date()
-start_date = end_date - 365
-
-# TODO: Implement the min/max dates?
 
 
 # User Interface code for the App ##############################################
@@ -223,7 +250,9 @@ ui <- fluidPage(
             width = '100%',
             inputId = 'start_date',
             label = 'Start Date',
-            value = start_date
+            value = start_date_default,
+            min = minimum_date,
+            max = maximum_date
           )
         ),
         column(
@@ -232,7 +261,9 @@ ui <- fluidPage(
             width = '100%',
             inputId = 'end_date',
             label = 'End Date',
-            value = end_date
+            value = end_date_default,
+            min = minimum_date,
+            max = maximum_date
           )
         )
       ),
