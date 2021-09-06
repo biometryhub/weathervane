@@ -5,15 +5,51 @@
  * MIT Licence
  *
  * Code author: Russell A. Edson
- * Date last modified: 13/08/2021
+ * Date last modified: 06/09/2021
  * Send all bug reports/questions/comments to
  *   russell.edson@adelaide.edu.au
  */
 
-/* Credits/Disclaimer modal. */
-#credits_title {
-
+/* VariableView toggle switch. */
+.toggle-switch input {
+  opacity: 0;
+  width: 0px;
+  height: 0px;
 }
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  background-color: #dddddd;
+  transition: .1s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #ffffff;
+  transition: .1s;
+}
+
+input:checked ~ .slider {
+  background-color: #00afc1;
+}
+
+input:checked ~ .slider:before {
+  transform: translateX(20px);
+}
+
+
+
+/* Credits/Disclaimer modal. */
 #credits_licence {
   color: #00afc1;
 }

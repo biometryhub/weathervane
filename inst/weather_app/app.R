@@ -121,24 +121,32 @@ VariableView <- R6::R6Class(
     # UI render method: returns the list of HTML elements that
     # draw this VariableView to the Shiny App screen.
     ui = function() {
-      style_string <- paste0(
-        'height: 32px; line-height: 32px; width: 100%; margin: 0px;',
-        ifelse(self$light_grey, 'background-color: #efefef', '')
-      )
-
       fluidRow(
-        style = style_string,
+        style = paste0(
+          'height: 32px; line-height: 32px; width: 100%; margin: 0px;',
+          ifelse(self$light_grey, 'background-color: #efefef', '')
+        ),
+        # We have a simple stylish toggle switch for the variable
+        # checkboxes.
         column(
           style = 'height: inherit; padding: 0px;',
           width = 2,
-          checkboxInput(
-            inputId = self$checkbox_id,
-            label = NULL,
-            value = self$checked
+          tags$label(
+            class = 'toggle-switch',
+            style = paste0(
+              'position: relative; display: inline-block; width: 50px;',
+              'height: 25px; margin-bottom: 0px; vertical-align: sub;'
+            ),
+            tags$input(
+              id = self$checkbox_id,
+              type = 'checkbox',
+              checked = ifelse(self$checked, 'checked', '')
+            ),
+            span(class = 'slider')
           )
         ),
         column(
-          style = 'height: inherit; padding: 0px;',
+          style = 'height: inherit; padding-right: 0px; padding-left: 8px;',
           width = 6,
           # TODO: Do we want hover tooltips or something here, too?
           p(id = self$label_id, class = 'truncate', self$var)
