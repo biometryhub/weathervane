@@ -9,7 +9,7 @@
 # MIT Licence
 #
 # Code author: Russell A. Edson, Biometry Hub
-# Date last modified: 03/09/2021
+# Date last modified: 06/09/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au
 
@@ -91,6 +91,10 @@ VariableView <- R6::R6Class(
     # Checked = TRUE by default (i.e. variable included in download)
     checked = TRUE,
 
+    # We colour every second VariableView row light-grey to enhance
+    # readability.
+    light_grey = FALSE,
+
     # VariableView constructor: instantiates a new VariableView
     # with the given variable name (as a string in var) and data
     # (as a data frame containing Date and variable values).
@@ -107,16 +111,26 @@ VariableView <- R6::R6Class(
       self$checkbox_id <- paste0(id, '_checkbox')
       self$label_id <- paste0(id, '_label')
       self$plot_id <- paste0(id, '_plot')
+
+      # Every second VariableView is coloured light-grey
+      if (instances_VariableView %% 2 == 0) {
+        self$light_grey <- TRUE
+      }
     },
 
     # UI render method: returns the list of HTML elements that
     # draw this VariableView to the Shiny App screen.
     ui = function() {
+      style_string <- paste0(
+        'height: 32px; line-height: 32px; width: 100%; margin: 0px;',
+        ifelse(self$light_grey, 'background-color: #efefef', '')
+      )
+
       fluidRow(
-        style = 'height: 32px; width: 100%;',
+        style = style_string,
         column(
-          style = 'height: inherit;',
-          width = 1,
+          style = 'height: inherit; padding: 0px;',
+          width = 2,
           checkboxInput(
             inputId = self$checkbox_id,
             label = NULL,
@@ -124,13 +138,13 @@ VariableView <- R6::R6Class(
           )
         ),
         column(
-          style = 'height: inherit;',
-          width = 7,
+          style = 'height: inherit; padding: 0px;',
+          width = 6,
           # TODO: Do we want hover tooltips or something here, too?
           p(id = self$label_id, class = 'truncate', self$var)
         ),
         column(
-          style = 'height: inherit;',
+          style = 'height: inherit; padding-left: 0px;',
           width = 4,
           plotOutput(outputId = self$plot_id, height = 'inherit')
         )
@@ -144,28 +158,31 @@ VariableView <- R6::R6Class(
         y = self$data[[self$var]]
       )
 
-      output[[self$plot_id]] <- renderPlot({
-        ggplot2::ggplot(plot_data) +
-          ggplot2::geom_line(
-            ggplot2::aes(x = x, y = y),
-            size = 0.2,
-            colour = 'blue'
-          ) +
-          ggplot2::theme_bw() +
-          ggplot2::theme(
-            axis.line = ggplot2::element_blank(),
-            axis.ticks = ggplot2::element_blank(),
-            axis.text.x = ggplot2::element_blank(),
-            axis.title.x = ggplot2::element_blank(),
-            axis.text.y = ggplot2::element_blank(),
-            axis.title.y = ggplot2::element_blank(),
-            legend.position = 'none',
-            panel.background = ggplot2::element_blank(),
-            plot.background = ggplot2::element_blank(),
-            panel.grid.major = ggplot2::element_blank(),
-            panel.grid.minor = ggplot2::element_blank()
-          )
-      })
+      output[[self$plot_id]] <- renderPlot(
+        {
+          ggplot2::ggplot(plot_data) +
+            ggplot2::geom_line(
+              ggplot2::aes(x = x, y = y),
+              size = 0.2,
+              colour = 'blue'
+            ) +
+            ggplot2::theme_bw() +
+            ggplot2::theme(
+              axis.line = ggplot2::element_blank(),
+              axis.ticks = ggplot2::element_blank(),
+              axis.text.x = ggplot2::element_blank(),
+              axis.title.x = ggplot2::element_blank(),
+              axis.text.y = ggplot2::element_blank(),
+              axis.title.y = ggplot2::element_blank(),
+              legend.position = 'none',
+              panel.background = ggplot2::element_blank(),
+              plot.background = ggplot2::element_blank(),
+              panel.grid.major = ggplot2::element_blank(),
+              panel.grid.minor = ggplot2::element_blank()
+            )
+        },
+        bg = 'transparent'
+      )
     },
 
     # Observers
@@ -200,18 +217,21 @@ ui <- fluidPage(
   ),
   fluidRow(
     id = 'row_helptext',
-    p(
-      id = 'helptext',
-      paste0(
-        'Choose a latitude and longitude (either by entering in the input ',
-        'boxes directly, or by clicking a location using the interactive ',
-        'map), and select a start date and an end date. The weather variables ',
-        'available at that location for the specified date range will then be ',
-        'loaded into the viewing window. The viewing window includes time ',
-        'series previews of the data for convenience, and each variable can ',
-        'be toggled include/exclude for the download. When you are ready, ',
-        'click the Download button to retrieve the specified weather ',
-        'variables to a CSV.'
+    column(
+      width = 12,
+      p(
+        id = 'helptext',
+        paste0(
+          'Choose a latitude and longitude (either by entering in the input ',
+          'boxes directly, or by clicking a location using the interactive ',
+          'map), and select a start date and an end date. The weather variables ',
+          'available at that location for the specified date range will then be ',
+          'loaded into the viewing window. The viewing window includes time ',
+          'series previews of the data for convenience, and each variable can ',
+          'be toggled include/exclude for the download. When you are ready, ',
+          'click the Download button to retrieve the specified weather ',
+          'variables to a CSV.'
+        )
       )
     )
   ),
@@ -268,30 +288,40 @@ ui <- fluidPage(
         )
       ),
       fluidRow(
-        tags$label(
-          class = 'control-label',
-          'for' = 'variables_view',
-          'Variables'
-        ),
-        div(
-          id = 'row_variables',
-          style = 'overflow: scroll; height: 240px; width: inherit;',
-          uiOutput(outputId = 'variables_view')
-        )
-      ),
-      fluidRow(
-        id = 'row_downloadtext',
-        p(
-          id = 'downloadtext',
-          paste0(
-            'Download the selected dataset to a CSV (.csv) file.'
+        column(
+          width = 12,
+          tags$label(
+            class = 'control-label',
+            'for' = 'variables_view',
+            'Variables'
+          ),
+          div(
+            id = 'row_variables',
+            style = 'overflow: scroll; height: 240px; width: inherit; border: 1px solid #ccc;',
+            uiOutput(outputId = 'variables_view')
           )
         )
       ),
       fluidRow(
-        downloadButton(
-          outputId = 'btn_download',
-          label = 'Download data to CSV...'
+        id = 'row_downloadtext',
+        column(
+          width = 12,
+          p(
+            id = 'downloadtext',
+            style = 'padding-top: 8px; margin-bottom: 4px;',
+            paste0(
+              'Download the selected dataset to a CSV (.csv) file.'
+            )
+          )
+        )
+      ),
+      fluidRow(
+        column(
+          width = 12,
+          downloadButton(
+            outputId = 'btn_download',
+            label = 'Download data to CSV...'
+          )
         )
       )
     ),
@@ -436,9 +466,11 @@ server <- function(input, output, session) {
   # Whenever the data is updated, regenerate the list of variables
   # and prepare the data download.
   observeEvent(data(), ignoreInit = FALSE, {
+    non_weather_vars <- c('Date', 'Latitude', 'Longitude', 'Elevation (m)')
+
     # Generate the variables list and plot views/checkboxes
     var_names <- colnames(data())[
-      which(!colnames(data()) %in% c('Date', 'Latitude', 'Longitude'))
+      which(!colnames(data()) %in% non_weather_vars)
     ]
     variables(
       lapply(
@@ -466,16 +498,16 @@ server <- function(input, output, session) {
     content = function(file) {
       download_data <- isolate(data())
       # Get only the selected weather variables
-      non_var_names <- c('Date', 'Latitude', 'Longitude')
+      non_weather_vars <- c('Date', 'Latitude', 'Longitude', 'Elevation (m)')
       var_names <- colnames(download_data)[
-        which(!colnames(download_data) %in% non_var_names)
+        which(!colnames(download_data) %in% non_weather_vars)
       ]
       selected <- var_names[
         which(sapply(isolate(variables()), function(var) { var$checked }))
       ]
       download_data <- download_data[
         append(
-          which(colnames(download_data) %in% non_var_names),
+          which(colnames(download_data) %in% non_weather_vars),
           which(colnames(download_data) %in% selected)
         )
       ]
