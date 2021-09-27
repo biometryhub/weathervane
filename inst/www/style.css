@@ -5,7 +5,7 @@
  * MIT Licence
  *
  * Code author: Russell A. Edson
- * Date last modified: 06/09/2021
+ * Date last modified: 27/09/2021
  * Send all bug reports/questions/comments to
  *   russell.edson@adelaide.edu.au
  */
@@ -13,17 +13,17 @@
 /* VariableView toggle switch. */
 .toggle-switch input {
   opacity: 0;
-  width: 0px;
-  height: 0px;
+  width: 0;
+  height: 0;
 }
 
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0px;
-  left: 0px;
-  bottom: 0px;
-  right: 0px;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
   background-color: #dddddd;
   transition: .1s;
 }
@@ -82,3 +82,7 @@ input:checked ~ .slider:before {
   text-overflow: ellipsis;
 }
 
+/* Slight gap between the update button and the variable view. */
+#btn_update {
+  margin-bottom: 18px;
+}

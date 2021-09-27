@@ -135,7 +135,8 @@ VariableView <- R6::R6Class(
             class = 'toggle-switch',
             style = paste0(
               'position: relative; display: inline-block; width: 50px;',
-              'height: 25px; margin-bottom: 0px; vertical-align: sub;'
+              'height: 25px; margin-bottom: 0px; vertical-align: sub;',
+              'margin-left: 4px;'
             ),
             tags$input(
               id = self$checkbox_id,
@@ -215,30 +216,36 @@ ui <- fluidPage(
     column(
       width = 10,
       id = 'col_title',
-      h2(id = 'apptitle', app_title)
+      div(
+        id = 'apptitle_container',
+        h2(id = 'apptitle_text', app_title)
+      )
     ),
     column(
       width = 2,
       id = 'col_credits',
-      actionButton(inputId = 'btn_credits', label = 'Credits')
+      div(
+        id = 'credits_container',
+        actionButton(inputId = 'btn_credits', label = 'Credits')
+      )
     )
   ),
   fluidRow(
-    id = 'row_helptext',
+    id = 'row_help',
     column(
       width = 12,
       p(
-        id = 'helptext',
+        id = 'help_text',
         paste0(
           'Choose a latitude and longitude (either by entering in the input ',
           'boxes directly, or by clicking a location using the interactive ',
-          'map), and select a start date and an end date. The weather variables ',
-          'available at that location for the specified date range will then be ',
-          'loaded into the viewing window. The viewing window includes time ',
-          'series previews of the data for convenience, and each variable can ',
-          'be toggled include/exclude for the download. When you are ready, ',
-          'click the Download button to retrieve the specified weather ',
-          'variables to a CSV.'
+          'map), and select a start date and an end date. The weather ',
+          'variables available at that location for the specified date range ',
+          'will then be loaded into the viewing window. The viewing window ',
+          'includes time series previews of the data for convenience, and ',
+          'each variable can be toggled include/exclude for the download. ',
+          'When you are ready, click the Download button to retrieve the ',
+          'specified weather variables to a CSV.'
         )
       )
     )
@@ -298,6 +305,15 @@ ui <- fluidPage(
       fluidRow(
         column(
           width = 12,
+          actionButton(
+            inputId = 'btn_update',
+            label = 'Update Coordinates/Date Range'
+          )
+        )
+      ),
+      fluidRow(
+        column(
+          width = 12,
           tags$label(
             class = 'control-label',
             'for' = 'variables_view',
@@ -305,7 +321,10 @@ ui <- fluidPage(
           ),
           div(
             id = 'row_variables',
-            style = 'overflow: scroll; height: 240px; width: inherit; border: 1px solid #ccc;',
+            style = paste0(
+              'overflow: scroll; height: 240px; width: inherit; ',
+              'border: 1px solid #ccc;'
+            ),
             uiOutput(outputId = 'variables_view')
           )
         )
@@ -338,7 +357,7 @@ ui <- fluidPage(
       div(
         id = 'col_map',
         tags$canvas(id = 'map_canvas', style = 'position: absolute;'),
-        leafletOutput(outputId = 'map_view', width = '100%', height = '480px')
+        leafletOutput(outputId = 'map_view', width = '100%', height = '530px')
       )
     )
   )
