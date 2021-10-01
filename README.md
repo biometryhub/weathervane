@@ -16,15 +16,12 @@ dependency](https://img.shields.io/badge/R%3E%3D-3.5.0-80b6ff.svg)](https://cran
 [![R-CMD-check](https://github.com/biometryhub/weathervane/workflows/R-CMD-check/badge.svg)](https://github.com/biometryhub/weathervane/actions)
 <!-- badges: end -->
 
-The mythical ‘Australia weather App’ that automates retrieving weather
-data. Finally getting around to finishing it.
+Easily navigate and retrieve weather datasets for anywhere in Australia!
 
-### 13/08/2021
-
-Update/finalising. At some point document here the three ways to use
-weathervane (e.g. the R package, the Shiny App or the ruby CLI
-interface). Alternatively perhaps remove the Ruby version later?
-(e.g. if we’re preparing for CRAN or something?)
+The **weathervane** package aids researchers in retrieving Australian
+weather and climate data (sourced from SILO and the Bureau of
+Meteorology) to incorporate into statistical analyses of agronomic
+experiments and plant-breeding trials.
 
 # Installation
 
@@ -32,7 +29,7 @@ Run the following code on your R console to install this package:
 
 ``` r
 if(!require("remotes")) install.packages("remotes") 
-remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
+remotes::install_github("biometryhub/weathervane", upgrade = FALSE)
 ```
 
 # Using the package
@@ -40,10 +37,20 @@ remotes::install_github("biometryhub/BiometryTraining", upgrade = FALSE)
 Load the package and start using it with:
 
 ``` r
-library(BiometryTraining)
+library(weathervane)
 ```
 
-# Citation
+TODO more here
 
-If you find this pacakge useful, please cite it! Type
-`citation("BiometryTraining")` on the R console to find out how.
+# Citation & Attribution to SILO/Bureau of Meteorology
+
+The weather datasets currently retrieved by **weathervane** are curated
+by [SILO](https://www.longpaddock.qld.gov.au/silo/), who make them
+available under a Creative Commons Attribution 4.0 International
+Licence. Their data is in turn sourced from the [Australian Bureau of
+Meteorology](http://www.bom.gov.au/) and their weather stations.
+
+Please reference them appropriately in any publications or other
+research outputs that use the downloaded weather data. See for example:
+- <https://www.longpaddock.qld.gov.au/silo/about/data-suppliers/> -
+<http://www.bom.gov.au/other/copyright.shtml>
