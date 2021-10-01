@@ -75,12 +75,8 @@
 <a href="#weathervane" class="anchor"></a>weathervane</h1></div>
 <!-- badges: start -->
 
-<p>The mythical ‘Australia weather App’ that automates retrieving weather data. Finally getting around to finishing it.</p>
-<div id="13082021" class="section level3">
-<h3 class="hasAnchor">
-<a href="#13082021" class="anchor"></a>13/08/2021</h3>
-<p>Update/finalising. At some point document here the three ways to use weathervane (e.g. the R package, the Shiny App or the ruby CLI interface). Alternatively perhaps remove the Ruby version later? (e.g. if we’re preparing for CRAN or something?)</p>
-</div>
+<p>Easily navigate and retrieve weather datasets for anywhere in Australia!</p>
+<p>The <strong>weathervane</strong> package aids researchers in retrieving Australian weather and climate data (sourced from SILO and the Bureau of Meteorology) to incorporate into statistical analyses of agronomic experiments and plant-breeding trials.</p>
 </div>
 <div id="installation" class="section level1">
 <h1 class="hasAnchor">
@@ -88,19 +84,26 @@
 <p>Run the following code on your R console to install this package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span> 
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"biometryhub/BiometryTraining"</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"biometryhub/weathervane"</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="using-the-package" class="section level1">
 <h1 class="hasAnchor">
 <a href="#using-the-package" class="anchor"></a>Using the package</h1>
 <p>Load the package and start using it with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">BiometryTraining</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://biometryhub.github.io/weathervane/">weathervane</a></span><span class="op">)</span></code></pre></div>
+<p>TODO more here</p>
 </div>
-<div id="citation" class="section level1">
+<div id="citation--attribution-to-silobureau-of-meteorology" class="section level1">
 <h1 class="hasAnchor">
-<a href="#citation" class="anchor"></a>Citation</h1>
-<p>If you find this pacakge useful, please cite it! Type <code><a href="https://rdrr.io/r/utils/citation.html">citation("BiometryTraining")</a></code> on the R console to find out how.</p>
+<a href="#citation--attribution-to-silobureau-of-meteorology" class="anchor"></a>Citation &amp; Attribution to SILO/Bureau of Meteorology</h1>
+<p>The weather datasets currently retrieved by <strong>weathervane</strong> are curated by <a href="https://www.longpaddock.qld.gov.au/silo/">SILO</a>, who make them available under a Creative Commons Attribution 4.0 International Licence. Their data is in turn sourced from the <a href="http://www.bom.gov.au/">Australian Bureau of Meteorology</a> and their weather stations.</p>
+<p>Please reference them appropriately in any publications or other research outputs that use the downloaded weather data. See for example:</p>
+<ul>
+<li>
+<a href="https://www.longpaddock.qld.gov.au/silo/about/data-suppliers/" class="uri">https://www.longpaddock.qld.gov.au/silo/about/data-suppliers/</a> - <a href="http://www.bom.gov.au/other/copyright.shtml" class="uri">http://www.bom.gov.au/other/copyright.shtml</a>
+</li>
+</ul>
 </div>
 
   </div>
