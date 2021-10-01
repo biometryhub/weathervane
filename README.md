@@ -42,15 +42,17 @@ library(weathervane)
 
 TODO more here
 
-# Citation & Attribution to SILO/Bureau of Meteorology
+# Attribution to SILO/Bureau of Meteorology
 
 The weather datasets currently retrieved by **weathervane** are curated
 by [SILO](https://www.longpaddock.qld.gov.au/silo/), who make them
 available under a Creative Commons Attribution 4.0 International
-Licence. Their data is in turn sourced from the [Australian Bureau of
-Meteorology](http://www.bom.gov.au/) and their weather stations.
+Licence. Their data is in turn mostly sourced from the [Australian
+Bureau of Meteorology](http://www.bom.gov.au/) and their weather
+stations.
 
 Please reference them appropriately in any publications or other
 research outputs that use the downloaded weather data. See for example:
-- <https://www.longpaddock.qld.gov.au/silo/about/data-suppliers/> -
-<http://www.bom.gov.au/other/copyright.shtml>
+- <https://www.longpaddock.qld.gov.au/silo/about/access-data/>
+
+-   <http://www.bom.gov.au/other/copyright.shtml>
