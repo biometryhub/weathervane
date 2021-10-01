@@ -86,3 +86,12 @@ input:checked ~ .slider:before {
 #btn_update {
   margin-bottom: 18px;
 }
+
+/* Change cursor when mousing over clickable layer */
+.leaflet-clickable {
+  cursor: crosshair !important;
+}
+/* Change cursor when over entire map */
+.leaflet-container {
+  cursor: crosshair !important;
+}

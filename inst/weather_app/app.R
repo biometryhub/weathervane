@@ -542,6 +542,11 @@ server <- function(input, output, session) {
       write.csv(download_data, file, row.names = FALSE)
     }
   )
+
+  session$onSessionEnded(function() {
+    stopApp()
+  })
+
 }
 
 
