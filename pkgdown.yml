@@ -3,7 +3,7 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   weathervane: weathervane.html
-last_built: 2021-10-01T04:27Z
+last_built: 2021-10-01T04:37Z
 urls:
   reference: https://biometryhub.github.io/weathervane//reference
   article: https://biometryhub.github.io/weathervane//articles
