@@ -8,7 +8,7 @@
 # Copyright (c) 2021 University of Adelaide Biometry Hub
 # MIT Licence
 #
-# Code author: Russell A. Edson, Biometry Hub
+# Code authors: Russell A. Edson, Sam Rogers, Biometry Hub
 # Date last modified: 06/09/2021
 # Send all bug reports/questions/comments to
 #   russell.edson@adelaide.edu.au

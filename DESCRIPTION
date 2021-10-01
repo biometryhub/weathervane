@@ -13,6 +13,8 @@ Authors@R:
              email = "biometryhubdev@gmail.com"))
 Description: Provides helper functions to download Australian weather data from SILO.
 License: MIT + file LICENSE
+URL: https://biometryhub.github.io/weathervane/
+BugReports: https://github.com/biometryhub/weathervane/issues
 Depends: 
     R (>= 3.5.0)
 Imports:
