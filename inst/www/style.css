@@ -4,10 +4,10 @@
  * Copyright (c) 2021 University of Adelaide Biometry Hub
  * MIT Licence
  *
- * Code author: Russell A. Edson
- * Date last modified: 27/09/2021
+ * Code authors: Russell A. Edson, Sam Rogers, Biometry Hub
+ * Date last modified: 11/10/2021
  * Send all bug reports/questions/comments to
- *   russell.edson@adelaide.edu.au
+ *   biometryhubdev@gmail.com
  */
 
 /* VariableView toggle switch. */
@@ -73,6 +73,18 @@ input:checked ~ .slider:before {
 /* Flash latitude/longitude coordinates when the user updates them. */
 .flash {
   background-color: #b6dfff;
+}
+
+/* Highlight for recently-updated coordinates/dates. */
+.updated {
+  background-color: #ffca43;
+}
+
+/* Bold the update button to reflect recent updates that can be applied. */
+.bolded {
+  font-weight: 600;
+  background-color: #ffca43;
+  border-color: #000000;
 }
 
 /* Truncate overly-long variable names in the VariableViews. */

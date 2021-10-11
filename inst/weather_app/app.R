@@ -9,9 +9,9 @@
 # MIT Licence
 #
 # Code authors: Russell A. Edson, Sam Rogers, Biometry Hub
-# Date last modified: 06/09/2021
+# Date last modified: 11/10/2021
 # Send all bug reports/questions/comments to
-#   russell.edson@adelaide.edu.au
+#   biometryhubdev@gmail.com
 
 
 # Using leaflet for the interactive map view, ggplot2 for the
@@ -383,11 +383,24 @@ server <- function(input, output, session) {
       modalDialog(
         easyClose = TRUE,
         title = NULL,
-        shiny::includeHTML(system.file('www/credits.html', package = 'weathervane')),
+        shiny::includeHTML(
+          system.file('www/credits.html', package = 'weathervane')
+        ),
         footer = modalButton('OK')
       )
     )
   })
+
+  # Initialise the data download
+  # TODO: Error-checking?
+  data <- reactiveVal(
+    value = get_weather_data(
+      latitude = latitude_default,
+      longitude = longitude_default,
+      start_date = start_date_default,
+      finish_date = end_date_default
+    )
+  )
 
   # Initialise the leaflet map
   output$map_view <- renderLeaflet({
@@ -408,6 +421,8 @@ server <- function(input, output, session) {
   })
 
   # Update the latitude/longitude when the user clicks on the map
+  # (And colour the latitude/longitude numeric inputs to signify
+  # that they have changed)
   observeEvent(input$map_view_click, ignoreInit = TRUE, {
     click <- input$map_view_click
     coordinates(
@@ -416,11 +431,18 @@ server <- function(input, output, session) {
         longitude = round(click$lng, digits = 4)
       )
     )
+
+    session$sendCustomMessage('colour_lat_lng', TRUE)
+    session$sendCustomMessage('bold_update_button', TRUE)
   })
 
   # Also update the latitude/longitude coordinates when the user
-  # changes their values in the input controls
+  # changes their values in the input controls (and colour the
+  # widgets to reflect the change)
   observeEvent(input$latitude, ignoreInit = TRUE, {
+    session$sendCustomMessage('colour_lat_lng', TRUE)
+    session$sendCustomMessage('bold_update_button', TRUE)
+
     # Error-checking: If we cannot parse the entered value, don't do
     # anything (yet).
     latitude_value <- as.numeric(input$latitude)
@@ -432,16 +454,12 @@ server <- function(input, output, session) {
         )
       )
     }
-
-    # TODO: May want a delay in here so that we don't immediately
-    #       grab weather data while the user is still typing the
-    #       coordinates? (Actually maybe we just want an
-    #       'Update coordinates' button ala Kym's App?)
-    #       If so, the below observeEvent for longitude also
-    #       needs to be updated.
   })
 
   observeEvent(input$longitude, ignoreInit = TRUE, {
+    session$sendCustomMessage('colour_lat_lng', TRUE)
+    session$sendCustomMessage('bold_update_button', TRUE)
+
     # Error-checking: If we cannot parse the entered value, don't do
     # anything (yet).
     longitude_value <- as.numeric(input$longitude)
@@ -455,9 +473,20 @@ server <- function(input, output, session) {
     }
   })
 
-  # Whenever the latitude/longitude is updated, update the map with
-  # a marker and flash the latitude/longitude coordinates to indicate
-  # that they've changed.
+  # Whenever the dates have been changed, we highlight the date
+  # range view to reflect the change.
+  observeEvent(input$start_date, ignoreInit = TRUE, {
+    session$sendCustomMessage('colour_start_date', TRUE)
+    session$sendCustomMessage('bold_update_button', TRUE)
+  })
+
+  observeEvent(input$end_date, ignoreInit = TRUE, {
+    session$sendCustomMessage('colour_end_date', TRUE)
+    session$sendCustomMessage('bold_update_button', TRUE)
+  })
+
+  # Whenever the latitude/longitude is successfully updated, update
+  # the map with a marker.
   observeEvent(coordinates(), ignoreInit = TRUE, {
     # Refresh marker
     addMarkers(
@@ -466,29 +495,27 @@ server <- function(input, output, session) {
       lng = coordinates()$longitude
     )
 
-    # Update and flash latitude/longitude controls
+    # Update latitude/longitude controls
     updateNumericInput(session, 'latitude', value = coordinates()$latitude)
     updateNumericInput(session, 'longitude', value = coordinates()$longitude)
-    session$sendCustomMessage('flash_latitude_longitude', 1000)
   })
 
-  # Whenever the start/end dates or the coordinates are modified,
-  # do a new data download.
-  data <- reactive({
-    # TODO: Error checking here.
-
-    get_weather_data(
-      latitude = coordinates()$latitude,
-      longitude = coordinates()$longitude,
-      start_date = input$start_date,
-      finish_date = input$end_date
+  # Whenever the 'Update' button is clicked, we do a new data download
+  observeEvent(input$btn_update, ignoreInit = TRUE, {
+    weather_data <- get_weather_data(
+      latitude = isolate(coordinates()$latitude),
+      longitude = isolate(coordinates()$longitude),
+      start_date = isolate(input$start_date),
+      finish_date = isolate(input$end_date)
     )
+    data(weather_data)
 
-    # TODO: Filter out the Elevation column.
-
-    # TODO: Filter out any NaN columns here.
+    # And reset all of the highlighted input widgets.
+    session$sendCustomMessage('colour_lat_lng', FALSE)
+    session$sendCustomMessage('colour_start_date', FALSE)
+    session$sendCustomMessage('colour_end_date', FALSE)
+    session$sendCustomMessage('bold_update_button', FALSE)
   })
-
 
   # Whenever the data is updated, regenerate the list of variables
   # and prepare the data download.
@@ -546,8 +573,6 @@ server <- function(input, output, session) {
   session$onSessionEnded(function() {
     stopApp()
   })
-
 }
-
 
 shinyApp(ui, server)
