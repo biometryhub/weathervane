@@ -9,8 +9,8 @@
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/)
-[![R
-version](https://img.shields.io/badge/weathervane.R%20version-0.1.0-80b6ff.svg)](/DESCRIPTION)
+[![Package
+version](https://img.shields.io/badge/Package%20version-0.1.0-80b6ff.svg)](/DESCRIPTION)
 [![R
 dependency](https://img.shields.io/badge/R%3E%3D-3.5.0-80b6ff.svg)](https://cran.r-project.org/)
 [![R-CMD-check](https://github.com/biometryhub/weathervane/workflows/R-CMD-check/badge.svg)](https://github.com/biometryhub/weathervane/actions)
