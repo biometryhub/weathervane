@@ -26,7 +26,7 @@ weather and climate data (sourced from SILO and the Bureau of
 Meteorology) to incorporate into statistical analyses of agronomic
 experiments and plant-breeding trials.
 
-![weathervane App](res/app_usage.gif)
+![weathervane App](man/figures/app_usage.gif)
 
 # Installation
 
