@@ -26,6 +26,8 @@ weather and climate data (sourced from SILO and the Bureau of
 Meteorology) to incorporate into statistical analyses of agronomic
 experiments and plant-breeding trials.
 
+![weathervane App](res/app_usage.gif)
+
 # Installation
 
 Run the following code on your R console to install this package:
