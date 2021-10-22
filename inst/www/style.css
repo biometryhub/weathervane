@@ -5,7 +5,7 @@
  * MIT Licence
  *
  * Code authors: Russell A. Edson, Sam Rogers, Biometry Hub
- * Date last modified: 11/10/2021
+ * Date last modified: 22/10/2021
  * Send all bug reports/questions/comments to
  *   biometryhubdev@gmail.com
  */
@@ -16,7 +16,6 @@
   width: 0;
   height: 0;
 }
-
 .slider {
   position: absolute;
   cursor: pointer;
@@ -27,7 +26,6 @@
   background-color: #dddddd;
   transition: .1s;
 }
-
 .slider:before {
   position: absolute;
   content: "";
@@ -38,16 +36,27 @@
   background-color: #ffffff;
   transition: .1s;
 }
-
 input:checked ~ .slider {
   background-color: #00afc1;
 }
-
 input:checked ~ .slider:before {
   transform: translateX(20px);
 }
 
-
+/* Title and Credits button styling. */
+#row_titlebar {
+  display: inline-table;
+}
+#apptitle_text {
+  font-size: 42px;
+}
+#title_bg {
+  position: absolute;
+  height: 84px;
+}
+#credits_container {
+  margin-top: 28px;
+}
 
 /* Credits/Disclaimer modal. */
 #credits_licence {
@@ -106,4 +115,9 @@ input:checked ~ .slider:before {
 /* Change cursor when over entire map */
 .leaflet-container {
   cursor: crosshair !important;
+}
+
+/* Add a border for the map view. */
+#map_view {
+  border: 1px solid #ccc;
 }

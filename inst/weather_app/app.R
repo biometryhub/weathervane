@@ -9,7 +9,7 @@
 # MIT Licence
 #
 # Code authors: Russell A. Edson, Sam Rogers, Biometry Hub
-# Date last modified: 11/10/2021
+# Date last modified: 22/10/2021
 # Send all bug reports/questions/comments to
 #   biometryhubdev@gmail.com
 
@@ -213,12 +213,13 @@ ui <- fluidPage(
   ),
   fluidRow(
     id = 'row_titlebar',
+    tags$img(src = 'www/biometry_hub_bg.png', id = 'title_bg'),
     column(
       width = 10,
       id = 'col_title',
       div(
         id = 'apptitle_container',
-        h2(id = 'apptitle_text', app_title)
+        h1(id = 'apptitle_text', app_title)
       )
     ),
     column(
@@ -234,19 +235,8 @@ ui <- fluidPage(
     id = 'row_help',
     column(
       width = 12,
-      p(
-        id = 'help_text',
-        paste0(
-          'Choose a latitude and longitude (either by entering in the input ',
-          'boxes directly, or by clicking a location using the interactive ',
-          'map), and select a start date and an end date. The weather ',
-          'variables available at that location for the specified date range ',
-          'will then be loaded into the viewing window. The viewing window ',
-          'includes time series previews of the data for convenience, and ',
-          'each variable can be toggled include/exclude for the download. ',
-          'When you are ready, click the Download button to retrieve the ',
-          'specified weather variables to a CSV.'
-        )
+      shiny::includeHTML(
+        system.file('www/intro_text.html', package = 'weathervane')
       )
     )
   ),
@@ -546,7 +536,6 @@ server <- function(input, output, session) {
   })
 
   # The download button click:
-  # TODO: Might need to disable/enable this button depending?
   output$btn_download <- downloadHandler(
     filename = function() { paste0('weathervane_data_', Sys.Date(), '.csv') },
     content = function(file) {
