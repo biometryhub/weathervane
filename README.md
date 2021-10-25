@@ -26,7 +26,16 @@ weather and climate data (sourced from SILO and the Bureau of
 Meteorology) to incorporate into statistical analyses of agronomic
 experiments and plant-breeding trials.
 
+This R package includes a simple and user-friendly Shiny App for
+retrieving weather data, complete with an interactive map, data previews
+and CSV spreadsheet export.
+
 ![weathervane App](man/figures/app_usage.gif)
+
+Alternatively, import the library and use the weather data retrieval
+functions directly in your statistical analysis workflow.
+
+![weathervane package](man/figures/package_usage.gif)
 
 # Installation
 
@@ -61,3 +70,7 @@ research outputs that use the downloaded weather data. See for example:
 - <https://www.longpaddock.qld.gov.au/silo/about/access-data/>
 
 -   <http://www.bom.gov.au/other/copyright.shtml>
+
+# Credits
+
+TODO
