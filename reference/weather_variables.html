@@ -136,75 +136,76 @@ https://www.longpaddock.qld.gov.au/silo/about/climate-variables/)</p>
     <p>A data.frame containing the weather variables and codes</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>weather_variables</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                      variable_name
-#&gt; 1                         rainfall
-#&gt; 2                         min_temp
-#&gt; 3                         max_temp
-#&gt; 4                    humidity_tmin
-#&gt; 5                    humidity_tmax
-#&gt; 6                   solar_exposure
-#&gt; 7          mean_sea_level_pressure
-#&gt; 8                  vapour_pressure
-#&gt; 9          vapour_pressure_deficit
-#&gt; 10                     evaporation
-#&gt; 11         evaporation_morton_lake
-#&gt; 12        evapotranspiration_fao56
-#&gt; 13         evapotranspiration_asce
-#&gt; 14 evapotranspiration_morton_areal
-#&gt; 15 evapotranspiration_morton_point
-#&gt; 16   evapotranspiration_morton_wet
-#&gt;                                                         pretty_name
-#&gt; 1                                                     Rainfall (mm)
-#&gt; 2                                        Minimum Temperature (degC)
-#&gt; 3                                        Maximum Temperature (degC)
-#&gt; 4                      Relative Humidity at Minimum Temperature (%)
-#&gt; 5                      Relative Humidity at Maximum Temperature (%)
-#&gt; 6                                            Solar Exposure (MJ/m2)
-#&gt; 7                                  Mean Pressure at Sea Level (hPa)
-#&gt; 8                                             Vapour Pressure (hPa)
-#&gt; 9                                     Vapour Pressure Deficit (hPa)
-#&gt; 10                                                 Evaporation (mm)
-#&gt; 11                           Morton's Shallow Lake Evaporation (mm)
-#&gt; 12                         FAO56 Short Crop Evapotranspiration (mm)
-#&gt; 13                           ASCE Tall Crop Evapotranspiration (mm)
-#&gt; 14                    Morton's Areal Actual Evapotranspiration (mm)
-#&gt; 15                 Morton's Point Potential Evapotranspiration (mm)
-#&gt; 16 Morton's Wet-environment Areal Potential Evapotranspiration (mm)
-#&gt;                                                         description
-#&gt; 1                                               Daily rainfall (mm)
-#&gt; 2                             Minimum temperature (degrees Celsius)
-#&gt; 3                             Maximum temperature (degrees Celsius)
-#&gt; 4              Relative humidity at time of minimum temperature (%)
-#&gt; 5              Relative humidity at time of maximum temperature (%)
-#&gt; 6                                            Solar exposure (MJ/m2)
-#&gt; 7                                  Mean pressure at sea level (hPa)
-#&gt; 8                                             Vapour pressure (hPa)
-#&gt; 9                                     Vapour pressure deficit (hPa)
-#&gt; 10   Class A pan evaporation [synthetic estimate for pre-1970] (mm)
-#&gt; 11                           Morton's shallow lake evaporation (mm)
-#&gt; 12                         FAO56 short crop evapotranspiration (mm)
-#&gt; 13                           ASCE tall crop evapotranspiration (mm)
-#&gt; 14                    Morton's areal actual evapotranspiration (mm)
-#&gt; 15                 Morton's point potential evapotranspiration (mm)
-#&gt; 16 Morton's wet-environment areal potential evapotranspiration (mm)
-#&gt;              silo_name silo_code
-#&gt; 1           daily_rain         R
-#&gt; 2             min_temp         N
-#&gt; 3             max_temp         X
-#&gt; 4              rh_tmin         G
-#&gt; 5              rh_tmax         H
-#&gt; 6            radiation         J
-#&gt; 7                 mslp         M
-#&gt; 8                   vp         V
-#&gt; 9           vp_deficit         D
-#&gt; 10           evap_comb         C
-#&gt; 11    evap_morton_lake         L
-#&gt; 12       et_short_crop         F
-#&gt; 13        et_tall_crop         T
-#&gt; 14    et_morton_actual         A
-#&gt; 15 et_morton_potential         P
-#&gt; 16       et_morton_wet         W</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'>weather_variables</span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                      variable_name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                         rainfall</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                         min_temp</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                         max_temp</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4                    humidity_tmin</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5                    humidity_tmax</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6                   solar_exposure</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7          mean_sea_level_pressure</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8                  vapour_pressure</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9          vapour_pressure_deficit</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10                     evaporation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11         evaporation_morton_lake</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12        evapotranspiration_fao56</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13         evapotranspiration_asce</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14 evapotranspiration_morton_areal</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15 evapotranspiration_morton_point</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16   evapotranspiration_morton_wet</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                         pretty_name</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                                                     Rainfall (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                                        Minimum Temperature (degC)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                                        Maximum Temperature (degC)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4                      Relative Humidity at Minimum Temperature (%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5                      Relative Humidity at Maximum Temperature (%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6                                            Solar Exposure (MJ/m2)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7                                  Mean Pressure at Sea Level (hPa)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8                                             Vapour Pressure (hPa)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9                                     Vapour Pressure Deficit (hPa)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10                                                 Evaporation (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11                           Morton's Shallow Lake Evaporation (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12                         FAO56 Short Crop Evapotranspiration (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13                           ASCE Tall Crop Evapotranspiration (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14                    Morton's Areal Actual Evapotranspiration (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15                 Morton's Point Potential Evapotranspiration (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16 Morton's Wet-environment Areal Potential Evapotranspiration (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>                                                         description</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1                                               Daily rainfall (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2                             Minimum temperature (degrees Celsius)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3                             Maximum temperature (degrees Celsius)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4              Relative humidity at time of minimum temperature (%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5              Relative humidity at time of maximum temperature (%)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6                                            Solar exposure (MJ/m2)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7                                  Mean pressure at sea level (hPa)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8                                             Vapour pressure (hPa)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9                                     Vapour pressure deficit (hPa)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10   Class A pan evaporation [synthetic estimate for pre-1970] (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11                           Morton's shallow lake evaporation (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12                         FAO56 short crop evapotranspiration (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13                           ASCE tall crop evapotranspiration (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14                    Morton's areal actual evapotranspiration (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15                 Morton's point potential evapotranspiration (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16 Morton's wet-environment areal potential evapotranspiration (mm)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              silo_name silo_code</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1           daily_rain         R</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2             min_temp         N</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3             max_temp         X</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4              rh_tmin         G</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5              rh_tmax         H</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6            radiation         J</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 7                 mslp         M</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 8                   vp         V</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 9           vp_deficit         D</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10           evap_comb         C</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 11    evap_morton_lake         L</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 12       et_short_crop         F</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 13        et_tall_crop         T</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 14    et_morton_actual         A</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 15 et_morton_potential         P</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 16       et_morton_wet         W</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
