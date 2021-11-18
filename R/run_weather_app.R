@@ -27,6 +27,9 @@ run_weather_app <- function() {
   }
   else {
     shiny::addResourcePath('www', system.file('www', package = 'weathervane'))
-    shiny::runApp(appDir)
+    if(interactive()) {
+      shiny::runApp(appDir)
+    }
+    else(return(FALSE))
   }
 }

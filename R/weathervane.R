@@ -222,19 +222,19 @@ download_data <- function(url) {
   }
 
   # Test for invalid parameters (e.g. missing comment=)
-  if (grepl('missing essential parameters', data, fixed = TRUE)) {
-    stop('Server-side error: Missing parameters/malformed URL')
-  }
+  # if (grepl('missing essential parameters', data, fixed = TRUE)) {
+  #   stop('Server-side error: Missing parameters/malformed URL')
+  # }
 
   # Test for a rejected URL (which can happen e.g. if the latitude
   # or longitude is 'too long')
-  if (grepl('([R|r]ejected)', data)) {
-    stop('Server-side error: URL rejected')
-  }
+  # if (grepl('([R|r]ejected)', data)) {
+  #   stop('Server-side error: URL rejected')
+  # }
 
   # Catch-all test for some other server-side error (e.g. if the server
   # is inaccessible)
-  if (grepl('(error occurred)|(error checking)', data)) {
+  if (grepl('(error occurred)|(error checking)|([R|r]ejected)|(missing essential parameters)', data)) {
     stop('Server-side error: Unspecified error or server inaccessible')
   }
 

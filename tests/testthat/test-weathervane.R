@@ -11,24 +11,162 @@
 
 
 # Test cases for the weather variables list function ###########################
-context('Tests for weather_variables()')
+# context('Tests for weather_variables()')
 
-test_that('blah', {
-  expect_equal(2, 2)
+test_that('weather_variables() returns a data frame', {
+  expect_s3_class(weather_variables(), "data.frame")
 })
+
+test_that('weather_variables() returns the expected variables', {
+  expect_equal(weather_variables()$variable_name,
+               c("rainfall", "min_temp", "max_temp", "humidity_tmin",
+                 "humidity_tmax", "solar_exposure", "mean_sea_level_pressure",
+                 "vapour_pressure", "vapour_pressure_deficit", "evaporation",
+                 "evaporation_morton_lake", "evapotranspiration_fao56",
+                 "evapotranspiration_asce", "evapotranspiration_morton_areal",
+                 "evapotranspiration_morton_point", "evapotranspiration_morton_wet"))
+
+  expect_equal(weather_variables()$pretty_name,
+               c('Rainfall (mm)', 'Minimum Temperature (degC)',
+                 'Maximum Temperature (degC)',
+                 'Relative Humidity at Minimum Temperature (%)',
+                 'Relative Humidity at Maximum Temperature (%)', 'Solar Exposure (MJ/m2)',
+                 'Mean Pressure at Sea Level (hPa)', 'Vapour Pressure (hPa)',
+                 'Vapour Pressure Deficit (hPa)', 'Evaporation (mm)',
+                 "Morton's Shallow Lake Evaporation (mm)",
+                 'FAO56 Short Crop Evapotranspiration (mm)',
+                 'ASCE Tall Crop Evapotranspiration (mm)',
+                 "Morton's Areal Actual Evapotranspiration (mm)",
+                 "Morton's Point Potential Evapotranspiration (mm)",
+                 "Morton's Wet-environment Areal Potential Evapotranspiration (mm)"))
+
+  expect_equal(weather_variables()$description,
+               c('Daily rainfall (mm)', 'Minimum temperature (degrees Celsius)',
+                 'Maximum temperature (degrees Celsius)',
+                 'Relative humidity at time of minimum temperature (%)',
+                 'Relative humidity at time of maximum temperature (%)',
+                 'Solar exposure (MJ/m2)', 'Mean pressure at sea level (hPa)',
+                 'Vapour pressure (hPa)', 'Vapour pressure deficit (hPa)',
+                 'Class A pan evaporation [synthetic estimate for pre-1970] (mm)',
+                 "Morton's shallow lake evaporation (mm)",
+                 'FAO56 short crop evapotranspiration (mm)',
+                 'ASCE tall crop evapotranspiration (mm)',
+                 "Morton's areal actual evapotranspiration (mm)",
+                 "Morton's point potential evapotranspiration (mm)",
+                 "Morton's wet-environment areal potential evapotranspiration (mm)"))
+
+  expect_equal(weather_variables()$silo_name,
+               c('daily_rain', 'min_temp', 'max_temp', 'rh_tmin', 'rh_tmax', 'radiation',
+                 'mslp', 'vp', 'vp_deficit', 'evap_comb', 'evap_morton_lake',
+                 'et_short_crop', 'et_tall_crop', 'et_morton_actual',
+                 'et_morton_potential', 'et_morton_wet'))
+
+  expect_equal(weather_variables()$silo_code,
+               c('R', 'N', 'X', 'G', 'H', 'J', 'M', 'V',
+                 'D', 'C', 'L', 'F', 'T', 'A', 'P', 'W'))
+})
+
 
 # Test cases for the main weather retrieval interface ##########################
-context('Tests for get_weather_data()')
+# context('Tests for get_weather_data()')
 
-test_that('blah', {
-  expect_equal(2, 2)
+test_that('get_weather_data() fails if outside Australia', {
+  expect_error(get_weather_data(-1, 1, Sys.Date()-1),
+               "Latitude and longitude coordinates must be within Australia \\(roughly -44.53 < lat < -9.97, 111.98 < lng < 156.27\\)")
 })
 
-# Test cases for the main weather data download function #######################
-context('Tests for download_data()')
+test_that('get_weather_data() truncates decimal places', {
+  # Using minimal variables to reduce server load
+  expect_identical(get_weather_data(-34.9680512, 138.6352101, Sys.Date()-1, variables = "rainfall"),
+                   get_weather_data(round(-34.9680512, 4), round(138.6352101, 4), Sys.Date()-1, variables = "rainfall"))
+})
 
-test_that('blah', {
-  expect_equal(2, 2)
+test_that('get_weather_data() fails if start date is earlier than 1889-01-01', {
+  expect_error(get_weather_data(-34.968, 138.635, start_date = "1700-01-01"),
+               "The given start date cannot precede 1889-01-01")
+})
+
+test_that('get_weather_data() fails if finish date is earlier than start_date', {
+  expect_error(get_weather_data(-34.968, 138.635, start_date = Sys.Date(), finish_date = Sys.Date() -1),
+               "The given finish date cannot precede the start date")
+})
+
+test_that('get_weather_data() fails if invalid weather varibales are provided', {
+  expect_error(get_weather_data(-34.968, 138.635, start_date = Sys.Date()-1, variables = "xyz"),
+               "xyz is not in the list of available variables\\; did you misspell the variable\\?\nYou can use weathervane\\:\\:weather_variables\\(\\) to check the list of available variables\\. Use the entries in the variable_name column to select variables as desired\\.")
+  expect_error(get_weather_data(-34.968, 138.635, start_date = Sys.Date()-1, variables = "humidity"),
+               "humidity is not in the list of available variables;")
+  expect_error(get_weather_data(-34.968, 138.635, start_date = Sys.Date()-1, variables = "temperature"),
+               "temperature is not in the list of available variables;")
+})
+
+test_that('get_weather_data() has different column names if pretty_names = FALSE', {
+  pretty_names <- get_weather_data(-34.968, 138.635, start_date = Sys.Date()-1, variables = "rainfall")
+  ugly_names <- get_weather_data(-34.968, 138.635, start_date = Sys.Date()-1, variables = "rainfall", pretty_names = FALSE)
+  expect_identical(colnames(pretty_names),
+                   c("Date", "Latitude", "Longitude",
+                     "Elevation (m)", "Rainfall (mm)"))
+  expect_identical(colnames(ugly_names),
+                   c("Date", "Latitude", "Longitude",
+                     "Elevation..m.", "Rainfall..mm."))
+  expect_false(identical(colnames(pretty_names), colnames(ugly_names)))
+})
+
+test_that('get_weather_data() returns all weather variables by default', {
+  data <- get_weather_data(-34.968, 138.635, start_date = Sys.Date()-5)
+  expect_identical(colnames(data),
+                   c("Date", "Latitude", "Longitude", "Elevation (m)",
+                     weather_variables()$pretty_name))
+  expect_equal(nrow(data), 5)
+})
+
+test_that('get_weather_data() returns a single row of data with one input date', {
+  data <- get_weather_data(-34.968, 138.635, start_date = Sys.Date()-1, variables = "rainfall")
+  expect_equal(nrow(data), 1)
+})
+
+
+# Test cases for the main weather data download function #######################
+# context('Tests for download_data()')
+
+test_that('download_data() produces an error if dates are invalid', {
+  latitude <- -34.9285
+  longitude <- 138.6007
+  start_date <- 'abc'
+  finish_date <- '2021-12-31'
+  variables <- c('rainfall')
+
+  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  expect_error(download_data(url), 'Server-side error: Invalid start/end date')
+})
+
+test_that('download_data() produces an error if latitude and/or longitude are invalid', {
+  latitude <- -3.9285
+  longitude <- 18.6007
+  start_date <- '2021-12-30'
+  finish_date <- '2021-12-31'
+  variables <- c('rainfall')
+
+  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  expect_error(download_data(url), 'Server-side error: Invalid latitude/longitude')
+})
+
+test_that('download_data() produces an error if url is invalid', {
+  latitude <- -3.9285
+  longitude <- 18.6007
+  start_date <- '2021-12-30'
+  finish_date <- '2021-12-31'
+  variables <- "abc"
+
+  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url2 <- download_url(latitude, longitude, start_date, finish_date, NA)
+  # url3 <- download_url(NA, NA, start_date, finish_date, variables)
+  # url4 <- download_url(latitude, longitude, NA, NA, variables)
+  expect_error(download_data(url), 'Server-side error: Unspecified error or server inaccessible')
+  expect_error(download_data(url2), 'Server-side error: Unspecified error or server inaccessible')
+  # expect_error(download_data(url3), 'Server-side error: Unspecified error or server inaccessible')
+  # expect_error(download_data(url4), 'Server-side error: Unspecified error or server inaccessible')
+  # expect_error(download_data("https://example.com/"), 'Server-side error: Missing parameters/malformed URL')
 })
 
 
@@ -38,7 +176,7 @@ test_that('blah', {
 # latitudes, longitudes, dates and variables list will all be
 # sanity-checked before this function is called, and garbage in
 # begets garbage out.
-context('Tests for download_url()')
+# context('Tests for download_url()')
 
 test_that('download_url() constructs a working URL properly' , {
   latitude <- -34.9285
@@ -289,7 +427,7 @@ test_that('download_url() returns a character object', {
   variables <- c('rainfall', 'max_temp', 'evaporation')
 
   url <- download_url(latitude, longitude, start_date, finish_date, variables)
-  expect_is(url, 'character')
+  expect_type(url, 'character')
 })
 
 
@@ -298,14 +436,14 @@ test_that('download_url() returns a character object', {
 # earliest test data against 1889-01-01: this test is a sentinel
 # that fails if we've ever updated the date in weathervane.R but
 # not in these test files (and likely other places!)
-context('Tests for earliest_dataset_date()')
+# context('Tests for earliest_dataset_date()')
 
 test_that('1889-01-01 is the earliest date of data', {
   expect_equal(earliest_dataset_date(), as.Date('1889-01-01'))
 })
 
 test_that('earliest_dataset_date() returns a Date object', {
-  expect_is(earliest_dataset_date(), 'Date')
+  expect_s3_class(earliest_dataset_date(), 'Date')
 })
 
 
@@ -314,7 +452,7 @@ test_that('earliest_dataset_date() returns a Date object', {
 # the bounds used by SILO (and also the Bureau of Meteorology),
 # and which actually include parts of Indonesia and Papua New
 # Guinea. We document this here in these tests.
-context('Tests for in_australia()')
+# context('Tests for in_australia()')
 
 test_that('lat/lng in Australia correctly return TRUE', {
   expect_true(in_australia(-34.9285, 138.6007))
