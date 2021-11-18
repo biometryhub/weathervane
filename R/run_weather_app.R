@@ -2,6 +2,8 @@
 #'
 #' Runs a shiny app where a user can select and download weather data.
 #'
+#' @importFrom utils installed.packages
+#'
 #' @examples
 #' \dontrun{
 #' run_weather_app()

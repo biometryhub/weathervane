@@ -3,6 +3,7 @@
 export(get_weather_data)
 export(run_weather_app)
 export(weather_variables)
+importFrom(utils,installed.packages)
 importFrom(utils,read.table)
 importFrom(xml2,read_html)
 importFrom(xml2,xml_text)
