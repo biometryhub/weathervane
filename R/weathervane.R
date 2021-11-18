@@ -176,6 +176,10 @@ get_weather_data <- function(
     download_url(latitude, longitude, start_date, finish_date, variables)
   )
 
+  # 18/11/2021 Fix: Truncate empty rows if given less than 4 days worth
+  # of data observations
+  data <- data[which(data['Date'] != ''), ]
+
   if (!pretty_names) {
     colnames(data) <- make.names(colnames(data))
   }
