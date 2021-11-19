@@ -18,13 +18,13 @@ BugReports: https://github.com/biometryhub/weathervane/issues
 Depends: 
     R (>= 3.5.0)
 Imports:
-    R6,
     xml2
 Suggests: 
     covr,
     ggplot2,
     knitr,
     leaflet,
+    R6,
     rmarkdown,
     shiny,
     testthat (>= 3.0.0)

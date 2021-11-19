@@ -13,7 +13,7 @@ run_weather_app <- function() {
   appDir <- system.file("weather_app", package = "weathervane")
 
   installed_pkgs <- rownames(installed.packages())
-  not_found <- setdiff(c("ggplot2", "leaflet", "shiny"), grep("(^ggplot2$)|(^shiny$)|(^leaflet$)", installed_pkgs, value = TRUE))
+  not_found <- setdiff(c("ggplot2", "leaflet", "R6", "shiny"), grep("(^ggplot2$)|(^shiny$)|(^leaflet$)|(^R6$)", installed_pkgs, value = TRUE))
   if (length(not_found) > 0) {
     stop("Package ", not_found[1], " is needed for this function to work. Please install it.", call. = FALSE)
   }
