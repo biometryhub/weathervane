@@ -1,30 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://biometryhub.github.io/weathervane//index.html</loc>
+    <loc>https://biometryhub.github.io/weathervane/404.html</loc>
   </url>
   <url>
-    <loc>https://biometryhub.github.io/weathervane//reference/download_data.html</loc>
+    <loc>https://biometryhub.github.io/weathervane/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://biometryhub.github.io/weathervane//reference/download_url.html</loc>
+    <loc>https://biometryhub.github.io/weathervane/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://biometryhub.github.io/weathervane//reference/earliest_dataset_date.html</loc>
+    <loc>https://biometryhub.github.io/weathervane/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://biometryhub.github.io/weathervane//reference/get_weather_data.html</loc>
+    <loc>https://biometryhub.github.io/weathervane/articles/weathervane.html</loc>
   </url>
   <url>
-    <loc>https://biometryhub.github.io/weathervane//reference/in_australia.html</loc>
+    <loc>https://biometryhub.github.io/weathervane/authors.html</loc>
   </url>
   <url>
-    <loc>https://biometryhub.github.io/weathervane//reference/run_weather_app.html</loc>
+    <loc>https://biometryhub.github.io/weathervane/index.html</loc>
   </url>
   <url>
-    <loc>https://biometryhub.github.io/weathervane//reference/weather_variables.html</loc>
+    <loc>https://biometryhub.github.io/weathervane/reference/download_data.html</loc>
   </url>
   <url>
-    <loc>https://biometryhub.github.io/weathervane//articles/weathervane.html</loc>
+    <loc>https://biometryhub.github.io/weathervane/reference/download_url.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane/reference/earliest_dataset_date.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane/reference/get_weather_data.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane/reference/in_australia.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane/reference/run_weather_app.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane/reference/weather_variables.html</loc>
   </url>
 </urlset>

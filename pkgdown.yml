@@ -1,10 +1,10 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1
+pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   weathervane: weathervane.html
-last_built: 2021-11-19T00:57Z
+last_built: 2022-01-17T00:34Z
 urls:
-  reference: https://biometryhub.github.io/weathervane//reference
-  article: https://biometryhub.github.io/weathervane//articles
+  reference: https://biometryhub.github.io/weathervane/reference
+  article: https://biometryhub.github.io/weathervane/articles
 
