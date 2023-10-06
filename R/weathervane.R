@@ -328,7 +328,7 @@ download_url <- function(
   weather_vars <- weather_variables()
   params <- list(
     'format' = 'csv',
-    'username' = 'apirequest',
+    'username' = 'biometryhubdev@gmail.com',
     'password' = 'apirequest',
     'lat' = latitude,
     'lon' = longitude,
