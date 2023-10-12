@@ -4,10 +4,10 @@
 \alias{get_station_details}
 \title{Get details of an individual weather station}
 \usage{
-get_station_details(station_id)
+get_station_details(station)
 }
 \arguments{
-\item{station_id}{The station ID to retrieve details of.}
+\item{station}{The station to retrieve details of. Station names will be attempted to be interpreted with an error returned.}
 }
 \value{
 A data.frame with Station ID, Name, Latitude, Longitude, State and Elevation of the given station ID.

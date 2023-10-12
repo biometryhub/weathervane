@@ -50,6 +50,13 @@ get_station_data <- function(
     stop('The given finish date cannot precede the start date')
   }
 
+  if(!is.numeric(station) && is.na(as.numeric(station))) {
+    station <- get_station_by_name(station)["ID"]
+    if(length(station)>1) {
+
+    }
+  }
+
   # If variables are specified, make sure that they each exist within
   # the set of available variables.
   valid_variables <- variables %in% weather_variables()$variable_name
@@ -84,16 +91,21 @@ get_station_data <- function(
 
 #' Get details of an individual weather station
 #'
-#' @param station_id The station ID to retrieve details of.
+#' @param station The station to retrieve details of. Station names will be attempted to be interpreted with an error returned.
 #'
 #' @return A data.frame with Station ID, Name, Latitude, Longitude, State and Elevation of the given station ID.
 #' @export
 #'
 #' @examples
 #' get_station_details(1001)
-get_station_details <- function(station_id) {
+get_station_details <- function(station) {
   url <- "https://www.longpaddock.qld.gov.au/cgi-bin/silo/PatchedPointDataset.php?format=id&station="
-  url <- paste0(url, station_id)
+
+  if(!is.numeric(station) && is.na(as.numeric(station))) {
+    station <- get_station_by_name(station)["ID"]
+  }
+
+  url <- paste0(url, station)
   data <- xml2::xml_text(xml2::read_html(url))
   data <- check_url_response(data)
 
@@ -107,11 +119,12 @@ get_station_details <- function(station_id) {
   return(data)
 }
 
-#' Get list of all weather stations
+#' Get list of all weather stations within specified distance
 #'
-#' Get the complete list of weather stations with data available on SILO (approximately 8000).
+#' Get a list of weather stations within a provided distance from a given weather station.
 #'
-#'
+#' @param station The station to retrieve details of. Station names will be attempted to be interpreted with an error returned.
+#' @param distance Radius from provided station.
 #' @param sort_by The column to sort the stations by. Valid values are "name" (the default), "id" or "state".
 #'
 #' @return A data.frame with all the weather stations along with their BoM station ID, Station name, Latitude, Longitude, State and Elevation.
@@ -119,13 +132,25 @@ get_station_details <- function(station_id) {
 #' @export
 #'
 #' @examples
-#' head(get_all_stations())
-#' head(get_all_stations(sort_by = "id"))
+#' get_stations_by_dist("Adelaide", 100)
 #'
-get_all_stations <- function(sort_by = "name") {
+get_stations_by_dist <- function(station, distance, sort_by = "name") {
 
   # Get all stations within a radius of 10000km from Alice Springs (ID 15540)
-  url <- "https://www.longpaddock.qld.gov.au/cgi-bin/silo/PatchedPointDataset.php?format=near&station=15540&radius=10000"
+  url <- "https://www.longpaddock.qld.gov.au/cgi-bin/silo/PatchedPointDataset.php?format=near&"
+
+  if(!is.numeric(station) && suppressWarnings(is.na(as.numeric(station)))) {
+    station <- get_station_by_name(station)
+    if(nrow(station)>1) {
+      warning("Provided station matched multiple locations.")
+      print(station)
+      id <- readline("Please select station ID: ")
+      station <- station[station$ID==id, "ID"]
+    }
+  }
+
+  url <- paste0(url, "station=", station, "&radius=", distance)
+
   data <- xml2::xml_text(xml2::read_html(url))
   data <- check_url_response(data)
 
@@ -152,3 +177,59 @@ get_all_stations <- function(sort_by = "name") {
   return(data)
 }
 
+#' Get list of all weather stations
+#'
+#' Get the complete list of weather stations with data available on SILO (approximately 8000).
+#'
+#'
+#' @param sort_by The column to sort the stations by. Valid values are "name" (the default), "id" or "state".
+#'
+#' @return A data.frame with all the weather stations along with their BoM station ID, Station name, Latitude, Longitude, State and Elevation.
+#'
+#' @export
+#'
+#' @examples
+#' head(get_all_stations())
+#' head(get_all_stations(sort_by = "id"))
+#'
+get_all_stations <- function(sort_by = "name") {
+  get_stations_by_dist(station = 15540, dist = 10000, sort_by)
+}
+
+
+#' Get station details from a provided (partial) name
+#'
+#' @param station A (partial) name of a station. Will be truncated to 10 characters. Wildcard searching can be performed with * or _
+#'
+#' @return A data frame listing all stations that matched the input text.
+#' @export
+#'
+#' @examples
+#' # Search by name
+#' get_station_by_name("Brisbane")
+#'
+#' # Find a specific station
+#' get_station_by_name("Adel (Waite)")
+#'
+#' # Will return any stations containing "botanic", "botanical" or "botany"
+#' get_station_by_name("botan*")
+get_station_by_name <- function(station) {
+  # Set up the base URL
+  url <- "https://www.longpaddock.qld.gov.au/cgi-bin/silo/PatchedPointDataset.php?format=name&nameFrag="
+
+  # Change any special or space characters to underscore for wildcard searching
+  # Input string is limited to 10 characters so truncate
+  station <- substr(gsub("(\\*|\\s|[[:punct:]])+", "_", station), 1, 10)
+
+  url <- paste0(url, station)
+
+  data <- xml2::xml_text(xml2::read_html(url))
+  data <- check_url_response(data)
+
+  data <- utils::read.table(text = data, header = TRUE, sep = '|',
+                            strip.white = TRUE, quote = "")
+
+  colnames(data) <- c("ID", "Name", "Latitude", "Longitude", "State", "Elevation")
+
+  return(data)
+}
