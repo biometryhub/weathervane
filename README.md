@@ -10,7 +10,7 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](https://choosealicense.com/licenses/mit/)
 [![Package
-version](https://img.shields.io/badge/Package%20version-0.1.0-80b6ff.svg)](/DESCRIPTION)
+version](https://img.shields.io/badge/Package%20version-0.2.0-80b6ff.svg)](/DESCRIPTION)
 [![R
 dependency](https://img.shields.io/badge/R%3E%3D-3.5.0-80b6ff.svg)](https://cran.r-project.org/)
 [![R-CMD-check](https://github.com/biometryhub/weathervane/workflows/R-CMD-check/badge.svg)](https://github.com/biometryhub/weathervane/actions)
@@ -32,12 +32,18 @@ This R package includes a simple and user-friendly Shiny App for
 retrieving weather data, complete with an interactive map, data previews
 and CSV spreadsheet export.
 
-![weathervane App](man/figures/app_usage.gif)
+<figure>
+<img src="man/figures/app_usage.gif" alt="weathervane App" />
+<figcaption aria-hidden="true">weathervane App</figcaption>
+</figure>
 
 Alternatively, load the library and use the weather data retrieval
 functions directly in your statistical analysis workflow.
 
-![weathervane package](man/figures/package_usage.gif)
+<figure>
+<img src="man/figures/package_usage.gif" alt="weathervane package" />
+<figcaption aria-hidden="true">weathervane package</figcaption>
+</figure>
 
 # Installation
 
@@ -117,9 +123,10 @@ stations.
 
 Please reference them appropriately in any publications or other
 research outputs that use the downloaded weather data. See for example:
+
 - <https://www.longpaddock.qld.gov.au/silo/about/access-data/>
 
--   <http://www.bom.gov.au/other/copyright.shtml>
+- <http://www.bom.gov.au/other/copyright.shtml>
 
 # Credits
 
@@ -129,4 +136,5 @@ hope that the package is useful to Australian researchers in easily
 retrieving weather data to incorporate into statistical analyses.
 
 Send all bug reports, questions and comments to
-<biometryhubdev@gmail.com>.
+<biometryhubdev@gmail.com> or [open an issue on
+GitHub](https://github.com/biometryhub/weathervane/issues).

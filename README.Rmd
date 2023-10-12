@@ -124,6 +124,7 @@ their weather stations.
 Please reference them appropriately in any publications or
 other research outputs that use the downloaded weather data. 
 See for example:
+
 - https://www.longpaddock.qld.gov.au/silo/about/access-data/
 
 - http://www.bom.gov.au/other/copyright.shtml
@@ -135,4 +136,4 @@ and Sam Rogers from the University of Adelaide's Biometry Hub. It is our hope
 that the package is useful to Australian researchers in easily retrieving
 weather data to incorporate into statistical analyses.
 
-Send all bug reports, questions and comments to <biometryhubdev@gmail.com>.
+Send all bug reports, questions and comments to <biometryhubdev@gmail.com> or [open an issue on GitHub](https://github.com/biometryhub/weathervane/issues).
