@@ -179,7 +179,9 @@ get_weather_data <- function(
   }
 
   data <- download_data(
-    download_url(latitude, longitude, start_date, finish_date, variables)
+    download_url(latitude = latitude, longitude = longitude,
+                 start_date = start_date, finish_date = finish_date,
+                 variables = variables)
   )
 
   # 18/11/2021 Fix: Truncate empty rows if given less than 4 days worth
@@ -211,7 +213,8 @@ get_weather_data <- function(
 #' @examples
 #' weathervane:::download_data(
 #'   weathervane:::download_url(
-#'     -34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall')
+#'     -34.9, 138.6, start_date = '2020-01-01',
+#'     finish_date = '2020-12-31', variables = c('rainfall')
 #'   )
 #' )
 download_data <- function(url) {

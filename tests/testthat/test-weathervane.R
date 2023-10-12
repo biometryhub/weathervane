@@ -77,8 +77,8 @@ test_that('get_weather_data() fails if outside Australia', {
 
 test_that('get_weather_data() truncates decimal places', {
   # Using minimal variables to reduce server load
-  expect_identical(get_weather_data(-34.9680512, 138.6352101, Sys.Date()-1, variables = "rainfall"),
-                   get_weather_data(round(-34.9680512, 4), round(138.6352101, 4), Sys.Date()-1, variables = "rainfall"))
+  expect_identical(get_weather_data(latitude = -34.9680512, longitude = 138.6352101, start_date = Sys.Date()-1, variables = "rainfall"),
+                   get_weather_data(latitude = round(-34.9680512, 4), longitude = round(138.6352101, 4), start_date = Sys.Date()-1, variables = "rainfall"))
 })
 
 test_that('get_weather_data() fails if start date is earlier than 1889-01-01', {
@@ -136,7 +136,9 @@ test_that('download_data() produces an error if dates are invalid', {
   finish_date <- '2021-12-31'
   variables <- c('rainfall')
 
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   expect_error(download_data(url), 'Server-side error: Invalid start/end date')
 })
 
@@ -147,7 +149,9 @@ test_that('download_data() produces an error if latitude and/or longitude are in
   finish_date <- '2021-12-31'
   variables <- c('rainfall')
 
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   expect_error(download_data(url), 'Server-side error: Invalid latitude/longitude')
 })
 
@@ -158,8 +162,12 @@ test_that('download_data() produces an error if url is invalid', {
   finish_date <- '2021-12-31'
   variables <- "abc"
 
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
-  url2 <- download_url(latitude, longitude, start_date, finish_date, NA)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
+  url2 <- download_url(latitude = latitude, longitude = longitude,
+                       start_date = start_date, finish_date = finish_date,
+                       variables = NA)
   # url3 <- download_url(NA, NA, start_date, finish_date, variables)
   # url4 <- download_url(latitude, longitude, NA, NA, variables)
   expect_error(download_data(url), 'Server-side error: Unspecified error or server inaccessible')
@@ -185,7 +193,9 @@ test_that('download_url() constructs a working URL properly' , {
   finish_date <- '2021-12-31'
   variables <- c('rainfall', 'max_temp', 'min_temp')
 
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
@@ -205,7 +215,9 @@ test_that('download_url() works when requesting all variables' , {
   finish_date <- '2021-12-31'
   variables <- weather_variables()$variable_name
 
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
@@ -231,7 +243,9 @@ test_that('download_url() works when requesting each specific variable' , {
     variable <- variables[index]
     code <- codes[index]
 
-    url <- download_url(latitude, longitude, start_date, finish_date, variable)
+    url <- download_url(latitude = latitude, longitude = longitude,
+                        start_date = start_date, finish_date = finish_date,
+                        variables = variable)
     parameters <- decode_url_parameters(url)
 
     expect_equal(as.character(parameters['format']), 'csv')
@@ -252,7 +266,9 @@ test_that('download_url() lists variables in exactly the given order' , {
   finish_date <- '2021-12-31'
 
   variables <- c('max_temp', 'min_temp')
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
@@ -266,7 +282,9 @@ test_that('download_url() lists variables in exactly the given order' , {
 
   # Reverse order for variables
   variables <- c('min_temp', 'max_temp')
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
@@ -286,7 +304,9 @@ test_that('(GIGO) there are no errors thrown for blank parameters' , {
   finish_date <- ''
   variables <- ''
 
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
@@ -306,7 +326,9 @@ test_that('(GIGO) there are no errors thrown for non-Australia coordinates' , {
   finish_date <- '2020-01-01'
   variables <- 'rainfall'
 
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
@@ -326,7 +348,9 @@ test_that('(GIGO) there are no errors thrown for bad/ill-formatted dates' , {
   finish_date <- '06/18/2009'
   variables <- 'rainfall'
 
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
@@ -346,7 +370,9 @@ test_that('(GIGO) there are no errors thrown for dates outside of range' , {
   finish_date <- '1781-12-20'
   variables <- c('rainfall', 'evaporation')
 
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
@@ -366,7 +392,9 @@ test_that('(GIGO) there are no errors thrown for mispelled variables' , {
   finish_date <- '2020-01-01'
   variables <- c('rainball', 'min_temp', 'max_temperature')
 
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
@@ -386,7 +414,9 @@ test_that('(GIGO) there are no errors thrown for nonexistent variables' , {
   finish_date <- '2021-04-05'
   variables <- c('max_temp', 'wind_speed', 'solar_exposure')
 
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
@@ -406,7 +436,9 @@ test_that('(GIGO) there are no errors thrown for duplicate variables' , {
   finish_date <- '1981-01-01'
   variables <- c('humidity_tmax', 'humidity_tmin', 'humidity_tmax')
 
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
@@ -426,7 +458,9 @@ test_that('download_url() returns a character object', {
   finish_date <- '2021-12-31'
   variables <- c('rainfall', 'max_temp', 'evaporation')
 
-  url <- download_url(latitude, longitude, start_date, finish_date, variables)
+  url <- download_url(latitude = latitude, longitude = longitude,
+                      start_date = start_date, finish_date = finish_date,
+                      variables = variables)
   expect_type(url, 'character')
 })
 

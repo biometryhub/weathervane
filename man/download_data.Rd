@@ -20,7 +20,8 @@ URL.
 \examples{
 weathervane:::download_data(
   weathervane:::download_url(
-    -34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall')
+    -34.9, 138.6, start_date = '2020-01-01',
+    finish_date = '2020-12-31', variables = c('rainfall')
   )
 )
 }

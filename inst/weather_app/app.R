@@ -172,7 +172,7 @@ VariableView <- R6::R6Class(
           ggplot2::ggplot(plot_data) +
             ggplot2::geom_line(
               ggplot2::aes(x = x, y = y),
-              size = 0.2,
+              linewidth = 0.2,
               colour = 'blue'
             ) +
             ggplot2::theme_bw() +
