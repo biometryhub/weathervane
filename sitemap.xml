@@ -37,10 +37,16 @@
     <loc>https://biometryhub.github.io/weathervane/reference/get_all_stations.html</loc>
   </url>
   <url>
+    <loc>https://biometryhub.github.io/weathervane/reference/get_station_by_name.html</loc>
+  </url>
+  <url>
     <loc>https://biometryhub.github.io/weathervane/reference/get_station_data.html</loc>
   </url>
   <url>
     <loc>https://biometryhub.github.io/weathervane/reference/get_station_details.html</loc>
+  </url>
+  <url>
+    <loc>https://biometryhub.github.io/weathervane/reference/get_stations_by_dist.html</loc>
   </url>
   <url>
     <loc>https://biometryhub.github.io/weathervane/reference/get_weather_data.html</loc>
