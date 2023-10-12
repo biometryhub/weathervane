@@ -216,38 +216,7 @@ get_weather_data <- function(
 #' )
 download_data <- function(url) {
   data <- xml2::xml_text(xml2::read_html(url))
-
-  # Test for invalid dates
-  if (grepl('(Sorry).+(date).+(invalid)*', data)) {
-    stop('Server-side error: Invalid start/end date', call. = FALSE)
-  }
-
-  # Test for invalid coordinates
-  if (grepl('(check).+(within Australia)', data)) {
-    stop('Server-side error: Invalid latitude/longitude', call. = FALSE)
-  }
-
-  # Test for invalid station ID
-  if (grepl('Invalid station number', data)) {
-      stop('Server-side error: Invalid station ID provided', call. = FALSE)
-  }
-
-  # Test for invalid parameters (e.g. missing comment=)
-  # if (grepl('missing essential parameters', data, fixed = TRUE)) {
-  #   stop('Server-side error: Missing parameters/malformed URL')
-  # }
-
-  # Test for a rejected URL (which can happen e.g. if the latitude
-  # or longitude is 'too long')
-  # if (grepl('([R|r]ejected)', data)) {
-  #   stop('Server-side error: URL rejected')
-  # }
-
-  # Catch-all test for some other server-side error (e.g. if the server
-  # is inaccessible)
-  if (grepl('(error occurred)|(error checking)|([R|r]ejected)|(missing essential parameters)', data)) {
-    stop('Server-side error: Unspecified error or server inaccessible', call. = FALSE)
-  }
+  data <- check_url_response(data)
 
   # Convert to table and remove source columns if any
   data <- utils::read.table(text = data, header = TRUE, sep = ',')

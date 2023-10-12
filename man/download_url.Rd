@@ -4,12 +4,14 @@
 \alias{download_url}
 \title{The download URL for the SILO weather data download}
 \usage{
-download_url(latitude, longitude, start_date, finish_date, variables)
+download_url(latitude, longitude, station, start_date, finish_date, variables)
 }
 \arguments{
 \item{latitude}{The latitude (in decimal degrees North)}
 
 \item{longitude}{The longitude (in decimal degrees East)}
+
+\item{station}{The numeric BoM station ID}
 
 \item{start_date}{A string or Date object for the starting date}
 
@@ -28,7 +30,14 @@ of variables to be retrieved.
 }
 \examples{
 weathervane:::download_url(
-  -34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall')
+  latitude = -34.9, longitude = 138.6,
+  start = '2020-01-01', finish = '2020-12-31',
+  variables = c('rainfall')
+)
+weathervane:::download_url(
+  station = 40004,
+  start = '2020-01-01', finish = '2020-12-31',
+  variables = c('rainfall')
 )
 }
 \keyword{internal}
