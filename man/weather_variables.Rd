@@ -14,7 +14,7 @@ Return a data frame mapping the available weather variables to
 their 'pretty' names, their descriptions, and their SILO
 codes and identifier names.
 (See also
-https://www.longpaddock.qld.gov.au/silo/about/climate-variables/)
+\url{https://www.longpaddock.qld.gov.au/silo/about/climate-variables/})
 }
 \examples{
 weather_variables()

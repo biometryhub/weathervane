@@ -26,7 +26,7 @@
 #' their 'pretty' names, their descriptions, and their SILO
 #' codes and identifier names.
 #' (See also
-#'  https://www.longpaddock.qld.gov.au/silo/about/climate-variables/)
+#'  <https://www.longpaddock.qld.gov.au/silo/about/climate-variables/>)
 #'
 #' @return A data.frame containing the weather variables and codes
 #' @examples
@@ -109,18 +109,24 @@ weather_variables <- function() {
 #'   cost of some readability)
 #' @return A data.frame containing the downloaded weather data
 #' @examples
-#' get_weather_data(-34.9, 138.6, '2021-01-01', pretty_names = FALSE)
-#' get_weather_data(
+#' weather_data <- get_weather_data(-34.9, 138.6,
+#' '2021-01-01', '2021-01-30', pretty_names = FALSE)
+#' colnames(weather_data)
+#' head(weather_data[,1:6])
+#'
+#' weather_data <- get_weather_data(
 #'   -34.18, 139.98, '2020-01-01', '2020-03-31', c('rainfall', 'max_temp')
 #' )
+#' head(weather_data)
+#'
 #' @export
 get_weather_data <- function(
-  latitude,
-  longitude,
-  start_date,
-  finish_date = Sys.Date(),
-  variables = weather_variables()$variable_name,
-  pretty_names = TRUE
+    latitude,
+    longitude,
+    start_date,
+    finish_date = Sys.Date(),
+    variables = weather_variables()$variable_name,
+    pretty_names = TRUE
 ) {
   # Given latitude and longitude should be (roughly) within
   # Australia bounds
@@ -213,12 +219,17 @@ download_data <- function(url) {
 
   # Test for invalid dates
   if (grepl('(Sorry).+(date).+(invalid)*', data)) {
-    stop('Server-side error: Invalid start/end date')
+    stop('Server-side error: Invalid start/end date', call. = FALSE)
   }
 
   # Test for invalid coordinates
   if (grepl('(check).+(within Australia)', data)) {
-    stop('Server-side error: Invalid latitude/longitude')
+    stop('Server-side error: Invalid latitude/longitude', call. = FALSE)
+  }
+
+  # Test for invalid station ID
+  if (grepl('Invalid station number', data)) {
+      stop('Server-side error: Invalid station ID provided', call. = FALSE)
   }
 
   # Test for invalid parameters (e.g. missing comment=)
@@ -235,7 +246,7 @@ download_data <- function(url) {
   # Catch-all test for some other server-side error (e.g. if the server
   # is inaccessible)
   if (grepl('(error occurred)|(error checking)|([R|r]ejected)|(missing essential parameters)', data)) {
-    stop('Server-side error: Unspecified error or server inaccessible')
+    stop('Server-side error: Unspecified error or server inaccessible', call. = FALSE)
   }
 
   # Convert to table and remove source columns if any
@@ -301,6 +312,7 @@ download_data <- function(url) {
 #'
 #' @param latitude The latitude (in decimal degrees North)
 #' @param longitude The longitude (in decimal degrees East)
+#' @param station The numeric BoM station ID
 #' @param start_date A string or Date object for the starting date
 #' @param finish_date A string or Date object for the finish date
 #' @param variables A vector containing the variable names
@@ -308,30 +320,45 @@ download_data <- function(url) {
 #' @keywords internal
 #' @examples
 #' weathervane:::download_url(
-#'   -34.9, 138.6, '2020-01-01', '2020-12-31', c('rainfall')
+#'   latitude = -34.9, longitude = 138.6,
+#'   start = '2020-01-01', finish = '2020-12-31',
+#'   variables = c('rainfall')
+#' )
+#' weathervane:::download_url(
+#'   station = 40004,
+#'   start = '2020-01-01', finish = '2020-12-31',
+#'   variables = c('rainfall')
 #' )
 download_url <- function(
-  latitude,
-  longitude,
-  start_date,
-  finish_date,
-  variables
+    latitude,
+    longitude,
+    station,
+    start_date,
+    finish_date,
+    variables
 ) {
   # Base API URL and parameter format specifiers.
   # NOTE: If SILO updates their server/API, these are the things
   #       most likely to need changing in weathervane, so check
   #       here first.
-  api_url <- paste0(
-    'https://www.longpaddock.qld.gov.au/cgi-bin/silo/',
-    'DataDrillDataset.php?'
-  )
+  api_url <- "https://www.longpaddock.qld.gov.au/cgi-bin/silo/"
+
+  if(!missing(station)) {
+    api_url <- paste0(api_url, "PatchedPointDataset.php?", "station=", station, "&")
+  }
+  else {
+    api_url <- paste0(api_url,
+                      'DataDrillDataset.php?',
+                      "lat=", latitude, "&",
+                      "lon=", longitude, "&")
+  }
+
+
   weather_vars <- weather_variables()
   params <- list(
     'format' = 'csv',
     'username' = 'biometryhubdev@gmail.com',
     'password' = 'apirequest',
-    'lat' = latitude,
-    'lon' = longitude,
     'start' = gsub('-', '', as.character(start_date)),
     'finish' = gsub('-', '', as.character(finish_date)),
     'comment' = paste(

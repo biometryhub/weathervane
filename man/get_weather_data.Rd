@@ -46,8 +46,14 @@ recently uploaded weather information on the SILO server, which is
 updated daily).
 }
 \examples{
-get_weather_data(-34.9, 138.6, '2021-01-01', pretty_names = FALSE)
-get_weather_data(
+weather_data <- get_weather_data(-34.9, 138.6,
+'2021-01-01', '2021-01-30', pretty_names = FALSE)
+colnames(weather_data)
+head(weather_data[,1:6])
+
+weather_data <- get_weather_data(
   -34.18, 139.98, '2020-01-01', '2020-03-31', c('rainfall', 'max_temp')
 )
+head(weather_data)
+
 }
