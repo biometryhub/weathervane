@@ -189,7 +189,7 @@ test_that('download_url() constructs a working URL properly' , {
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
-  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['username']), 'biometryhubdev@gmail.com')
   expect_equal(as.character(parameters['password']), 'apirequest')
   expect_equal(as.character(parameters['lat']), '-34.9285')
   expect_equal(as.character(parameters['lon']), '138.6007')
@@ -209,7 +209,7 @@ test_that('download_url() works when requesting all variables' , {
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
-  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['username']), 'biometryhubdev@gmail.com')
   expect_equal(as.character(parameters['password']), 'apirequest')
   expect_equal(as.character(parameters['lat']), '-34.9285')
   expect_equal(as.character(parameters['lon']), '138.6007')
@@ -235,7 +235,7 @@ test_that('download_url() works when requesting each specific variable' , {
     parameters <- decode_url_parameters(url)
 
     expect_equal(as.character(parameters['format']), 'csv')
-    expect_equal(as.character(parameters['username']), 'apirequest')
+    expect_equal(as.character(parameters['username']), 'biometryhubdev@gmail.com')
     expect_equal(as.character(parameters['password']), 'apirequest')
     expect_equal(as.character(parameters['lat']), '-34.9285')
     expect_equal(as.character(parameters['lon']), '138.6007')
@@ -256,7 +256,7 @@ test_that('download_url() lists variables in exactly the given order' , {
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
-  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['username']), 'biometryhubdev@gmail.com')
   expect_equal(as.character(parameters['password']), 'apirequest')
   expect_equal(as.character(parameters['lat']), '-34.9285')
   expect_equal(as.character(parameters['lon']), '138.6007')
@@ -270,7 +270,7 @@ test_that('download_url() lists variables in exactly the given order' , {
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
-  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['username']), 'biometryhubdev@gmail.com')
   expect_equal(as.character(parameters['password']), 'apirequest')
   expect_equal(as.character(parameters['lat']), '-34.9285')
   expect_equal(as.character(parameters['lon']), '138.6007')
@@ -290,7 +290,7 @@ test_that('(GIGO) there are no errors thrown for blank parameters' , {
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
-  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['username']), 'biometryhubdev@gmail.com')
   expect_equal(as.character(parameters['password']), 'apirequest')
   expect_equal(as.character(parameters['lat']), '')
   expect_equal(as.character(parameters['lon']), '')
@@ -310,7 +310,7 @@ test_that('(GIGO) there are no errors thrown for non-Australia coordinates' , {
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
-  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['username']), 'biometryhubdev@gmail.com')
   expect_equal(as.character(parameters['password']), 'apirequest')
   expect_equal(as.character(parameters['lat']), '52.9548')
   expect_equal(as.character(parameters['lon']), '-1.1581')
@@ -330,7 +330,7 @@ test_that('(GIGO) there are no errors thrown for bad/ill-formatted dates' , {
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
-  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['username']), 'biometryhubdev@gmail.com')
   expect_equal(as.character(parameters['password']), 'apirequest')
   expect_equal(as.character(parameters['lat']), '-34.9285')
   expect_equal(as.character(parameters['lon']), '138.6007')
@@ -350,7 +350,7 @@ test_that('(GIGO) there are no errors thrown for dates outside of range' , {
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
-  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['username']), 'biometryhubdev@gmail.com')
   expect_equal(as.character(parameters['password']), 'apirequest')
   expect_equal(as.character(parameters['lat']), '-34.9285')
   expect_equal(as.character(parameters['lon']), '-1.1581')
@@ -370,7 +370,7 @@ test_that('(GIGO) there are no errors thrown for mispelled variables' , {
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
-  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['username']), 'biometryhubdev@gmail.com')
   expect_equal(as.character(parameters['password']), 'apirequest')
   expect_equal(as.character(parameters['lat']), '-34.9285')
   expect_equal(as.character(parameters['lon']), '138.6007')
@@ -390,7 +390,7 @@ test_that('(GIGO) there are no errors thrown for nonexistent variables' , {
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
-  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['username']), 'biometryhubdev@gmail.com')
   expect_equal(as.character(parameters['password']), 'apirequest')
   expect_equal(as.character(parameters['lat']), '-34.9285')
   expect_equal(as.character(parameters['lon']), '138.6007')
@@ -410,7 +410,7 @@ test_that('(GIGO) there are no errors thrown for duplicate variables' , {
   parameters <- decode_url_parameters(url)
 
   expect_equal(as.character(parameters['format']), 'csv')
-  expect_equal(as.character(parameters['username']), 'apirequest')
+  expect_equal(as.character(parameters['username']), 'biometryhubdev@gmail.com')
   expect_equal(as.character(parameters['password']), 'apirequest')
   expect_equal(as.character(parameters['lat']), '-34.9285')
   expect_equal(as.character(parameters['lon']), '138.6007')
