@@ -61,7 +61,7 @@
 
 
 <dt>distance</dt>
-<dd><p>Radius from provided station.</p></dd>
+<dd><p>Radius in km from provided station.</p></dd>
 
 
 <dt>sort_by</dt>
@@ -77,70 +77,60 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">get_stations_by_dist</span><span class="op">(</span><span class="st">"Adelaide"</span>, <span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Provided station matched multiple locations.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       ID                                     Name Latitude Longitude State</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  14092               ADELAIDE RIVER POST OFFICE  -13.237   131.104    NT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  23000   ADELAIDE (WEST TERRACE / NGAYIRDAPIRA)  -34.926   138.583    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  23001                      ADELAIDE (BRIGHTON)  -35.020   138.520    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  23005                   ADELAIDE (GLEN OSMOND)  -34.946   138.652    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  23011                           NORTH ADELAIDE  -34.916   138.595    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  23014                      ADELAIDE (GLENSIDE)  -34.947   138.630    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  23016     ADELAIDE (PORT DOCK RAILWAY STATION)  -34.510   138.517    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  23018                ADELAIDE (TORRENS ISLAND)  -34.782   138.522    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  23023        ADELAIDE (SALISBURY BOWLING CLUB)  -34.767   138.643    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 23024                        ADELAIDE (SEATON)  -34.897   138.510    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 23026                       ADELAIDE (POORAKA)  -34.832   138.613    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 23027                 ADELAIDE (THORNDON PARK)  -34.874   138.686    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 23029                         ADELAIDE (UNLEY)  -34.950   138.606    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 23031               ADELAIDE (WAITE INSTITUTE)  -34.970   138.633    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15 23033                ADELAIDE (TOWNSEND HOUSE)  -35.013   138.515    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16 23034                         ADELAIDE AIRPORT  -34.952   138.520    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17 23037 ADELAIDE (PARAFIELD PLANT INTRODUCTION C  -34.783   138.624    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18 23040               ADELAIDE (TRINITY GARDENS)  -34.917   138.650    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19 23057    ADELAIDE (NORTHFIELD RESEARCH CENTRE)  -34.853   138.652    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20 23072     ADELAIDE (MAGILL SECURE CARE CENTRE)  -34.907   138.687    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21 23075                       ADELAIDE (CLAPHAM)  -34.996   138.604    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22 23079           ADELAIDE (DRY CREEK SALTWORKS)  -34.828   138.578    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23 23090                     ADELAIDE (KENT TOWN)  -34.921   138.622    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24 23096         ADELAIDE (HOPE VALLEY RESERVOIR)  -34.856   138.684    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25 23097  ADELAIDE (BLACK HILL CONSERVATION PARK)  -34.883   138.717    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26 23098      ADELAIDE (MORPHETTVILLE RACECOURSE)  -34.974   138.542    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27 23732                 ADELAIDE (MORPHETT VALE)  -35.135   138.527    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28 23748        ADELAIDE (TEA TREE GULLY COUNCIL)  -34.831   138.705    SA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29 33000                            ADELAIDE PARK  -23.100   150.700   QLD</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Elevation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       52.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       29.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        8.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      128.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       26.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       70.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7        3.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8        1.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9       32.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10      10.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11      21.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12      85.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13      45.7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14     115.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15       5.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16       2.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17      16.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18      70.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19      77.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20     170.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21     110.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22       3.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23      48.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24     105.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25     225.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26      11.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27      92.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28     145.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29     152.4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Please select station ID: </span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Server-side error: Invalid start/end date</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">get_stations_by_dist</span><span class="op">(</span><span class="st">"Waite"</span>, <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       ID                                   Name Latitude Longitude State</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  23075                     ADELAIDE (CLAPHAM) -34.9964  138.6039    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  23005                 ADELAIDE (GLEN OSMOND) -34.9464  138.6519    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  23014                    ADELAIDE (GLENSIDE) -34.9467  138.6303    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  23090                   ADELAIDE (KENT TOWN) -34.9211  138.6216    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  23029                       ADELAIDE (UNLEY) -34.9503  138.6056    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  23031             ADELAIDE (WAITE INSTITUTE) -34.9697  138.6331    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  23000 ADELAIDE (WEST TERRACE / NGAYIRDAPIRA) -34.9257  138.5832    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  23703                        BELAIR (KALYRA) -35.0042  138.6147    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  23704           BELAIR (STATE FLORA NURSERY) -35.0076  138.6498    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 23706                  BLACKWOOD POST OFFICE -35.0167  138.6167    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 23010                    MITCHAM POST OFFICE -34.9833  138.6167    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 23746                              STONYFELL -34.9333  138.6667    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Elevation Distance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      110.0      4.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      128.0      3.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       70.0      2.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       48.0      5.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       45.7      3.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      115.0      0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       29.3      6.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      305.0      3.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      305.0      4.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     265.0      5.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      92.0      2.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     250.0      5.0</span>
+<span class="r-in"><span><span class="fu">get_stations_by_dist</span><span class="op">(</span><span class="fl">23031</span>, <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       ID                                   Name Latitude Longitude State</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  23075                     ADELAIDE (CLAPHAM) -34.9964  138.6039    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  23005                 ADELAIDE (GLEN OSMOND) -34.9464  138.6519    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  23014                    ADELAIDE (GLENSIDE) -34.9467  138.6303    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  23090                   ADELAIDE (KENT TOWN) -34.9211  138.6216    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  23029                       ADELAIDE (UNLEY) -34.9503  138.6056    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  23031             ADELAIDE (WAITE INSTITUTE) -34.9697  138.6331    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  23000 ADELAIDE (WEST TERRACE / NGAYIRDAPIRA) -34.9257  138.5832    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  23703                        BELAIR (KALYRA) -35.0042  138.6147    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  23704           BELAIR (STATE FLORA NURSERY) -35.0076  138.6498    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 23706                  BLACKWOOD POST OFFICE -35.0167  138.6167    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 23010                    MITCHAM POST OFFICE -34.9833  138.6167    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 23746                              STONYFELL -34.9333  138.6667    SA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Elevation Distance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      110.0      4.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      128.0      3.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       70.0      2.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       48.0      5.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       45.7      3.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      115.0      0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       29.3      6.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8      305.0      3.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      305.0      4.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     265.0      5.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      92.0      2.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12     250.0      5.0</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
