@@ -9,7 +9,7 @@ get_stations_by_dist(station, distance, sort_by = "name")
 \arguments{
 \item{station}{The station to retrieve details of. Station names will be attempted to be interpreted with an error returned.}
 
-\item{distance}{Radius from provided station.}
+\item{distance}{Radius in km from provided station.}
 
 \item{sort_by}{The column to sort the stations by. Valid values are "name" (the default), "id" or "state".}
 }
@@ -20,6 +20,7 @@ A data.frame with all the weather stations along with their BoM station ID, Stat
 Get a list of weather stations within a provided distance from a given weather station.
 }
 \examples{
-get_stations_by_dist("Adelaide", 100)
+get_stations_by_dist("Waite", 5)
+get_stations_by_dist(23031, 5)
 
 }

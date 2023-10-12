@@ -39,3 +39,29 @@ check_url_response <- function(url_output) {
 
   return(url_output)
 }
+
+
+
+#' Check if a station name produces a unique station ID.
+#'
+#' @param station A station name to check for validity.
+#'
+#' @return A valid station ID, or an error if no or multiple stations match.
+#' @keywords internal
+check_station <- function(station) {
+  if(!is.numeric(station) && suppressWarnings(is.na(as.numeric(station)))) {
+    station <- get_station_by_name(station)
+    if(nrow(station)==1) {
+      station <- station$ID
+    }
+    else if(nrow(station)>1) {
+      stop("Provided station matched multiple locations. Please provide unique station name or station ID.", call. = FALSE)
+    }
+    else if(nrow(station)==0) {
+      stop("Unknown station provided. Please provide unique station name or station ID.", call. = FALSE)
+    }
+  }
+
+  return(station)
+}
+

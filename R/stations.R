@@ -35,6 +35,8 @@ get_station_data <- function(
     variables = weather_variables()$variable_name,
     pretty_names = TRUE) {
 
+  station <- check_station(station)
+
   start_date <- as.Date(start_date)
   finish_date <- as.Date(finish_date)
 
@@ -48,13 +50,6 @@ get_station_data <- function(
   # The finish date must not precede the start date.
   if (finish_date < start_date) {
     stop('The given finish date cannot precede the start date')
-  }
-
-  if(!is.numeric(station) && is.na(as.numeric(station))) {
-    station <- get_station_by_name(station)["ID"]
-    if(length(station)>1) {
-
-    }
   }
 
   # If variables are specified, make sure that they each exist within
@@ -101,9 +96,7 @@ get_station_data <- function(
 get_station_details <- function(station) {
   url <- "https://www.longpaddock.qld.gov.au/cgi-bin/silo/PatchedPointDataset.php?format=id&station="
 
-  if(!is.numeric(station) && is.na(as.numeric(station))) {
-    station <- get_station_by_name(station)["ID"]
-  }
+  station <- check_station(station)
 
   url <- paste0(url, station)
   data <- xml2::xml_text(xml2::read_html(url))
@@ -124,7 +117,7 @@ get_station_details <- function(station) {
 #' Get a list of weather stations within a provided distance from a given weather station.
 #'
 #' @param station The station to retrieve details of. Station names will be attempted to be interpreted with an error returned.
-#' @param distance Radius from provided station.
+#' @param distance Radius in km from provided station.
 #' @param sort_by The column to sort the stations by. Valid values are "name" (the default), "id" or "state".
 #'
 #' @return A data.frame with all the weather stations along with their BoM station ID, Station name, Latitude, Longitude, State and Elevation.
@@ -132,22 +125,14 @@ get_station_details <- function(station) {
 #' @export
 #'
 #' @examples
-#' get_stations_by_dist("Adelaide", 100)
+#' get_stations_by_dist("Waite", 5)
+#' get_stations_by_dist(23031, 5)
 #'
 get_stations_by_dist <- function(station, distance, sort_by = "name") {
 
-  # Get all stations within a radius of 10000km from Alice Springs (ID 15540)
   url <- "https://www.longpaddock.qld.gov.au/cgi-bin/silo/PatchedPointDataset.php?format=near&"
 
-  if(!is.numeric(station) && suppressWarnings(is.na(as.numeric(station)))) {
-    station <- get_station_by_name(station)
-    if(nrow(station)>1) {
-      warning("Provided station matched multiple locations.")
-      print(station)
-      id <- readline("Please select station ID: ")
-      station <- station[station$ID==id, "ID"]
-    }
-  }
+  station <- check_station(station)
 
   url <- paste0(url, "station=", station, "&radius=", distance)
 
@@ -156,9 +141,9 @@ get_stations_by_dist <- function(station, distance, sort_by = "name") {
 
   data <- utils::read.table(text = data, header = TRUE, sep = '|',
                             strip.white = TRUE, quote = "")
-  data$Distance..km. <- NULL
+  # data$Distance..km. <- NULL
 
-  colnames(data) <- c("ID", "Name", "Latitude", "Longitude", "State", "Elevation")
+  colnames(data) <- c("ID", "Name", "Latitude", "Longitude", "State", "Elevation", "Distance")
 
   if(tolower(sort_by) == "name") {
     data <- data[order(data$Name),]
@@ -193,7 +178,7 @@ get_stations_by_dist <- function(station, distance, sort_by = "name") {
 #' head(get_all_stations(sort_by = "id"))
 #'
 get_all_stations <- function(sort_by = "name") {
-  get_stations_by_dist(station = 15540, dist = 10000, sort_by)
+  get_stations_by_dist(station = 15540, distance = 10000, sort_by)
 }
 
 
