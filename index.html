@@ -88,15 +88,15 @@ plant-breeding trials and other research.</p>
 </h1>
 <p>Run the following code on your R console to install this package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span> 
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"biometryhub/weathervane"</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span> </span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"biometryhub/weathervane"</span>, upgrade <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="using-the-package">Using the package<a class="anchor" aria-label="anchor" href="#using-the-package"></a>
 </h1>
 <p>Load the package and start using it with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://biometryhub.github.io/weathervane/">weathervane</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://biometryhub.github.io/weathervane/">weathervane</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="using-the-library-functions-directly">Using the library functions directly<a class="anchor" aria-label="anchor" href="#using-the-library-functions-directly"></a>
 </h2>
@@ -104,19 +104,19 @@ plant-breeding trials and other research.</p>
 <blockquote>
 <p><strong>Example:</strong> Here we grab a week’s worth of weather data for the Adelaide CBD (-34.9285°N, 138.600°E) from 01/01/2021 to 07/01/2021 inclusive:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/get_weather_data.html">get_weather_data</a></span><span class="op">(</span><span class="op">-</span><span class="fl">34.9285</span>, <span class="fl">138.6007</span>, <span class="st">'2021-01-01'</span>, <span class="st">'2021-01-07'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/get_weather_data.html">get_weather_data</a></span><span class="op">(</span><span class="op">-</span><span class="fl">34.9285</span>, <span class="fl">138.6007</span>, <span class="st">'2021-01-01'</span>, <span class="st">'2021-01-07'</span><span class="op">)</span></span></code></pre></div>
 </blockquote>
 <p>By default, all possible weather variables are returned. Should you wish to fine-tune the selection of variables before they are retrieved from the server, this can be done by specifying the variables individually. (See <code>weather_variables</code> for the variables available and their codes.)</p>
 <blockquote>
 <p><strong>Example:</strong> Here we suppose we only want rainfall and maximum temperature data for the Sydney CBD (-33.8688°N, 151.2093°E) for the first week in June, 2020:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/get_weather_data.html">get_weather_data</a></span><span class="op">(</span>
-  latitude <span class="op">=</span> <span class="op">-</span><span class="fl">33.8688</span>, 
-  longitude <span class="op">=</span> <span class="fl">151.2093</span>, 
-  start_date <span class="op">=</span> <span class="st">'2020-06-01'</span>, 
-  finish_date <span class="op">=</span> <span class="st">'2020-06-07'</span>,
-  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'rainfall'</span>, <span class="st">'max_temp'</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/get_weather_data.html">get_weather_data</a></span><span class="op">(</span></span>
+<span>  latitude <span class="op">=</span> <span class="op">-</span><span class="fl">33.8688</span>, </span>
+<span>  longitude <span class="op">=</span> <span class="fl">151.2093</span>, </span>
+<span>  start_date <span class="op">=</span> <span class="st">'2020-06-01'</span>, </span>
+<span>  finish_date <span class="op">=</span> <span class="st">'2020-06-07'</span>,</span>
+<span>  variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'rainfall'</span>, <span class="st">'max_temp'</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 </blockquote>
 </div>
 <div class="section level2">
@@ -125,7 +125,7 @@ plant-breeding trials and other research.</p>
 <p>(<strong>Note:</strong> Requires the <code>shiny</code>, <code>ggplot2</code>, <code>leaflet</code> and <code>R6</code> packages to be installed locally for the GUI.)</p>
 <p>The Shiny app provides a user-friendly front-end to the <strong>weathervane</strong> library functions, including an interactive map and variable list, and easy export to a CSV spreadsheet format. Load the app from the R console with:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/run_weather_app.html">run_weather_app</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/run_weather_app.html">run_weather_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level1">
@@ -203,7 +203,7 @@ plant-breeding trials and other research.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

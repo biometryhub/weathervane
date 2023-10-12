@@ -57,17 +57,20 @@ URL.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">download_data</span><span class="op">(</span><span class="va">url</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_data</span><span class="op">(</span><span class="va">url</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>url</dt>
 <dd><p>A character string containing the download URL</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.frame containing the specified weather data</p>
+    
+
+<p>A data.frame containing the specified weather data</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -76,35 +79,35 @@ URL.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">weathervane</span><span class="fu">:::</span><span class="fu">download_data</span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu">weathervane</span><span class="fu">:::</span><span class="fu"><a href="download_url.html">download_url</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="op">-</span><span class="fl">34.9</span>, <span class="fl">138.6</span>, <span class="st">'2020-01-01'</span>, <span class="st">'2020-12-31'</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'rainfall'</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">weathervane</span><span class="fu">:::</span><span class="fu">download_data</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu">weathervane</span><span class="fu">:::</span><span class="fu"><a href="download_url.html">download_url</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="op">-</span><span class="fl">34.9</span>, <span class="fl">138.6</span>, <span class="st">'2020-01-01'</span>, <span class="st">'2020-12-31'</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'rainfall'</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           Date Latitude Longitude Elevation (m) Rainfall (mm)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   2020-01-01    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   2020-01-02    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3   2020-01-03    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4   2020-01-04    -34.9     138.6          42.2           0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   2020-01-05    -34.9     138.6          42.2           1.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   2020-01-06    -34.9     138.6          42.2           2.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   2020-01-05    -34.9     138.6          42.2           1.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   2020-01-06    -34.9     138.6          42.2           2.7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7   2020-01-07    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8   2020-01-08    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9   2020-01-09    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10  2020-01-10    -34.9     138.6          42.2           0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  2020-01-11    -34.9     138.6          42.2           0.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  2020-01-11    -34.9     138.6          42.2           0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12  2020-01-12    -34.9     138.6          42.2           0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13  2020-01-13    -34.9     138.6          42.2           0.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13  2020-01-13    -34.9     138.6          42.2           1.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 14  2020-01-14    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 15  2020-01-15    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 16  2020-01-16    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 17  2020-01-17    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 18  2020-01-18    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 19  2020-01-19    -34.9     138.6          42.2           0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20  2020-01-20    -34.9     138.6          42.2           8.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20  2020-01-20    -34.9     138.6          42.2           9.3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 21  2020-01-21    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 22  2020-01-22    -34.9     138.6          42.2           0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23  2020-01-23    -34.9     138.6          42.2           4.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23  2020-01-23    -34.9     138.6          42.2           4.7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 24  2020-01-24    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 25  2020-01-25    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 26  2020-01-26    -34.9     138.6          42.2           0.0</span>
@@ -114,12 +117,12 @@ URL.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 30  2020-01-30    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 31  2020-01-31    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 32  2020-02-01    -34.9     138.6          42.2          32.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33  2020-02-02    -34.9     138.6          42.2           4.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33  2020-02-02    -34.9     138.6          42.2           3.8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 34  2020-02-03    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 35  2020-02-04    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 36  2020-02-05    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 37  2020-02-06    -34.9     138.6          42.2           0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38  2020-02-07    -34.9     138.6          42.2           0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38  2020-02-07    -34.9     138.6          42.2           0.6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 39  2020-02-08    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 40  2020-02-09    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 41  2020-02-10    -34.9     138.6          42.2           0.0</span>
@@ -139,7 +142,7 @@ URL.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 55  2020-02-24    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 56  2020-02-25    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 57  2020-02-26    -34.9     138.6          42.2           0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58  2020-02-27    -34.9     138.6          42.2           0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58  2020-02-27    -34.9     138.6          42.2           0.3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 59  2020-02-28    -34.9     138.6          42.2           0.4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 60  2020-02-29    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 61  2020-03-01    -34.9     138.6          42.2           0.0</span>
@@ -190,7 +193,7 @@ URL.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 106 2020-04-15    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 107 2020-04-16    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 108 2020-04-17    -34.9     138.6          42.2           0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 109 2020-04-18    -34.9     138.6          42.2           1.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109 2020-04-18    -34.9     138.6          42.2           1.4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 110 2020-04-19    -34.9     138.6          42.2           2.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 111 2020-04-20    -34.9     138.6          42.2           0.3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 112 2020-04-21    -34.9     138.6          42.2           0.0</span>
@@ -201,7 +204,7 @@ URL.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 117 2020-04-26    -34.9     138.6          42.2          33.4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 118 2020-04-27    -34.9     138.6          42.2           0.2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 119 2020-04-28    -34.9     138.6          42.2           0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 120 2020-04-29    -34.9     138.6          42.2          18.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120 2020-04-29    -34.9     138.6          42.2          18.8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 121 2020-04-30    -34.9     138.6          42.2          15.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 122 2020-05-01    -34.9     138.6          42.2           4.2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 123 2020-05-02    -34.9     138.6          42.2           3.8</span>
@@ -236,7 +239,7 @@ URL.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 152 2020-05-31    -34.9     138.6          42.2           1.1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 153 2020-06-01    -34.9     138.6          42.2          12.2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 154 2020-06-02    -34.9     138.6          42.2           0.3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 155 2020-06-03    -34.9     138.6          42.2           0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 155 2020-06-03    -34.9     138.6          42.2           0.1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 156 2020-06-04    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 157 2020-06-05    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 158 2020-06-06    -34.9     138.6          42.2           0.0</span>
@@ -248,7 +251,7 @@ URL.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 164 2020-06-12    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 165 2020-06-13    -34.9     138.6          42.2           0.1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 166 2020-06-14    -34.9     138.6          42.2           2.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 167 2020-06-15    -34.9     138.6          42.2           8.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 167 2020-06-15    -34.9     138.6          42.2           8.6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 168 2020-06-16    -34.9     138.6          42.2           1.7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 169 2020-06-17    -34.9     138.6          42.2           3.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 170 2020-06-18    -34.9     138.6          42.2           0.0</span>
@@ -306,7 +309,7 @@ URL.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 222 2020-08-09    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 223 2020-08-10    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 224 2020-08-11    -34.9     138.6          42.2           0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 225 2020-08-12    -34.9     138.6          42.2           7.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 225 2020-08-12    -34.9     138.6          42.2           7.4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 226 2020-08-13    -34.9     138.6          42.2           0.2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 227 2020-08-14    -34.9     138.6          42.2           0.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 228 2020-08-15    -34.9     138.6          42.2           0.9</span>
@@ -318,7 +321,7 @@ URL.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 234 2020-08-21    -34.9     138.6          42.2           5.1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 235 2020-08-22    -34.9     138.6          42.2           1.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 236 2020-08-23    -34.9     138.6          42.2           0.1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 237 2020-08-24    -34.9     138.6          42.2           3.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 237 2020-08-24    -34.9     138.6          42.2           3.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 238 2020-08-25    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 239 2020-08-26    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 240 2020-08-27    -34.9     138.6          42.2           0.0</span>
@@ -362,7 +365,7 @@ URL.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 278 2020-10-04    -34.9     138.6          42.2           0.1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 279 2020-10-05    -34.9     138.6          42.2          19.3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 280 2020-10-06    -34.9     138.6          42.2           0.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 281 2020-10-07    -34.9     138.6          42.2           3.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 281 2020-10-07    -34.9     138.6          42.2           2.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 282 2020-10-08    -34.9     138.6          42.2          13.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 283 2020-10-09    -34.9     138.6          42.2           0.2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 284 2020-10-10    -34.9     138.6          42.2           0.0</span>
@@ -385,7 +388,7 @@ URL.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 301 2020-10-27    -34.9     138.6          42.2           0.1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 302 2020-10-28    -34.9     138.6          42.2           0.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 303 2020-10-29    -34.9     138.6          42.2           0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 304 2020-10-30    -34.9     138.6          42.2           1.3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 304 2020-10-30    -34.9     138.6          42.2           1.4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 305 2020-10-31    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 306 2020-11-01    -34.9     138.6          42.2           0.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 307 2020-11-02    -34.9     138.6          42.2           0.0</span>
@@ -432,12 +435,12 @@ URL.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 348 2020-12-13    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 349 2020-12-14    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 350 2020-12-15    -34.9     138.6          42.2           0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 351 2020-12-16    -34.9     138.6          42.2           0.1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 351 2020-12-16    -34.9     138.6          42.2           0.2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 352 2020-12-17    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 353 2020-12-18    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 354 2020-12-19    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 355 2020-12-20    -34.9     138.6          42.2           0.0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 356 2020-12-21    -34.9     138.6          42.2           1.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 356 2020-12-21    -34.9     138.6          42.2           1.1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 357 2020-12-22    -34.9     138.6          42.2           3.4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 358 2020-12-23    -34.9     138.6          42.2           0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 359 2020-12-24    -34.9     138.6          42.2           0.0</span>
@@ -462,7 +465,7 @@ URL.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

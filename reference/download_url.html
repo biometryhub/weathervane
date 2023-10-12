@@ -59,33 +59,44 @@ of variables to be retrieved.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">download_url</span><span class="op">(</span><span class="va">latitude</span>, <span class="va">longitude</span>, <span class="va">start_date</span>, <span class="va">finish_date</span>, <span class="va">variables</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">download_url</span><span class="op">(</span><span class="va">latitude</span>, <span class="va">longitude</span>, <span class="va">start_date</span>, <span class="va">finish_date</span>, <span class="va">variables</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>latitude</dt>
 <dd><p>The latitude (in decimal degrees North)</p></dd>
+
+
 <dt>longitude</dt>
 <dd><p>The longitude (in decimal degrees East)</p></dd>
+
+
 <dt>start_date</dt>
 <dd><p>A string or Date object for the starting date</p></dd>
+
+
 <dt>finish_date</dt>
 <dd><p>A string or Date object for the finish date</p></dd>
+
+
 <dt>variables</dt>
 <dd><p>A vector containing the variable names</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The parameter-formatted URL for the data download</p>
+    
+
+<p>The parameter-formatted URL for the data download</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">weathervane</span><span class="fu">:::</span><span class="fu">download_url</span><span class="op">(</span></span>
-<span class="r-in">  <span class="op">-</span><span class="fl">34.9</span>, <span class="fl">138.6</span>, <span class="st">'2020-01-01'</span>, <span class="st">'2020-12-31'</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'rainfall'</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "https://www.longpaddock.qld.gov.au/cgi-bin/silo/DataDrillDataset.php?format=csv&amp;username=apirequest&amp;password=apirequest&amp;lat=-34.9&amp;lon=138.6&amp;start=20200101&amp;finish=20201231&amp;comment=R"</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">weathervane</span><span class="fu">:::</span><span class="fu">download_url</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="op">-</span><span class="fl">34.9</span>, <span class="fl">138.6</span>, <span class="st">'2020-01-01'</span>, <span class="st">'2020-12-31'</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'rainfall'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "https://www.longpaddock.qld.gov.au/cgi-bin/silo/DataDrillDataset.php?format=csv&amp;username=biometryhubdev@gmail.com&amp;password=apirequest&amp;lat=-34.9&amp;lon=138.6&amp;start=20200101&amp;finish=20201231&amp;comment=R"</span>
 </code></pre></div>
     </div>
   </div>
@@ -100,7 +111,7 @@ of variables to be retrieved.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
