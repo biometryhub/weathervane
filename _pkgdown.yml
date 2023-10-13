@@ -4,3 +4,17 @@ destination: docs
 
 template:
   bootstrap: 5
+
+reference:
+- title: Gridded Data
+  desc: Get gridded weather data from SILO
+- contents:
+  - get_weather_data
+- title: Station Data
+  desc: Get information about weather stations and weather data from them
+- contents:
+  - contains("station")
+- title: Other
+- contents:
+  - run_weather_app
+  - weather_variables

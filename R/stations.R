@@ -118,7 +118,7 @@ get_station_details <- function(station) {
 #'
 #' @param station The station to retrieve details of. Station names will be attempted to be interpreted with an error returned.
 #' @param distance Radius in km from provided station.
-#' @param sort_by The column to sort the stations by. Valid values are "name" (the default), "id" or "state".
+#' @param sort_by The column to sort the stations by. Valid values are "name" (the default), "distance" (from Alice Springs), "id" or "state".
 #'
 #' @return A data.frame with all the weather stations along with their BoM station ID, Station name, Latitude, Longitude, State and Elevation.
 #'
@@ -128,7 +128,7 @@ get_station_details <- function(station) {
 #' get_stations_by_dist("Waite", 5)
 #' get_stations_by_dist(23031, 5)
 #'
-get_stations_by_dist <- function(station, distance, sort_by = "name") {
+get_stations_by_dist <- function(station, distance, sort_by = "distance") {
 
   url <- "https://www.longpaddock.qld.gov.au/cgi-bin/silo/PatchedPointDataset.php?format=near&"
 
@@ -141,33 +141,35 @@ get_stations_by_dist <- function(station, distance, sort_by = "name") {
 
   data <- utils::read.table(text = data, header = TRUE, sep = '|',
                             strip.white = TRUE, quote = "")
-  # data$Distance..km. <- NULL
 
   colnames(data) <- c("ID", "Name", "Latitude", "Longitude", "State", "Elevation", "Distance")
 
-  if(tolower(sort_by) == "name") {
-    data <- data[order(data$Name),]
+  if(tolower(sort_by) == "distance") {
+    data <- data[order(data$Distance),]
   }
   else if(tolower(sort_by) == "id") {
     data <- data[order(data$ID),]
+  }
+  else if(tolower(sort_by) == "name") {
+    data <- data[order(data$Name),]
   }
   else if(tolower(sort_by) == "state") {
     data <- data[order(data$State),]
   }
   else {
-    stop("sort_by must be one of 'name', 'id' or 'state'.")
+    stop("sort_by must be one of 'distance', 'name', 'id' or 'state'.", call. = FALSE)
   }
 
   rownames(data) <- 1:nrow(data)
   return(data)
 }
 
-#' Get list of all weather stations
+#' Get a list of all weather stations
 #'
 #' Get the complete list of weather stations with data available on SILO (approximately 8000).
 #'
 #'
-#' @param sort_by The column to sort the stations by. Valid values are "name" (the default), "id" or "state".
+#' @param sort_by The column to sort the stations by. Valid values are "name" (the default), "distance" (from Alice Springs), "id" or "state".
 #'
 #' @return A data.frame with all the weather stations along with their BoM station ID, Station name, Latitude, Longitude, State and Elevation.
 #'
@@ -178,7 +180,9 @@ get_stations_by_dist <- function(station, distance, sort_by = "name") {
 #' head(get_all_stations(sort_by = "id"))
 #'
 get_all_stations <- function(sort_by = "name") {
-  get_stations_by_dist(station = 15540, distance = 10000, sort_by)
+  stations <- get_stations_by_dist(station = 15540, distance = 10000, sort_by)
+  stations$Distance <- NULL
+  return(stations)
 }
 
 
