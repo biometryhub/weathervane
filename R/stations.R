@@ -106,7 +106,7 @@ get_station_details <- function(station) {
                             strip.white = TRUE, quote = "")
 
   # There seems to be an extra column, which doesn't appear to be anything useful
-  data$`NA` <- NULL
+  data$V7 <- NULL
   colnames(data) <- c("ID", "Name", "Latitude", "Longitude", "State", "Elevation")
 
   return(data)

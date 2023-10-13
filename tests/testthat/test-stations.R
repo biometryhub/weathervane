@@ -140,3 +140,31 @@ test_that("Invalid station name returns an error", {
                "Unknown station provided\\. Please provide unique station name or station ID\\.")
 })
 
+# Tests for get_station_details
+test_that("Station details are returned", {
+  stations <- get_station_details(23031)
+  expect_s3_class(stations, "data.frame")
+  expect_identical(nrow(stations), 1L)
+  expect_identical(ncol(stations), 6L)
+  expect_identical(stations$Name, "ADELAIDE (WAITE INSTITUTE)")
+  expect_identical(stations$Latitude, -34.97)
+  expect_identical(stations$Longitude, 138.633)
+  expect_identical(stations$State, "SA")
+  expect_identical(stations$Elevation, 115)
+})
+
+test_that("Station details are returned when given name", {
+  stations <- get_station_details("Waite")
+  expect_identical(stations, get_station_details(23031))
+})
+
+test_that("Error produced with invalid station name", {
+  expect_error(get_station_details("abc"),
+               "Unknown station provided\\. Please provide unique station name or station ID\\.")
+})
+
+# test_that("Error produced with invalid station name", {
+#   expect_error(get_station_details(123),
+#                "Unknown station provided\\. Please provide unique station name or station ID\\.")
+# })
+
