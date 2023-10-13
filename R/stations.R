@@ -142,6 +142,11 @@ get_stations_by_dist <- function(station, distance, sort_by = "distance") {
   data <- utils::read.table(text = data, header = TRUE, sep = '|',
                             strip.white = TRUE, quote = "")
 
+  # No data is returned for some reason, but URL call hasn't failed.
+  if(nrow(data)==0) {
+    stop("No data returned, please check input.", call. = FALSE)
+  }
+
   colnames(data) <- c("ID", "Name", "Latitude", "Longitude", "State", "Elevation", "Distance")
 
   if(tolower(sort_by) == "distance") {

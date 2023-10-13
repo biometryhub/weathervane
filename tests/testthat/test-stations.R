@@ -125,4 +125,18 @@ test_that("Invalid sort options return an error", {
                "sort_by must be one of 'distance', 'name', 'id' or 'state'")
 })
 
+test_that("Non unique station name returns an error", {
+  expect_error(get_stations_by_dist("ADEL", 5),
+               "Provided station matched multiple locations\\. Please provide unique station name or station ID\\.")
+})
+
+test_that("Invalid station ID returns an error", {
+  expect_error(get_stations_by_dist(123, 5),
+               "No data returned, please check input")
+})
+
+test_that("Invalid station name returns an error", {
+  expect_error(get_stations_by_dist("XYZ", 5),
+               "Unknown station provided\\. Please provide unique station name or station ID\\.")
+})
 
