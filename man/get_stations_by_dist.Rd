@@ -4,14 +4,14 @@
 \alias{get_stations_by_dist}
 \title{Get list of all weather stations within specified distance}
 \usage{
-get_stations_by_dist(station, distance, sort_by = "name")
+get_stations_by_dist(station, distance, sort_by = "distance")
 }
 \arguments{
 \item{station}{The station to retrieve details of. Station names will be attempted to be interpreted with an error returned.}
 
 \item{distance}{Radius in km from provided station.}
 
-\item{sort_by}{The column to sort the stations by. Valid values are "name" (the default), "id" or "state".}
+\item{sort_by}{The column to sort the stations by. Valid values are "name" (the default), "distance", "id" or "state".}
 }
 \value{
 A data.frame with all the weather stations along with their BoM station ID, Station name, Latitude, Longitude, State and Elevation.

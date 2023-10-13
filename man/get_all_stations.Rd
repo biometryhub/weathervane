@@ -2,12 +2,12 @@
 % Please edit documentation in R/stations.R
 \name{get_all_stations}
 \alias{get_all_stations}
-\title{Get list of all weather stations}
+\title{Get a list of all weather stations}
 \usage{
 get_all_stations(sort_by = "name")
 }
 \arguments{
-\item{sort_by}{The column to sort the stations by. Valid values are "name" (the default), "id" or "state".}
+\item{sort_by}{The column to sort the stations by. Valid values are "name" (the default), "distance" (from Alice Springs), "id" or "state".}
 }
 \value{
 A data.frame with all the weather stations along with their BoM station ID, Station name, Latitude, Longitude, State and Elevation.

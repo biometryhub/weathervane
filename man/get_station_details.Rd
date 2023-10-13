@@ -16,5 +16,5 @@ A data.frame with Station ID, Name, Latitude, Longitude, State and Elevation of 
 Get details of an individual weather station
 }
 \examples{
-get_station_details(1001)
+get_station_details(23031)
 }

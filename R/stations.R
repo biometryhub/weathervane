@@ -92,7 +92,7 @@ get_station_data <- function(
 #' @export
 #'
 #' @examples
-#' get_station_details(1001)
+#' get_station_details(23031)
 get_station_details <- function(station) {
   url <- "https://www.longpaddock.qld.gov.au/cgi-bin/silo/PatchedPointDataset.php?format=id&station="
 
@@ -118,7 +118,7 @@ get_station_details <- function(station) {
 #'
 #' @param station The station to retrieve details of. Station names will be attempted to be interpreted with an error returned.
 #' @param distance Radius in km from provided station.
-#' @param sort_by The column to sort the stations by. Valid values are "name" (the default), "distance" (from Alice Springs), "id" or "state".
+#' @param sort_by The column to sort the stations by. Valid values are "name" (the default), "distance", "id" or "state".
 #'
 #' @return A data.frame with all the weather stations along with their BoM station ID, Station name, Latitude, Longitude, State and Elevation.
 #'
