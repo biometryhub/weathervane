@@ -293,12 +293,51 @@ ui <- fluidPage(
         )
       ),
       fluidRow(
+        column(width = 12,
+          h5(strong("Or select last:"))
+        )
+      ),
+      fluidRow(
+        div(
+          column(
+            width = 3,
+            actionButton(width = "100%",
+                         inputId = 'btn_6mo',
+                         label = '6 Months'
+            )
+          ),
+          column(
+            width = 3,
+            actionButton(width = "100%",
+                         inputId = 'btn_1yr',
+                         label = '12 Months'
+            )
+          ),
+          column(
+            width = 3,
+            actionButton(width = "100%",
+                         inputId = 'btn_3yrs',
+                         label = '3 years'
+            )
+          ),
+          column(
+            width = 3,
+            actionButton(width = "100%",
+                         inputId = 'btn_5yrs',
+                         label = '5 years'
+            )
+          )
+        )
+      ),
+      br(),
+      fluidRow(
         column(
           width = 12,
           actionButton(
             inputId = 'btn_update',
+            class = "btn-success",
             label = 'Update Coordinates/Date Range'
-          )
+          ), align = "center"
         )
       ),
       fluidRow(
