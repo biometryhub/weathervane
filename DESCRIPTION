@@ -24,6 +24,7 @@ Suggests:
     ggplot2,
     knitr,
     leaflet,
+    mockery,
     R6,
     rmarkdown,
     shiny,

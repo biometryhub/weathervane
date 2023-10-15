@@ -44,7 +44,7 @@ updated daily).
 }
 \examples{
 weather_data <- get_station_data(
-  40004, '2020-01-01', '2020-03-31', c('rainfall', 'max_temp')
+  23031, '2020-01-01', '2020-03-31', c('rainfall', 'max_temp')
 )
 head(weather_data)
 

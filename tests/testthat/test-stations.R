@@ -163,8 +163,89 @@ test_that("Error produced with invalid station name", {
                "Unknown station provided\\. Please provide unique station name or station ID\\.")
 })
 
-# test_that("Error produced with invalid station name", {
-#   expect_error(get_station_details(123),
-#                "Unknown station provided\\. Please provide unique station name or station ID\\.")
-# })
+test_that("Non unique station name returns an error", {
+  expect_error(get_station_details("ADEL"),
+               "Provided station matched multiple locations\\. Please provide unique station name or station ID\\.")
+})
+
+
+
+# Tests for get_station_data
+test_that("Station weather data can be downloaded by station ID", {
+  weather_data <- get_station_data(23031, '2020-01-01', '2020-01-31', c('rainfall', 'max_temp'))
+  expect_s3_class(weather_data, "data.frame")
+  expect_identical(nrow(weather_data), 31L)
+  expect_identical(ncol(weather_data), 4L)
+})
+
+test_that("Station weather data can be downloaded by station name", {
+  weather_data <- get_station_data("Waite", '2020-01-01', '2020-01-31', c('rainfall', 'max_temp'))
+  expect_s3_class(weather_data, "data.frame")
+  expect_identical(nrow(weather_data), 31L)
+  expect_identical(ncol(weather_data), 4L)
+  expect_identical(weather_data, get_station_data(23031, '2020-01-01', '2020-01-31', c('rainfall', 'max_temp')))
+})
+
+test_that("Download all variables", {
+  weather_data <- get_station_data(23031, '2020-01-01', '2020-01-02')
+  expect_s3_class(weather_data, "data.frame")
+  expect_identical(nrow(weather_data), 2L)
+  expect_identical(ncol(weather_data), 18L)
+})
+
+test_that("Download all variables", {
+  weather_data <- get_station_data("Waite", '2020-01-01', '2020-01-02')
+  expect_s3_class(weather_data, "data.frame")
+  expect_identical(nrow(weather_data), 2L)
+  expect_identical(ncol(weather_data), 18L)
+})
+
+test_that("Get data without pretty names", {
+  weather_data <- get_station_data("Waite", '2020-01-01', '2020-01-02', pretty_names = FALSE)
+  expect_s3_class(weather_data, "data.frame")
+  expect_identical(nrow(weather_data), 2L)
+  expect_identical(ncol(weather_data), 18L)
+  expect_identical(colnames(weather_data), c("Date",
+                                             "Elevation..m.",
+                                             "Rainfall..mm.",
+                                             "Minimum.Temperature..degC.",
+                                             "Maximum.Temperature..degC.",
+                                             "Relative.Humidity.at.Minimum.Temperature....",
+                                             "Relative.Humidity.at.Maximum.Temperature....",
+                                             "Solar.Exposure..MJ.m2.",
+                                             "Mean.Pressure.at.Sea.Level..hPa.",
+                                             "Vapour.Pressure..hPa.",
+                                             "Vapour.Pressure.Deficit..hPa.",
+                                             "Evaporation..mm.",
+                                             "Morton.s.Shallow.Lake.Evaporation..mm.",
+                                             "FAO56.Short.Crop.Evapotranspiration..mm.",
+                                             "ASCE.Tall.Crop.Evapotranspiration..mm.",
+                                             "Morton.s.Areal.Actual.Evapotranspiration..mm.",
+                                             "Morton.s.Point.Potential.Evapotranspiration..mm.",
+                                             "Morton.s.Wet.environment.Areal.Potential.Evapotranspiration..mm."))
+})
+
+test_that("Error produced with invalid station name", {
+  expect_error(get_station_data("abc", '2020-01-01', '2020-01-02'),
+               "Unknown station provided\\. Please provide unique station name or station ID\\.")
+})
+
+test_that("Error produced with invalid station ID", {
+  expect_error(get_station_data(123, '2020-01-01', '2020-01-02'),
+               "Server-side error: Invalid station ID provided")
+})
+
+test_that("Errors produced with invalid dates", {
+  expect_error(get_station_data(23031, start_date = '2020-01-02', finish_date = '2020-01-01'),
+               "The given finish date cannot precede the start date")
+  expect_error(get_station_data(23031, start_date = '1620-01-02', finish_date = '2020-01-01'),
+               "The given start date cannot precede 1889-01-01")
+  expect_error(get_station_data(23031, start_date = '2050-01-01', finish_date = '2050-01-02'),
+               "Server-side error: Invalid start/end date")
+})
+
+test_that("Errors produced with invalid variables", {
+  expect_error(get_station_data(23031, '2020-01-01', '2020-01-02', variables = "abc"),
+               "abc is not in the list of available variables; did you misspell the variable?")
+})
 

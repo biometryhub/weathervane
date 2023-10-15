@@ -23,7 +23,7 @@
 #' @return A data.frame containing the downloaded weather data
 #' @examples
 #' weather_data <- get_station_data(
-#'   40004, '2020-01-01', '2020-03-31', c('rainfall', 'max_temp')
+#'   23031, '2020-01-01', '2020-03-31', c('rainfall', 'max_temp')
 #' )
 #' head(weather_data)
 #'
@@ -42,9 +42,7 @@ get_station_data <- function(
 
   # The start date must not precede the oldest date of data available.
   if (start_date < earliest_dataset_date()) {
-    stop(
-      paste('The given start date cannot precede', earliest_dataset_date())
-    )
+    stop('The given start date cannot precede ', earliest_dataset_date())
   }
 
   # The finish date must not precede the start date.
