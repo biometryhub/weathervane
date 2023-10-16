@@ -113,7 +113,7 @@ test_that('get_weather_data() has different column names if pretty_names = FALSE
 })
 
 test_that('get_weather_data() returns all weather variables by default', {
-  data <- get_weather_data(-34.968, 138.635, start_date = Sys.Date()-5)
+  data <- get_weather_data(-34.968, 138.635, start_date = "2023-10-10", finish_date = "2023-10-15")
   expect_identical(colnames(data),
                    c("Date", "Latitude", "Longitude", "Elevation (m)",
                      weather_variables()$pretty_name))
@@ -121,7 +121,8 @@ test_that('get_weather_data() returns all weather variables by default', {
 })
 
 test_that('get_weather_data() returns a single row of data with one input date', {
-  data <- get_weather_data(-34.968, 138.635, start_date = Sys.Date()-1, variables = "rainfall")
+  data <- get_weather_data(-34.968, 138.635, start_date = Sys.Date()-5, finish_date = Sys.Date()-5,
+                           variables = "rainfall")
   expect_equal(nrow(data), 1)
 })
 

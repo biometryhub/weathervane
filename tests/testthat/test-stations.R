@@ -198,6 +198,8 @@ test_that("Download all variables", {
   expect_s3_class(weather_data, "data.frame")
   expect_identical(nrow(weather_data), 2L)
   expect_identical(ncol(weather_data), 18L)
+  expect_identical(colnames(weather_data), c("Date", "Elevation (m)",
+                                             weather_variables()$pretty_name))
 })
 
 test_that("Get data without pretty names", {
@@ -205,24 +207,8 @@ test_that("Get data without pretty names", {
   expect_s3_class(weather_data, "data.frame")
   expect_identical(nrow(weather_data), 2L)
   expect_identical(ncol(weather_data), 18L)
-  expect_identical(colnames(weather_data), c("Date",
-                                             "Elevation..m.",
-                                             "Rainfall..mm.",
-                                             "Minimum.Temperature..degC.",
-                                             "Maximum.Temperature..degC.",
-                                             "Relative.Humidity.at.Minimum.Temperature....",
-                                             "Relative.Humidity.at.Maximum.Temperature....",
-                                             "Solar.Exposure..MJ.m2.",
-                                             "Mean.Pressure.at.Sea.Level..hPa.",
-                                             "Vapour.Pressure..hPa.",
-                                             "Vapour.Pressure.Deficit..hPa.",
-                                             "Evaporation..mm.",
-                                             "Morton.s.Shallow.Lake.Evaporation..mm.",
-                                             "FAO56.Short.Crop.Evapotranspiration..mm.",
-                                             "ASCE.Tall.Crop.Evapotranspiration..mm.",
-                                             "Morton.s.Areal.Actual.Evapotranspiration..mm.",
-                                             "Morton.s.Point.Potential.Evapotranspiration..mm.",
-                                             "Morton.s.Wet.environment.Areal.Potential.Evapotranspiration..mm."))
+  expect_identical(colnames(weather_data), make.names(c("Date", "Elevation (m)",
+                                             weather_variables()$pretty_name)))
 })
 
 test_that("Error produced with invalid station name", {
