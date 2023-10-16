@@ -310,7 +310,7 @@ ui <- fluidPage(
             width = 3,
             actionButton(width = "100%",
                          inputId = 'btn_1yr',
-                         label = '12 Months'
+                         label = '1 Year'
             )
           ),
           column(
@@ -500,6 +500,39 @@ server <- function(input, output, session) {
         )
       )
     }
+  })
+
+  # Enable the shortcut buttons to update date ranges
+  # 6 months
+  observeEvent(input$btn_6mo, ignoreInit = TRUE, {
+    updateDateInput(session, 'start_date', value = seq(as.Date(Sys.Date()), length = 2, by = "-6 months")[2])
+    updateDateInput(session, 'end_date', value = Sys.Date())
+    session$sendCustomMessage('colour_start_date', TRUE)
+    session$sendCustomMessage('bold_update_button', TRUE)
+  })
+
+  # Date range 1 year
+  observeEvent(input$btn_1yr, ignoreInit = TRUE, {
+    updateDateInput(session, 'start_date', value = seq(as.Date(Sys.Date()), length = 2, by = "-1 year")[2])
+    updateDateInput(session, 'end_date', value = Sys.Date())
+    session$sendCustomMessage('colour_start_date', TRUE)
+    session$sendCustomMessage('bold_update_button', TRUE)
+  })
+
+  # Date range 3 years
+  observeEvent(input$btn_3yrs, ignoreInit = TRUE, {
+    updateDateInput(session, 'start_date', value = seq(as.Date(Sys.Date()), length = 2, by = "-3 years")[2])
+    updateDateInput(session, 'end_date', value = Sys.Date())
+    session$sendCustomMessage('colour_start_date', TRUE)
+    session$sendCustomMessage('bold_update_button', TRUE)
+  })
+
+  # Date range 5 years
+  observeEvent(input$btn_5yrs, ignoreInit = TRUE, {
+    updateDateInput(session, 'start_date', value = seq(as.Date(Sys.Date()), length = 2, by = "-5 years")[2])
+    updateDateInput(session, 'end_date', value = Sys.Date())
+    session$sendCustomMessage('colour_start_date', TRUE)
+    session$sendCustomMessage('bold_update_button', TRUE)
   })
 
   # Whenever the dates have been changed, we highlight the date
