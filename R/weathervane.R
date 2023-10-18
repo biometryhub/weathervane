@@ -179,7 +179,7 @@ get_weather_data <- function(
   }
 
   data <- download_data(
-    download_url(latitude = latitude, longitude = longitude,
+    build_url(latitude = latitude, longitude = longitude,
                  start_date = start_date, finish_date = finish_date,
                  variables = variables)
   )
@@ -203,7 +203,7 @@ get_weather_data <- function(
 #'
 #' @param url A character string containing the download URL
 #' @return A data.frame containing the specified weather data
-#' @seealso [download_url()] to generate the requisite URLs.
+#' @seealso [build_url()] to build the requisite URLs.
 #'
 #' @importFrom xml2 read_html xml_text
 #' @importFrom utils read.table
@@ -212,7 +212,7 @@ get_weather_data <- function(
 #'
 #' @examples
 #' weathervane:::download_data(
-#'   weathervane:::download_url(
+#'   weathervane:::build_url(
 #'     -34.9, 138.6, start_date = '2020-01-01',
 #'     finish_date = '2020-12-31', variables = c('rainfall')
 #'   )
@@ -275,7 +275,7 @@ download_data <- function(url) {
   data
 }
 
-#' The download URL for the SILO weather data download
+#' Build the download URL for the SILO weather data download
 #'
 #' Return a character string containing the parameter-formatted
 #' download URL for the SILO data, given the latitude/longitude
@@ -291,17 +291,17 @@ download_data <- function(url) {
 #' @return The parameter-formatted URL for the data download
 #' @keywords internal
 #' @examples
-#' weathervane:::download_url(
+#' weathervane:::build_url(
 #'   latitude = -34.9, longitude = 138.6,
 #'   start = '2020-01-01', finish = '2020-12-31',
 #'   variables = c('rainfall')
 #' )
-#' weathervane:::download_url(
+#' weathervane:::build_url(
 #'   station = 40004,
 #'   start = '2020-01-01', finish = '2020-12-31',
 #'   variables = c('rainfall')
 #' )
-download_url <- function(
+build_url <- function(
     latitude,
     longitude,
     station,

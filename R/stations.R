@@ -67,7 +67,7 @@ get_station_data <- function(
     )
   }
 
-  url <- download_url(station = station, start_date = start_date, finish_date = finish_date, variables = variables)
+  url <- build_url(station = station, start_date = start_date, finish_date = finish_date, variables = variables)
   data <- download_data(url)
 
   # 18/11/2021 Fix: Truncate empty rows if given less than 4 days worth

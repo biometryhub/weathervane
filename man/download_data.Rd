@@ -19,13 +19,13 @@ URL.
 }
 \examples{
 weathervane:::download_data(
-  weathervane:::download_url(
+  weathervane:::build_url(
     -34.9, 138.6, start_date = '2020-01-01',
     finish_date = '2020-12-31', variables = c('rainfall')
   )
 )
 }
 \seealso{
-\code{\link[=download_url]{download_url()}} to generate the requisite URLs.
+\code{\link[=build_url]{build_url()}} to generate the requisite URLs.
 }
 \keyword{internal}
